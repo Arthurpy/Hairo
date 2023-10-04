@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "rippleui": "^1.12.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
