@@ -4,6 +4,9 @@
   import What from './components/What.vue';
   import About from './components/about.vue';
   import Flutter from './components/Flutteur.vue';
+  import login from './vue/login.vue';
+  import dashboard from './vue/dashboard.vue';
+import router from './routers/routers';
 
   export default {
     name: 'App',
@@ -12,19 +15,21 @@
     What,
     About,
     Testimonials,
-    Flutter
+    Flutter,
+    login,
+    dashboard,
+    router
 },
 data() {
     return {
       isLightTheme: true,
     };
   },
-  
   }
 </script>
 
 <template>
-  <div class="bg-white text-primary">
+  <!-- <div class="bg-white text-primary">
     <div class="navbar bg-backgroung fixed">
       <div class="navbar-start text-secondary font-bold">
         <a class="navbar-item">Home</a>
@@ -56,5 +61,8 @@ data() {
       <Testimonials/>
       <Flutter/>
     </div>
-  </div>
+  </div> -->
+  <!-- <login/> -->
+  <!-- <dashboard/> -->
+  <router-view></router-view>
 </template>

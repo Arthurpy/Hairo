@@ -1,66 +1,71 @@
 <template>
     <div class="sidebar">
-        <logo/>
-        <div1 class="titre">
-        <button class="page">
-            <img class="icon" src="../../public/logo-home.png">
-            Dashboard</button>
-        <button class="page">
-            <img class="icon" src="../../public/logo-ressources.png">
-            Ressources
+      <logo />
+      <div class="titre-sb">
+        <button class="page" :class="{ active: activeButton === 'dashboard' }">
+          <img class="icon" src="../assets/logo-home.png">
+          Dashboard
         </button>
-        <button class="page">
-            <img class="icon" src="../../public/cas_pratique_logo.png">
-            Cas Pratiques
+        <button class="page" :class="{ active: activeButton === 'ressources' }">
+          <img class="icon" src="../assets/logo-ressources.png">
+          Ressources
         </button>
-        </div1>
-        <footer class="sett">
-            <button class="page">
-                <img class="icon" src="../../public/logo-setting.png">
-                Settings
-            </button>
-            <button class="page">
-                <img class="icon" src="../../public/logo-logout.png">
-                Logout
-            </button>
-        </footer>
+        <button class="page" :class="{ active: activeButton === 'cas-pratiques' }">
+          <img class="icon" src="../assets/cas_pratique_logo.png">
+          Cas Pratiques
+        </button>
+      </div>
+      <footer class="sett">
+        <button class="page" :class="{ active: activeButton === 'settings' }">
+          <img class="icon" src="../assets/logo-setting.png">
+          Settings
+        </button>
+        <button class="page" :class="{ active: activeButton === 'logout' }">
+          <img class="icon" src="../assets/logo-logout.png">
+          Logout
+        </button>
+      </footer>
     </div>
+  </template>
 
-</template>
+  <script>
+  import Poppins from '../assets/Poppins-Regular.ttf'
+  import logo from './logo.vue'
 
-
-<script>
-import Poppins from '../../public/Poppins-Regular.ttf'
-import logo from './logo.vue'
-
-export default {
-  name: 'Sidebar',
-  components: {
-    logo
-  },
-
-}
-
-</script>
-
+  export default {
+    name: 'Sidebar',
+    components: {
+      logo
+    },
+    data() {
+      return {
+        activeButton: 'dashboard'
+      };
+    }
+  }
+  </script>
 
 <style>
 
-.titre {
-    display: table-column-group;
-    margin-top: 20px;
-    width: fit-content;
-    margin-left: -80px;
+.titre_sb {
+    display: flex;
+    padding-left: 63px;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
 }
 
 .sidebar {
     width: 275px;
     height: 100vh;
     flex-shrink: 0;
-    background: #FFF;
     display: flex;
     flex-direction: column;
-    padding: 50px;
+    padding-top: 50px;
+    border-right: #001A45;
+    border-style: outset;
+    align-items: center;
+    background-color: #fff;
 }
 
 .icon {
@@ -72,13 +77,14 @@ export default {
 .page {
     color: #001A45;
     font-family: Poppins;
-    font-size: 16px;
+    font-size: 90%;
     font-style: normal;
     font-weight: 600;
-    line-height: 19.104px;
     display: flex;
-    padding: 20px;
-    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 237px;
+    padding-left: 20px;
 }
 
 .sett {
@@ -89,6 +95,14 @@ export default {
     margin-bottom: 20px;
     flex-direction: column;
 }
+
+.page.active {
+    border-radius: 4px;
+    background: #D6EDFB;
+    color: #2176FF;
+    border-radius: 4px;;
+}
+
 
 </style>
 ```
