@@ -16,11 +16,9 @@ export default {
 				themeName: "dark",
 				colorScheme: "dark",
 				colors: {
-					primary: "#235264",
-					background: "#FFFFFF",
-          primary: "#252525",
-          secondary: "#FFFFFF",
-          TextTertiary: "#252525",
+					primary: "#252525",
+          			secondary: "#FFFFFF",
+          			TextTertiary: "#252525",
 				},
 			},
 			{

@@ -3,7 +3,7 @@
   import We from './components/We.vue';
   import What from './components/What.vue';
   import About from './components/about.vue';
-  import Flutter from './components/Flutteur.vue';
+  import Footer from './components/Footer.vue';
 
   export default {
     name: 'App',
@@ -12,7 +12,7 @@
     What,
     About,
     Testimonials,
-    Flutter
+    Footer
 },
 data() {
     return {
@@ -54,7 +54,7 @@ data() {
       <What/>
       <About/>
       <Testimonials/>
-      <Flutter/>
+      <Footer/>
     </div>
   </div>
 </template>
