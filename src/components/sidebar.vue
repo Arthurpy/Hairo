@@ -2,18 +2,24 @@
     <div class="sidebar">
       <logo />
       <div class="titre-sb">
-        <button class="page" :class="{ active: activeButton === 'dashboard' }">
-          <img class="icon" src="../assets/logo-home.png">
-          Dashboard
-        </button>
-        <button class="page" :class="{ active: activeButton === 'ressources' }">
-          <img class="icon" src="../assets/logo-ressources.png">
-          Ressources
-        </button>
-        <button class="page" :class="{ active: activeButton === 'cas-pratiques' }">
-          <img class="icon" src="../assets/cas_pratique_logo.png">
-          Cas Pratiques
-        </button>
+        <RouterLink to="/dashboard">
+          <button class="page" :class="{ active: activeButton === 'dashboard' }">
+            <img class="icon" src="../assets/logo-home.png">
+            Dashboard
+          </button>
+        </RouterLink>
+        <RouterLink to="/dashboard">
+          <button class="page" :class="{ active: activeButton === 'cas-pratiques' }">
+            <img class="icon" src="../assets/cas_pratique_logo.png">
+            Cas Pratiques
+          </button>
+        </RouterLink>
+        <RouterLink to="/dashboard">
+          <button class="page" :class="{ active: activeButton === 'ressource' }">
+            <img class="icon" src="../assets/logo-ressources.png">
+            ressource
+          </button>
+        </RouterLink>
       </div>
       <footer class="sett">
         <button class="page" :class="{ active: activeButton === 'settings' }">
@@ -29,14 +35,17 @@
   </template>
 
   <script>
-  import Poppins from '../assets/Poppins-Regular.ttf'
+  import { RouterLink } from 'vue-router';
+import Poppins from '../assets/Poppins-Regular.ttf'
   import logo from './logo.vue'
+
 
   export default {
     name: 'Sidebar',
     components: {
-      logo
-    },
+    logo,
+    RouterLink
+},
     data() {
       return {
         activeButton: 'dashboard'
@@ -62,7 +71,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 50px;
-    border-right: #001A45;
+    border-right: #001a452c;
     border-style: outset;
     align-items: center;
     background-color: #fff;
