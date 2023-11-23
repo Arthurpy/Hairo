@@ -1,9 +1,9 @@
 <script>
   import Testimonials from './components/test.vue';
-  import We from './components/We.vue';
-  import What from './components/What.vue';
-  import About from './components/about.vue';
-  import Footer from './components/Footer.vue';
+  import We from './components/wee.vue';
+  import What from './components/wwaht.vue';
+  import About from './components/abo.vue';
+  import Footer from './components/foot.vue';
 
   export default {
     name: 'App',
