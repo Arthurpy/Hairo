@@ -3,24 +3,24 @@
         <logo/>
         <div1 class="titre">
         <button class="page">
-            <img class="icon" src="../../public/logo-home.png">
+            <img class="icon" src="..//assets/logo-home.png">
             Dashboard</button>
         <button class="page">
-            <img class="icon" src="../../public/logo-ressources.png">
+            <img class="icon" src="..//assets/logo-ressources.png">
             Ressources
         </button>
         <button class="page">
-            <img class="icon" src="../../public/cas_pratique_logo.png">
+            <img class="icon" src="..//assets/cas_pratique_logo.png">
             Cas Pratiques
         </button>
         </div1>
         <footer class="sett">
             <button class="page">
-                <img class="icon" src="../../public/logo-setting.png">
+                <img class="icon" src="..//assets/logo-setting.png">
                 Settings
             </button>
             <button class="page">
-                <img class="icon" src="../../public/logo-logout.png">
+                <img class="icon" src="..//assets/logo-logout.png">
                 Logout
             </button>
         </footer>
@@ -30,7 +30,7 @@
 
 
 <script>
-import Poppins from '../../public/Poppins-Regular.ttf'
+import Poppins from '..//assets/Poppins-Regular.ttf'
 import logo from './logo.vue'
 
 export default {

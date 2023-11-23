@@ -1,13 +1,13 @@
 <template>
     <div>
-    <img src="../../public/logo.png" alt="logo" class="logo">
+    <img src="..//assets/logo.png" alt="logo" class="logo">
     <p class="title">AIRO</p>
     </div>
 </template>
 
 <script>
 
-import Poppins from '../../public/Poppins-Regular.ttf'
+import Poppins from '..//assets/Poppins-Regular.ttf'
 export default {
     name: 'Logo',
 }

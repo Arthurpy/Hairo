@@ -1,7 +1,7 @@
 <template>
     <div class="login_page">
     <div class="photo">
-      <img  class="bateau" src="../../public/login.png">
+      <img  class="bateau" src="..//assets/login.png">
     </div>
     <div2 class="infodiv">
         <logo/>
@@ -11,19 +11,19 @@
       <input class="password" type="password" placeholder="password">
         <button class="forgot"> Forgot password?</button>
         <p class="remember">
-            <img class="btrm" src="../../public/bg-switcher.svg" @click="rememberMe = !rememberMe" :class="{ active: rememberMe }">
+            <img class="btrm" src="..//assets/bg-switcher.svg" @click="rememberMe = !rememberMe" :class="{ active: rememberMe }">
             <p> Remember me</p>
         </p>
       <button class="signin"> Sign in</button>
-      <button class="google"> <img src="../../public/icon-google.png"> <p> Sign in with Google</p> </button>
-      <button class="apple"> <img src="../../public/icon-apple.svg"> <p> Sign in with Apple</p> </button>
+      <button class="google"> <img src="..//assets/icon-google.png"> <p> Sign in with Google</p> </button>
+      <button class="apple"> <img src="..//assets/icon-apple.svg"> <p> Sign in with Apple</p> </button>
       <p class="DOESNT"> Don't have an account? <button class="signup" href="#"> Sign up now</button></p>
     </div2>
 </div>
   </template>
 
 <script>
-  import Poppins from '../../public/Poppins-Regular.ttf'
+  import Poppins from '..//assets/Poppins-Regular.ttf'
   import logo from '../components/logo.vue'
 
   export default {
@@ -237,7 +237,7 @@ input {
    }
 
    .remember.btrm.active {
-    src: url('../../public/bg-switcher.svg');
+    src: url('..//assets/bg-switcher.svg');
    }
 
 </style>
