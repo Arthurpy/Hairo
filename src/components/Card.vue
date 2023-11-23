@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-white p-4 mx-5">
+    <div class="card bg-white p-4 mx-10 w-96">
         <div class="bg-red-300 h-[40px]  w-[40px] flex justify-center items-center rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                 <g clip-path="url(#clip0_716_891)">
@@ -12,13 +12,17 @@
                 </defs>
             </svg>
         </div>
-		<h2 class="card-header">Web site design</h2>
-		<p class="text-content2">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odit, aliquid hic nostrum rem unde ipsum voluptas dignissimos veritatis doloribus totam molestiae rerum provident quos. Eos dolorem qui perferendis laboriosam distinctio!</p>
-	</div>
+        <h2 class="card-header">{{ title }}</h2>
+		<p class="text-content2">{{ value }}</p>
+        </div>
 </template>
 
 <script>
 export default {
     name: 'Card',
+    props: {
+        title: String,
+        value: String
+    }
 }
 </script>

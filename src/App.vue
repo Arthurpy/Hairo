@@ -50,11 +50,11 @@ data() {
       </div>
     </div>
     <div class="bg-white">
-      <We class=""/>
+      <We/>
       <What/>
       <About/>
       <Testimonials/>
-      <Footer/>
+      <Footer />
     </div>
   </div>
 </template>

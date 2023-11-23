@@ -6,16 +6,12 @@
             <div class=" flex bg-white p-2 w-[448px] flex-col rounded-3xl m-4">
                 <img src="../assets/coat.png" class="flex justify-start  h-[32px] w-[32px] m-2"/>
                 <text class="m-4">
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown printer took a galley of type and scrambled it to make a type
-                    specimen book. It has survived not only five centuries.                </text>
+                    Depuis que j'utilise HAIRO, ma compréhension des sujets complexes s'est nettement améliorée. Les explications sont claires et les quiz interactifs me permettent de tester mes connaissances de manière ludique. J'apprécie particulièrement la possibilité de revoir des cas cliniques, ce qui rend l'apprentissage plus concret et pertinent. C'est devenu un complément indispensable à mes révisions!               </text>
             </div>
             <div class=" flex bg-white p-2 w-[448px] flex-col rounded-3xl m-4">
                 <img src="../assets/coat.png" class="flex justify-start  h-[32px] w-[32px] m-2"/>
                 <text class="m-4">
-                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when an unknown printer took a galley of type and scrambled it to make a type
-                    specimen book. It has survived not only five centuries.                </text>
+                    HAIRO a changé ma façon de réviser. La richesse du contenu et la diversité des ressources disponibles sont impressionnantes. J'aime surtout les vidéos explicatives qui donnent l'impression d'avoir un tuteur personnel. Cela m'aide énormément à assimiler les cours théoriques. Je recommande vivement cet outil à tous mes camarades en médecine.               </text>
             </div>
         </div>
     </div>
