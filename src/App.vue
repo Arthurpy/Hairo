@@ -33,7 +33,7 @@ data() {
       </div>
       <div class="nabbar-center">
         <a class="navbar-item flex flex-row flex-end">
-          <img src="images/logo.png" alt="logo" />
+          <img src="/logo.png" alt="logo" />
           <h2 class="text-2xl mt-2 ml-1 font-bold text-[#2176FF]">AIRO</h2>
         </a>
       </div>
