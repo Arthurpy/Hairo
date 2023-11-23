@@ -1,5 +1,5 @@
 <script>
-  import Testimonials from './components/testimonials.vue';
+  import Testimonials from './components/test.vue';
   import We from './components/We.vue';
   import What from './components/What.vue';
   import About from './components/about.vue';
