@@ -13,13 +13,13 @@
     About,
     Testimonials,
     Footer
-},
-data() {
-    return {
-      isLightTheme: true,
-    };
   },
-  }
+  data() {
+      return {
+        isLightTheme: true,
+      };
+  },
+}
 </script>
 
 <template>

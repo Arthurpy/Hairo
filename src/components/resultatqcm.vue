@@ -24,7 +24,6 @@ export default {
     border-radius: 10px;
     flex-shrink: 0;
     background-color: #B4E1FE;
-    margin-top: 25px;
 }
 
 .name {
