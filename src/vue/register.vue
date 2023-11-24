@@ -12,13 +12,13 @@
 
 <script>
     import logo from '../components/logo.vue'
-    import login_com from '../components/register_com.vue';
+    import register_com from '../components/register_com.vue';
 
     export default {
         name: 'Login',
         components: {
             logo,
-            login_com,
+            register_com,
         },
         data() {
             return {
@@ -27,6 +27,3 @@
         },
     }
 </script>
-
-<style>
-</style>

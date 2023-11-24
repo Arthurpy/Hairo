@@ -1,8 +1,8 @@
 <script>
-  import Testimonials from '../components/testimonials.vue';
-  import We from '../components/We.vue';
-  import What from '../components/What.vue';
-  import About from '../components/about.vue';
+  import Testimonials from '../components/test.vue';
+  import We from '../components/wee.vue';
+  import What from '../components/wwaht.vue';
+  import About from '../components/abo.vue';
   import Footer from '../components/foot.vue';
 
   export default {
@@ -19,7 +19,6 @@ data() {
       isLightTheme: true,
     };
   },
-  
   }
 </script>
 
@@ -33,19 +32,19 @@ data() {
       </div>
       <div class="nabbar-center">
         <a class="navbar-item flex flex-row flex-end">
-          <img src="images/logo.png" alt="logo" />
+          <img src="../assets/images/logo.png" alt="logo" />
           <h2 class="text-2xl mt-2 ml-1 font-bold text-[#2176FF]">AIRO</h2>
         </a>
       </div>
       <div class="navbar-end">
         <a class="navbar-item">
-          <img src="images/insta.svg" alt="instagram" />
+          <img src="../assets/images/insta.svg" alt="instagram" />
         </a>
         <a class="navbar-item">
-          <img src="images/facebook.svg" alt="facebook" />
+          <img src="../assets/images/facebook.svg" alt="facebook" />
         </a>
         <a class="navbar-item">
-          <img src="images/linkedin.svg" alt="linkedin" />
+          <img src="../assets/images/linkedin.svg" alt="linkedin" />
         </a>
       </div>
     </div>

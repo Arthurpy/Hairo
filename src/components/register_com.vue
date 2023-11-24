@@ -1,7 +1,7 @@
 <template>
-    <form class="mx-auto flex w-full max-w-lg flex-col rounded-xl border border-border bg-backgroundSecondary p-4 sm:p-20">
+    <form class="mx-auto flex w-full max-w-lg flex-col rounded-xl border border-border bg-backgroundSecondary p-4 sm:p-20 bg-white">
 	<div class="flex w-full flex-col gap-2">
-		<p>Sign in with</p>
+		<p class="text-black">Sign in with</p>
 		<div class="flex w-full flex-col gap-2">
 			<button type="button" class="btn gap-2 bg-gray-5">
 				<svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 48 48" enablebackground="new 0 0 48 48" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +14,7 @@
               c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
 					></path>
 				</svg>
-				<span>Sign up with google</span>
+				<span class="text-white">Sign up with google</span>
 			</button>
 			<button type="button" class="btn gap-2 bg-gray-5">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-primary">
@@ -30,7 +30,7 @@
 					></path>
 				</svg>
 
-				<span>Sign up with github</span>
+				<span class="text-white">Sign up with github</span>
 			</button>
 		</div>
 	</div>
@@ -38,7 +38,7 @@
 
 	<div class="form-group">
 		<div class="form-field">
-			<label class="form-label">Email address</label>
+			<label class="form-label text-black">Email address</label>
 
 			<input placeholder="Type here" type="email" class="input max-w-full" />
 			<label class="form-label">
@@ -47,32 +47,26 @@
 		</div>
 		<div class="form-field">
 			<label class="form-label">
-				<span>Password</span>
+				<span class="text-black">Password</span>
 			</label>
 			<div class="form-control">
 				<input placeholder="Type here" type="password" class="input max-w-full" />
 			</div>
 		</div>
 		<div class="form-field">
-			<div class="form-control justify-between">
-				<div class="flex gap-2">
-					<input type="checkbox" class="checkbox" />
-					<a class="text-sm" href="#">Remember me</a>
-				</div>
-				<label class="form-label">
-					<a class="link link-underline-hover link-primary text-sm">Forgot your password?</a>
-				</label>
+			<div class="form-control">
+				<input placeholder="confirm password" type="password" class="input max-w-full" />
 			</div>
 		</div>
 		<div class="form-field pt-5">
 			<div class="form-control justify-between">
-				<button type="button" class="btn btn-primary w-full">Sign in</button>
+				<button type="button" class="btn btn-primary w-full">Sign up</button>
 			</div>
 		</div>
 
 		<div class="form-field">
 			<div class="form-control">
-				<button @click="goToRegister" ><a class="link link-underline-hover link-primary text-sm" >Don't have an account? Sign in</a> </button>
+				<button @click="goToLogin" ><a class="link link-underline-hover link-primary text-sm" >have an account? Sign in</a> </button>
 			</div>
 		</div>
 	</div>
@@ -83,8 +77,8 @@
 export default {
     name: 'login_com',
 	methods: {
-		goToRegister() {
-			this.$router.push('/register');
+		goToLogin() {
+			this.$router.push('/login');
 		},
 	},
 };

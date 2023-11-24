@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar bg-white">
       <logo />
       <div class="titre-sb">
         <RouterLink to="/dashboard">
@@ -48,7 +48,7 @@ import Poppins from '../assets/Poppins-Regular.ttf'
 },
     data() {
       return {
-        activeButton: 'dashboard'
+        activeButton: 'dashboard',
       };
     }
   }

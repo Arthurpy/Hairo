@@ -3,6 +3,7 @@
   import We from './components/wee.vue';
   import What from './components/wwaht.vue';
   import About from './components/abo.vue';
+  import Footer from './components/foot.vue';
 
   export default {
     name: 'App',
@@ -11,6 +12,7 @@
     What,
     About,
     Testimonials,
+    Footer
 },
 data() {
     return {
