@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Card from './Card.vue';
+import Card from './mycard.vue';
 
 export default {
     name: 'What',

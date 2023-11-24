@@ -14,7 +14,7 @@
                 nous rejoindre 
             </button>
         </div>
-        <div class="-mr-12 -mb-20  -z-1 max-w-screen w-2/4">
+        <div class="-mr-12 -mb-20  -z-1 w-full">
             <img src="../assets/We.png" alt="We"/>
         </div>
     </div>
