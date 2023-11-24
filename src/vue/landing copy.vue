@@ -3,7 +3,7 @@
   import We from '../components/We.vue';
   import What from '../components/What.vue';
   import About from '../components/about.vue';
-  import Footer from '../components/foot.vue';
+  import Footer from '../components/Flutteur.vue';
 
   export default {
     name: 'App',

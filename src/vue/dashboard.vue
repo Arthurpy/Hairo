@@ -5,7 +5,7 @@
             <div class="ligne">
             <div class="orange">
                 Vos exploits en résumé  !
-                <div class="fiche">ajouter une fiche</div>
+                <button @onclick="goTofiche"><div class="fiche">ajouter une fiche</div></button>
                 <img class="megaphone" src="../assets/megaphone.png">
             </div>
             </div>
@@ -19,13 +19,15 @@
                 </p>
             </div>
             <div class="ligne">
+            </div>
+            <resultatqcm :value="43" />
+            <resultatqcm :value="56" />
+        </div>
+            <div class="ligne">
                 <div class="last_question">
                     test
                 </div>
             </div>
-                <resultatqcm :value="43" />
-                <resultatqcm :value="56" />
-        </div>
         </div>
         <profil/>
     </div>
@@ -49,6 +51,11 @@ export default {
             isDarkTheme: false,
         };
     },
+    methods: {
+        goTofiche() {
+            this.$router.push('/fiche');
+        },
+    }
 };
 </script>
 
@@ -59,6 +66,8 @@ export default {
     height: 127px;
     flex-shrink: 0;
     background-color: #B4E1FE80;
+    margin: 25px;
+    border-radius: 10px;
 }
 
 .ligne {

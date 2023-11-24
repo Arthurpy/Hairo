@@ -11,7 +11,6 @@
     What,
     About,
     Testimonials,
-    Footer
 },
 data() {
     return {
