@@ -8,6 +8,7 @@
             <Card title="Tu veux de l'aide pour mieux t'organiser dans t'es revision" value="Nous te proposons de mieux t'organiser grâce a notre IA qui te permettra d'organiser ton planning avec nos suggestion en fonction de t'es résultat et de t'es besoins avec la méthode d'organisaton de notre IA" />
         </div>
     </div>
+    
 </template>
 
 <script>
