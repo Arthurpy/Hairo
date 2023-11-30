@@ -9,7 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "poppins": "^0.1.1",
+    "rippleui": "^1.12.1",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5",
+    "vue-routers": "^1.0.9"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
