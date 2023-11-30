@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar bg-white">
+    <div class="sidebar bg-white w-58">
       <logo />
       <div class="titre-sb">
         <RouterLink to="/dashboard">
@@ -8,8 +8,8 @@
             Dashboard
           </button>
         </RouterLink>
-        <RouterLink to="/dashboard">
-          <button class="page" :class="{ active: activeButton === 'cas-pratiques' }">
+        <RouterLink to="/caspratique">
+          <button class="page" :class="{ active: activeButton === 'caspratiques' }">
             <img class="icon" src="../assets/cas_pratique_logo.png">
             Cas Pratiques
           </button>
@@ -36,19 +36,24 @@
 
   <script>
   import { RouterLink } from 'vue-router';
-import Poppins from '../assets/Poppins-Regular.ttf'
+  import Poppins from './../assets/Poppins-Regular.ttf'
   import logo from './logo.vue'
 
 
   export default {
     name: 'Sidebar',
-    components: {
-    logo,
-    RouterLink
-},
+      components: {
+      logo,
+      RouterLink
+    },
+    props: {
+      activeButton: {
+        type: String,
+        default: 'dashboard'
+      }
+    },
     data() {
       return {
-        activeButton: 'dashboard',
       };
     }
   }
@@ -75,6 +80,7 @@ import Poppins from '../assets/Poppins-Regular.ttf'
     border-style: outset;
     align-items: center;
     background-color: #fff;
+    position: fixed;
 }
 
 .icon {

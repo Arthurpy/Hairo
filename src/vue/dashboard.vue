@@ -11,12 +11,12 @@
                     <img class="w-36 h-36 -rotate-10 shrink-0" src="../assets/megaphone.png">
                 </div>
             </div>
-            <div class="flex items-center pb-8">
-                <div class="w-96 h-32 rounded-lg bg-[#D2EADA] space-x-5">
+            <div class="flex items-center pb-8 space-x-8">
+                <div class="w-128 h-32 rounded-lg bg-[#D2EADA] space-x-5">
                     <p class="text-black text-center text-lg font-bold">
                         Bonjour Doe,
                     </p>
-                    <p class="text-black text-center text-lg font-medium">
+                    <p class="text-black text-center text-lg font-medium whitespace-normal">
                         Vous avez fournis de très beaux efforts ces derniers temps continuiez ainsi.
                     </p>
                 </div>

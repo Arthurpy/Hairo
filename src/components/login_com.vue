@@ -111,7 +111,7 @@ export default {
                 });
 
                 if (response.data.success) {
-                    this.$router.push('/dashboard'); // Redirection après une connexion réussie
+                    this.$router.push('/dashboard');
                 } else {
                     this.loginError = true;
                     this.loginErrorMessage = 'Invalid email or password.';

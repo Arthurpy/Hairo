@@ -3,6 +3,7 @@ import login from './../vue/login.vue';
 import dashboard from './../vue/dashboard.vue';
 import Register from './../vue/register.vue';
 import Landing from './../vue/landing.vue';
+import caspratique from './../vue/caspratique.vue';
 
 
 const routes = [
@@ -25,8 +26,17 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: dashboard
+    },
+    {
+      path: '/caspratique',
+      name: 'caspratique',
+      component: caspratique
     }
-
+    // {
+    //   path: '/cas-pratique/id',
+    //   name: 'cas-pratique-id',
+    //   component: cas-id
+    // }
 ];
 
 const router = createRouter({
