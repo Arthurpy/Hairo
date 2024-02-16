@@ -1,7 +1,7 @@
 <template>
-    <div class="flex justify-between">
+    <div class="flex">
         <sidebar :activeButton="'dashboard'"/>
-        <div class="w-full h-screen bg-[#F3F8FF] p-4">
+        <div class="w-full h-screen bg-[#F3F8FF] p-4 pl-64">
             <div class="flex items-center pb-8">
                 <div class="w-full h-28 rounded-lg bg-[#FCD19C] flex justify-between items-center text-white text-center text-2xl font-bold">
                     Vos exploits en résumé  !
