@@ -10,8 +10,8 @@
             <text class="flex text-xl w-9/12 mt-5">
                 Booste ta réussite cette année avec une organisation optimale de tes révisions. Accède à tout moment à des ressources, cas pratiques, et reçois des retours personnalisés grâce à l'IA, des QCM, et des plans de révisions sur mesure.
             </text>
-            <button class="flex p-5 mt-16 bg-[#B4E1FE] px-7 rounded-lg uppercase font-bold my-4">
-                nous rejoindre 
+            <button @click="goToRegister" class="flex p-5 mt-16 bg-[#B4E1FE] px-7 rounded-lg uppercase font-bold my-4">
+                nous rejoindre
             </button>
         </div>
         <div class="-mr-12 -mb-20  -z-1 w-full">
@@ -23,5 +23,13 @@
 <script>
 export default {
     name: 'We',
+    methods: {
+        goToLogin() {
+            this.$router.push('/login');
+        },
+        goToRegister() {
+            this.$router.push('/register');
+        },
+    },
 }
 </script>
