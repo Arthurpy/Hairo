@@ -1,7 +1,7 @@
 <template>
     <div class="flex">
         <sidebar :activeButton="'dashboard'"/>
-        <div class="w-full h-screen bg-[#F3F8FF] p-4 pl-64">
+        <div class="w-full h-screen bg-[#F3F8FF] p-6">
             <div class="flex items-center pb-8">
                 <div class="w-full h-28 rounded-lg bg-[#FCD19C] flex justify-between items-center text-white text-center text-2xl font-bold">
                     Vos exploits en résumé  !
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="flex items-center pb-8 space-x-8">
-                <div class="w-128 h-32 rounded-lg bg-[#D2EADA] space-x-5">
+                <div class="w-128 h-32 rounded-lg bg-[#D2EADA] space-x-5 p-4">
                     <p class="text-black text-center text-lg font-bold">
                         Bonjour Doe,
                     </p>
@@ -24,18 +24,17 @@
                     <resultatqcm :value="56" />
             </div>
             <div class="flex items-center pb-8 space-x-5">
-                <div class="w-1/3 h-32 bg-[#B4E1FE80] rounded-lg">
+                <div class="w-1/3 h-32 bg-[#B4E1FE80] rounded-lg p-4">
                     <h1>test 1</h1>
                 </div>
-                <div class="w-1/3 h-32 bg-[#B4E1FE80] rounded-lg">
+                <div class="w-1/3 h-32 bg-[#B4E1FE80] rounded-lg p-4">
                     <h1>test 2</h1>
                 </div>
-                <div class="w-1/3 h-32 bg-[#B4E1FE80] rounded-lg">
+                <div class="w-1/3 h-32 bg-[#B4E1FE80] rounded-lg p-4">
                     <h1>test 3</h1>
                 </div>
             </div>
         </div>
-        <profil/>
     </div>
 </template>
 
@@ -45,16 +44,23 @@ import resultatqcm from '../components/resultatqcm.vue';
 import profil from '../components/profil.vue';
 
 export default {
-    name: 'Dash',
+    name: 'dashboard',
     components: {
         sidebar,
         resultatqcm,
         profil,
     },
     methods: {
-        goTofiche() {
-            this.$router.push('/fiche');
-        },
     }
 };
 </script>
+
+
+<style>
+
+    h1 {
+        color: black;
+        font-size: 1.5rem;
+    }
+
+</style>

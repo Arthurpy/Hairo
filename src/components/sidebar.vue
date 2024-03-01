@@ -2,22 +2,34 @@
     <div class="sidebar bg-white w-58">
       <logo />
       <div class="titre-sb">
+        <RouterLink to="/revisions">
+          <button class="page" :class="{ active: activeButton === 'revisions' }">
+            <img class="icon" src="../assets/Revision.png">
+            Révision
+          </button>
+        </RouterLink>
+        <RouterLink to="/ressources">
+          <button class="page" :class="{ active: activeButton === 'ressources' }">
+            <img class="icon" src="../assets/Ressources.png">
+            Ressource
+          </button>
+        </RouterLink>
         <RouterLink to="/dashboard">
           <button class="page" :class="{ active: activeButton === 'dashboard' }">
-            <img class="icon" src="../assets/logo-home.png">
+            <img class="icon" src="../assets/Dashboard.png">
             Dashboard
           </button>
         </RouterLink>
-        <RouterLink to="/caspratique">
-          <button class="page" :class="{ active: activeButton === 'caspratiques' }">
-            <img class="icon" src="../assets/cas_pratique_logo.png">
-            Cas Pratiques
+        <RouterLink to="/agenda">
+          <button class="page" :class="{ active: activeButton === 'agenda' }">
+            <img class="icon" src="../assets/Agenda.png">
+            Agenda
           </button>
         </RouterLink>
-        <RouterLink to="/dashboard">
-          <button class="page" :class="{ active: activeButton === 'ressource' }">
-            <img class="icon" src="../assets/logo-ressources.png">
-            ressource
+        <RouterLink to="/messagerie">
+          <button class="page" :class="{ active: activeButton === 'messagerie' }">
+            <img class="icon" src="../assets/Messagerie.png">
+            Messagerie
           </button>
         </RouterLink>
       </div>
@@ -70,7 +82,7 @@
 }
 
 .sidebar {
-    width: 275px;
+    width: 25vw;
     height: 100vh;
     flex-shrink: 0;
     display: flex;
@@ -80,12 +92,9 @@
     border-style: outset;
     align-items: center;
     background-color: #fff;
-    position: fixed;
 }
 
 .icon {
-    width: 24px;
-    height: 24px;
     margin-right: 19px;
 }
 
@@ -113,8 +122,8 @@
 
 .page.active {
     border-radius: 4px;
-    background: #D6EDFB;
-    color: #2176FF;
+    background: #FCD19C;
+    color: black;
     border-radius: 4px;;
 }
 

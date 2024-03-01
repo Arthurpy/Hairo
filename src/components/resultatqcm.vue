@@ -12,7 +12,8 @@ export default {
         return {
             value: 0,
         }
-    }
+    },
+    props: ['value'],
 }
 </script>
 
