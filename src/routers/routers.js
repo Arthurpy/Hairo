@@ -27,15 +27,21 @@ const routes = [
         name: 'dashboard',
         component: dashboard
     },
-    {
-      path: '/caspratique',
-      name: 'caspratique',
-      component: caspratique
-    }
     // {
-    //   path: '/cas-pratique/id',
-    //   name: 'cas-pratique-id',
-    //   component: cas-id
+    //   path: '/revision',
+    //   name: 'revision',
+    // }
+    // {
+    //   path: '/ressources',
+    //   name: 'ressources',
+    // }
+    // {
+    //   path: '/agenda',
+    //   name: 'agenda',
+    // }
+    // {
+    //   path: '/messagerie',
+    //   name: 'messagerie',
     // }
 ];
 
