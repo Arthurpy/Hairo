@@ -3,7 +3,8 @@ import login from './../vue/login.vue';
 import dashboard from './../vue/dashboard.vue';
 import Register from './../vue/register.vue';
 import Landing from './../vue/landing.vue';
-import caspratique from './../vue/caspratique.vue';
+import ressources from './../vue/ressources.vue'
+import revisions from './../vue/revision.vue'
 
 
 const routes = [
@@ -18,7 +19,7 @@ const routes = [
       component: login
     },
     {
-      path: '/Register',
+      path: '/register',
       name: 'Register',
       component: Register
     },
@@ -27,10 +28,16 @@ const routes = [
         name: 'dashboard',
         component: dashboard
     },
-    // {
-    //   path: '/revision',
-    //   name: 'revision',
-    // }
+    {
+      path: '/ressources',
+      name: 'ressources',
+      component: ressources
+    },
+    {
+      path: '/revisions',
+      name: 'revisions',
+      component: revisions
+    },
     // {
     //   path: '/ressources',
     //   name: 'ressources',
