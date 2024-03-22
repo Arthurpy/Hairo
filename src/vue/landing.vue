@@ -23,12 +23,10 @@
 </script>
 
 <template>
-  <div class="bg-white text-primary">
-    <div class="navbar bg-backgroung fixed">
+  <div class="bg-white text-primary min-h-screen">
+    <div class="navbar bg-transparent fixed">
       <div class="navbar-start text-secondary font-bold">
-        <a class="navbar-item">Home</a>
-        <a class="navbar-item">About</a>
-        <a class="navbar-item">Contact</a>
+        <a class="navbar-item"> </a>
       </div>
       <div class="nabbar-center">
         <a class="navbar-item flex flex-row flex-end">
@@ -48,8 +46,8 @@
         </a>
       </div>
     </div>
-    <div class="bg-white">
-      <We class=""/>
+    <div class="bg-white md:max-w-4xl md:mx-auto xl:max-w-5xl xl:mx-auto 2xl:max-w-6xl 2xl:mx-auto">
+      <We/>
       <What/>
       <About/>
       <Testimonials/>
