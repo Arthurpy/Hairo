@@ -52,7 +52,7 @@
                 <p v-if="passwordError" class="text-red-500">{{ passwordErrorMessage }}</p>
             </div>
             <div class="form-field pt-5">
-                <button type="submit" class="btn btn-primary w-full">Sign up</button>
+                <button type="submit" class="btn btn-primary w-full" @click="register">Sign up</button>
             </div>
             <p v-if="signupError" class="text-red-500">{{ signupErrorMessage }}</p>
             <div class="form-field">
@@ -65,10 +65,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'signup_com',
     data() {
         return {
+            username: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -97,28 +100,22 @@ export default {
             } else {
                 this.passwordError = false;
             }
-
             return true;
         },
-        async signup() {
+        async register() {
             if (!this.validateSignup()) return;
 
             try {
-                //remplacez par votre logique d'inscription (appel API)
-                const response = await this.$http.post('/api/signup', {
+                const response = await axios.post('http://localhost:8000/accountsy/signup/', {
+                    username: this.username,
                     email: this.email,
-                    password: this.password
+                    password: this.password,
                 });
 
-                if (response.data.success) {
-                    // Gérer la réussite de l'inscription
-                    this.$router.push('/login');
-                } else {
-                    // Gérer les erreurs du serveur
-                    this.signupError = true;
-                    this.signupErrorMessage = response.data.message || 'Signup failed.';
-                }
+                console.log(response.data);
+                this.$router.push('/login');
             } catch (error) {
+                console.error(error);
                 this.signupError = true;
                 this.signupErrorMessage = 'An error occurred during signup.';
             }
