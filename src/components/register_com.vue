@@ -39,16 +39,16 @@
         <div class="form-group">
             <div class="form-field">
                 <label class="form-label text-black">Email address</label>
-                <input v-model="email" placeholder="Email" type="email" class="input max-w-full" />
+                <input v-model="email" placeholder="Email" type="email" class="input max-w-full bg-white text-black" />
                 <p v-if="emailError" class="text-red-500">{{ emailErrorMessage }}</p>
             </div>
             <div class="form-field">
                 <label class="form-label text-black">Password</label>
-                <input v-model="password" placeholder="Password" type="password" class="input max-w-full" />
+                <input v-model="password" placeholder="Password" type="password" class="input max-w-full bg-white text-black" />
             </div>
             <div class="form-field">
                 <label class="form-label text-black">Confirm Password</label>
-                <input v-model="confirmPassword" placeholder="Confirm Password" type="password" class="input max-w-full" />
+                <input v-model="confirmPassword" placeholder="Confirm Password" type="password" class="input max-w-full bg-white text-black" />
                 <p v-if="passwordError" class="text-red-500">{{ passwordErrorMessage }}</p>
             </div>
             <div class="form-field pt-5">
