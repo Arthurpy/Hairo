@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "poppins": "^0.1.1",
     "rippleui": "^1.12.1",
     "vue": "^3.3.4",
@@ -21,6 +21,7 @@
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
     "tailwindcss": "^3.3.3",
-    "vite": "^4.4.5"
+    "vite": "^4.4.5",
+    "vite-plugin-copy": "^0.1.6"
   }
 }
