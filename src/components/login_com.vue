@@ -40,7 +40,7 @@
         <div class="form-group">
             <div class="form-field">
                 <label class="form-label text-black">Email address</label>
-                <input v-model="email" @blur="validateEmail" placeholder="Type here" type="email" class="input max-w-full bg-white text-black" />
+                <input v-model="email" @blur="validateEmail" placeholder="Type here" type="email" class="input max-w-full bg-white" />
                 <p v-if="emailError" class="text-red-500">Please enter a valid email.</p>
             </div>
             <div class="form-field">
@@ -103,19 +103,23 @@ export default {
                     this.loginErrorMessage = 'Please enter a valid email.';
                     return;
                 }
-                const response = await this.$http.post('/api/login', {
+                const response = await this.$http.post('http://localhost:8000/login/', {
                     email: this.email,
                     password: this.password
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
-
-                if (response.data.success) {
+                if (response.status === 200) {
                     this.$router.push('/dashboard');
                 } else {
-                    this.loginError = true;
-                    this.loginErrorMessage = 'Invalid email or password.';
+                    const responseData = await response.json();
+                    this.loginErrorMessage = 'Email ou mot de passe incorrect.';
+                    this.loginErrorMessage = responseData.error;  // Affiche le message d'erreur retourné par la vue Django
                 }
             } catch (error) {
-                this.loginError = true;
+                console.error('Login failed:', error);
                 this.loginErrorMessage = 'An error occurred while trying to log in.';
             }
         },
@@ -125,7 +129,3 @@ export default {
 	},
 };
 </script>
-
-<style>
-
-</style>
