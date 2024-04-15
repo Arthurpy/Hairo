@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block content %}
+<div style="text-align: center; color: black">
+    <h1>{{ date }}</h1>
+    <button onclick="window.location.href='{% url 'home' %}'">Back to Home</button>
+</div>
+{% endblock %}
