@@ -5,6 +5,7 @@ import Register from './../vue/register.vue';
 import Landing from './../vue/landing.vue';
 import ressources from './../vue/ressources.vue'
 import revisions from './../vue/revision.vue'
+import Agenda from "../vue/agenda.vue";
 
 
 const routes = [
@@ -42,10 +43,11 @@ const routes = [
     //   path: '/ressources',
     //   name: 'ressources',
     // }
-    // {
-    //   path: '/agenda',
-    //   name: 'agenda',
-    // }
+    {
+      path: '/agenda',
+      name: 'agenda',
+      component: Agenda
+    }
     // {
     //   path: '/messagerie',
     //   name: 'messagerie',

@@ -44,6 +44,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'webpack_loader',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +64,9 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS middleware juste après le SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Hairo_Back.urls'
@@ -169,3 +176,20 @@ AUTH_USER_MODEL = 'Hairo_Back.User'
 AUTHENTICATION_BACKENDS = [
     'Hairo_Back.backends.EmailBackend'
     ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+            'https://www.googleapis.com/auth/calendar',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',
+        },
+        'APP': {
+            'client_id': '281350104013-egts6r5aqhpim3je7c3kdf6t1a04trah.apps.googleusercontent.com',
+            'secret': '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',
+        }
+    }
+}
