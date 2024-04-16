@@ -1,21 +1,11 @@
 <template>
-    <div class="bg-[#F4FBFF] flex">
+    <div class="bg-[#D2E3FF] flex">
         <sidebar :activeButton="'revisions'"/>
         <div class="flex flex-col">
-            <div class="flex mt-[40px] bg-black w-[70vw] h-[56px] ml-[50px] rounded-lg">
-                <h4> Révisions </h4>
-            </div>
-            <div class="bg-black w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px]">
-                que rechercher vous?
-            </div>
-            <div class="flex flex-row ml-[50px] mt-[10px] h-[142px] space-x-[23px]">
-                <div class="bg-[#2176FF] w-[100%] rounded-lg">
-                    theme
-                </div>
-            </div>
-            <div class="flex flex-row ml-[50px] mt-[10px] h-[142px] space-x-[23px]">
-                <div class="bg-[#2176FF] w-[100%] rounded-lg">
-                    theme
+            <SearchBar/>
+            <div class="flex mt-[4% ml-[5%] flex-col px-12 mt-5 ">
+                <div class="bg-white text-[#2176FF] w-[100%] rounded-lg">
+                    bon 
                 </div>
             </div>
         </div>
@@ -28,11 +18,13 @@
 
 <script>
   import sidebar from './../components/sidebar.vue';
+  import SearchBar from './../components/SearchComponent.vue';
 
   export default {
     name: 'revisions',
     components: {
       sidebar,
+      SearchBar,
     },
     data() {
       return {
