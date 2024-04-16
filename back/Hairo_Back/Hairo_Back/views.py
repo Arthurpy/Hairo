@@ -1,7 +1,6 @@
 # views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from Hairo_Back.utils import get_user_oauth_token_from_django
 from .forms import LoginForm
 from .models import User
 from django.contrib.auth.hashers import check_password
@@ -13,6 +12,8 @@ from django.http import JsonResponse
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
+from allauth.socialaccount.models import SocialToken
 
 
 def landing_page(request):
@@ -43,12 +44,13 @@ def signup_view(request):
         return JsonResponse({'message': 'User created successfully'})
     return render(request, 'signup.html')
 
+@login_required
 def agenda(request):
      # Récupérer le jeton d'accès OAuth de l'utilisateur depuis Django
-    user_oauth_token = get_user_oauth_token_from_django()  # Fonction hypothétique à remplacer par ton propre code
+    token = SocialToken.objects.get(account__user=request.user, account__provider='google')
 
     # Créer un objet Credentials à partir du jeton d'accès OAuth
-    credentials = Credentials(token=user_oauth_token)
+    credentials = Credentials(token)
 
     # Créer un client Google Calendar à partir des credentials
     calendar_service = build('calendar', 'v3', credentials=credentials)
@@ -72,4 +74,4 @@ def agenda(request):
         'events': events.get('items', [])
     }
 
-    return render(request, 'agenda.html', context)
+    return JsonResponse(context)
