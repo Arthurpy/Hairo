@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar bg-white w-58 fixed flex ">
+    <div class="sidebar bg-white w-58 fixed flex">
       <logo />
       <div class="titre-sb">
         <RouterLink to="/revisions">

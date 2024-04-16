@@ -1,7 +1,7 @@
 <template>
     <div>
       <sidebar :activeButton="'ressources'" @openNoteTaker="openNoteTaker" />
-      <div class="main-content">
+      <div class="main-content ml-80">
         <div class="pdf-container" v-if="selectedPdfUrl">
           <embed :src="selectedPdfUrl" type="application/pdf" width="100%" height="1000px" />
 

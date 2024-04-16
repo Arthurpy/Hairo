@@ -1,7 +1,7 @@
 <template>
     <div class="bg-[#F4FBFF] flex">
         <sidebar :activeButton="'dashboard'"/>
-        <div class="flex flex-col">
+        <div class="flex flex-col ml-80 h-screen">
             <div class="flex mt-[40px] bg-black w-[70vw] h-[56px] ml-[50px] rounded-lg">
                 <h4> Dashboard </h4>
             </div>
