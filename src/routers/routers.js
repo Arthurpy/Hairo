@@ -7,6 +7,8 @@ import ressources from './../vue/ressources.vue'
 import revisions from './../vue/revision.vue'
 import Agenda from "../vue/agenda.vue";
 
+import CourseDetails from './../vue/CourseDetails.vue';
+import ReadCours from './../vue/ReadCours.vue';
 
 const routes = [
     {
@@ -47,11 +49,23 @@ const routes = [
       path: '/agenda',
       name: 'agenda',
       component: Agenda
-    }
+    },
     // {
     //   path: '/messagerie',
     //   name: 'messagerie',
     // }
+    {
+      path: '/course/:courseName',
+      name: 'CourseDetails',
+      component: CourseDetails,
+      props: true,
+    },
+    {
+      path: '/cours/:courseName/:fileName',
+      name: 'ReadCours',
+      component: ReadCours,
+      props: true,
+    },
 ];
 
 const router = createRouter({

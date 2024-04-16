@@ -2,8 +2,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './routers/routers.js';
 import axios from 'axios';
-import './style.css'
 import GAuth from 'vue3-google-oauth2'
+import './style.css';
 
 // Create a new app instance
 const app = createApp(App);
