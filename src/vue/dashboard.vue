@@ -57,7 +57,16 @@ export default {
     components: {
         sidebar,
     },
+    created() {
+        this.checkUserLoggedIn();
+        console.log(localStorage.getItem('authToken'));
+    },
     methods: {
+        checkUserLoggedIn() {
+            if (!localStorage.getItem('authToken')) {
+                this.$router.push('/login');
+            }
+        }
     }
 };
 </script>

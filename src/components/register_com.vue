@@ -118,7 +118,7 @@ export default {
                     }
                 });
                 if (response.status === 200) {
-                    this.$router.push('/dashboard');
+                    this.$router.push('/login');
                 } else {
                     const responseData = await response.json();
                     this.loginErrorMessage = 'Email ou mot de passe incorrect.';

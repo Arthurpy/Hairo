@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -59,13 +60,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
+    'django.contrib.sites.middleware.CurrentSiteMiddleware',
+    'Hairo_Back.middleware.JWTAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'Hairo_Back.urls'
@@ -191,4 +187,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': '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',
         }
     }
+
 }
+
+SITE_ID = 1

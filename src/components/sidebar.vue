@@ -38,7 +38,7 @@
           <img class="icon" src="../assets/logo-setting.png">
           Settings
         </button>
-        <button class="page" :class="{ active: activeButton === 'logout' }">
+        <button class="page" :class="{ active: activeButton === 'logout'}" @click="logout" >
           <img class="icon" src="../assets/logo-logout.png">
           Logout
         </button>
@@ -67,8 +67,16 @@
     data() {
       return {
       };
+    },
+    methods: {
+      logout() {
+        localStorage.removeItem('authToken');
+        this.$router.push('/login');
+        console.log('logout');
+      }
     }
   }
+
   </script>
 
 <style>
