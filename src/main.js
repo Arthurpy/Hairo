@@ -4,7 +4,6 @@ import router from './routers/routers.js';
 import axios from 'axios';
 import GAuth from 'vue3-google-oauth2'
 import './style.css';
-import GAuth from 'vue3-google-oauth2'
 
 // Create a new app instance
 const app = createApp(App);
