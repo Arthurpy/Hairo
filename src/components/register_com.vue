@@ -1,9 +1,9 @@
 <template>
     <form class="mx-auto flex w-full max-w-lg flex-col rounded-xl border border-border bg-backgroundSecondary p-4 sm:p-20 bg-white" @submit.prevent="signup">
-        <div class="flex w-full flex-col gap-2">
+        <div class="flex w-full flex-col gap-2 bg-grey blur-[1px] p-5 rounded-[10px]">
             <p class="text-black">Sign up with</p>
-            <div class="flex w-full flex-col gap-2">
-			  <button type="button" class="btn gap-2 bg-gray-5">
+            <div class="flex w-full flex-col gap-2 bg-slate-500">
+			  <button type="button" class="btn gap-2 bg-slate-500">
 			    <svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 48 48" enablebackground="new 0 0 48 48" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
 			      <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
 			      <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657        C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
@@ -39,20 +39,20 @@
         <div class="form-group">
             <div class="form-field">
                 <label class="form-label text-black">Email address</label>
-                <input v-model="email" placeholder="Email" type="email" class="input max-w-full bg-white text-black" />
+                <input v-model="email" placeholder="Email" type="email" class="input max-w-full" />
                 <p v-if="emailError" class="text-red-500">{{ emailErrorMessage }}</p>
             </div>
             <div class="form-field">
                 <label class="form-label text-black">Password</label>
-                <input v-model="password" placeholder="Password" type="password" class="input max-w-full bg-white text-black" />
+                <input v-model="password" placeholder="Password" type="password" class="input max-w-full" />
             </div>
             <div class="form-field">
                 <label class="form-label text-black">Confirm Password</label>
-                <input v-model="confirmPassword" placeholder="Confirm Password" type="password" class="input max-w-full bg-white text-black" />
+                <input v-model="confirmPassword" placeholder="Confirm Password" type="password" class="input max-w-full" />
                 <p v-if="passwordError" class="text-red-500">{{ passwordErrorMessage }}</p>
             </div>
             <div class="form-field pt-5">
-                <button type="submit" class="btn btn-primary w-full">Sign up</button>
+                <button type="submit" class="btn btn-primary w-full" @click="register">Sign up</button>
             </div>
             <p v-if="signupError" class="text-red-500">{{ signupErrorMessage }}</p>
             <div class="form-field">
@@ -65,10 +65,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'signup_com',
     data() {
         return {
+            username: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -97,30 +100,33 @@ export default {
             } else {
                 this.passwordError = false;
             }
-
             return true;
         },
-        async signup() {
-            if (!this.validateSignup()) return;
-
+        async register() {
             try {
-                //remplacez par votre logique d'inscription (appel API)
-                const response = await this.$http.post('/api/signup', {
+                this.validateSignup();
+                if (this.emailError) {
+                    this.loginErrorMessage = "l'email n'est pas valide ou déja utiliser.";
+                    return;
+                }
+                const response = await this.$http.post('http://localhost:8000/signup/', {
                     email: this.email,
                     password: this.password
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
-
-                if (response.data.success) {
-                    // Gérer la réussite de l'inscription
-                    this.$router.push('/login');
+                if (response.status === 200) {
+                    this.$router.push('/dashboard');
                 } else {
-                    // Gérer les erreurs du serveur
-                    this.signupError = true;
-                    this.signupErrorMessage = response.data.message || 'Signup failed.';
+                    const responseData = await response.json();
+                    this.loginErrorMessage = 'Email ou mot de passe incorrect.';
+                    this.loginErrorMessage = responseData.error;  // Affiche le message d'erreur retourné par la vue Django
                 }
             } catch (error) {
-                this.signupError = true;
-                this.signupErrorMessage = 'An error occurred during signup.';
+                console.error('Login failed:', error);
+                this.loginErrorMessage = 'An error occurred while trying to log in.';
             }
         },
         goToLogin() {
