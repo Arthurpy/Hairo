@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 from .views import landing_page, login_view, signup_view
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('', landing_page, name='landing'),
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
+    path('api/events/', views.agenda, name='events'),
 ]

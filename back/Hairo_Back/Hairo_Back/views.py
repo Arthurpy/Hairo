@@ -9,6 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 from django.http import JsonResponse
+from google.oauth2.credentials import Credentials
+from googleapiclient.discovery import build
+from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
+from allauth.socialaccount.models import SocialToken
 
 
 def landing_page(request):
@@ -23,9 +28,9 @@ def login_view(request):
         user = authenticate(request, username=email, password=password)
         if user is not None:
             login(request, user)
-            return JsonResponse({'message': 'Logged in successfully'})  # Retourne un message de succès
+            return JsonResponse({'message': 'Logged in successfully'})
         else:
-            return JsonResponse({'error': 'Invalid email or password'}, status=400)  # Retourne un message d'erreur
+            return JsonResponse({'error': 'Invalid email or password'}, status=400)
     return render(request, 'login.html')
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -38,3 +43,35 @@ def signup_view(request):
         login(request, user)
         return JsonResponse({'message': 'User created successfully'})
     return render(request, 'signup.html')
+
+@login_required
+def agenda(request):
+     # Récupérer le jeton d'accès OAuth de l'utilisateur depuis Django
+    token = SocialToken.objects.get(account__user=request.user, account__provider='google')
+
+    # Créer un objet Credentials à partir du jeton d'accès OAuth
+    credentials = Credentials(token)
+
+    # Créer un client Google Calendar à partir des credentials
+    calendar_service = build('calendar', 'v3', credentials=credentials)
+
+    # Récupérer la date de début et de fin de la semaine actuelle
+    today = datetime.today()
+    start_of_week = today - timedelta(days=today.weekday())
+    end_of_week = start_of_week + timedelta(days=6)
+
+    # Récupérer les événements de la semaine actuelle
+    events = calendar_service.events().list(
+        calendarId='primary',
+        timeMin=start_of_week.isoformat() + 'Z',
+        timeMax=end_of_week.isoformat() + 'Z',
+        singleEvents=True,
+        orderBy='startTime'
+    ).execute()
+
+    # Passer les événements au template
+    context = {
+        'events': events.get('items', [])
+    }
+
+    return JsonResponse(context)
