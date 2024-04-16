@@ -5,7 +5,8 @@ import Register from './../vue/register.vue';
 import Landing from './../vue/landing.vue';
 import ressources from './../vue/ressources.vue'
 import revisions from './../vue/revision.vue'
-
+import CourseDetails from './../vue/CourseDetails.vue';
+import ReadCours from './../vue/ReadCours.vue';
 
 const routes = [
     {
@@ -38,18 +39,18 @@ const routes = [
       name: 'revisions',
       component: revisions
     },
-    // {
-    //   path: '/ressources',
-    //   name: 'ressources',
-    // }
-    // {
-    //   path: '/agenda',
-    //   name: 'agenda',
-    // }
-    // {
-    //   path: '/messagerie',
-    //   name: 'messagerie',
-    // }
+    {
+      path: '/course/:courseName',
+      name: 'CourseDetails',
+      component: CourseDetails,
+      props: true,
+    },
+    {
+      path: '/cours/:courseName/:fileName',
+      name: 'ReadCours',
+      component: ReadCours,
+      props: true,
+    },
 ];
 
 const router = createRouter({
