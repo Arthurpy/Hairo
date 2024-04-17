@@ -9,7 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tato30/vue-pdf": "^1.9.6",
     "axios": "^1.6.8",
+    "pdfjs-dist": "^4.1.392",
     "poppins": "^0.1.1",
     "rippleui": "^1.12.1",
     "vue": "^3.3.4",

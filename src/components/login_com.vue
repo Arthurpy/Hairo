@@ -79,7 +79,7 @@
     </form>
 </template>
 
-<script>
+<!-- <script>
 export default {
     name: 'login_com',
 	data() {
@@ -97,35 +97,87 @@ export default {
             this.emailError = !pattern.test(this.email);
         },
 		async login() {
-            try {
-                this.validateEmail();
-                if (this.emailError) {
-                    this.loginErrorMessage = 'Please enter a valid email.';
-                    return;
-                }
-                const response = await this.$http.post('http://localhost:8000/login/', {
-                    email: this.email,
-                    password: this.password
-                }, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (response.status === 200) {
-                    this.$router.push('/dashboard');
-                } else {
-                    const responseData = await response.json();
-                    this.loginErrorMessage = 'Email ou mot de passe incorrect.';
-                    this.loginErrorMessage = responseData.error;  // Affiche le message d'erreur retourné par la vue Django
-                }
-            } catch (error) {
-                console.error('Login failed:', error);
-                this.loginErrorMessage = 'An error occurred while trying to log in.';
-            }
-        },
+    try {
+        this.validateEmail();
+        if (this.emailError) {
+            this.loginErrorMessage = 'Please enter a valid email.';
+            return;
+        }
+        const response = await fetch('http://localhost:8000/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: this.email,
+                password: this.password
+            })
+        });
+        const responseData = await response.json();  // Assurez-vous que cette ligne est correctement appelée
+        if (response.ok && responseData.token) {
+            localStorage.setItem('authToken', responseData.token);
+            this.$router.push('/dashboard');
+        } else {
+            this.loginErrorMessage = responseData.error || 'Email ou mot de passe incorrect.';
+        }
+    } catch (error) {
+        console.error('Login failed:', error);
+        this.loginErrorMessage = 'An error occurred while trying to log in.';
+    }
+},
 		goToRegister() {
 			this.$router.push('/register');
 		},
 	},
+};
+</script> -->
+
+<script>
+export default {
+    name: 'login_com',
+    data() {
+        return {
+            email: '',
+            password: '',
+            emailError: false,
+            loginError: false,
+            loginErrorMessage: ''
+        };
+    },
+    methods: {
+        validateEmail() {
+            const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            this.emailError = !pattern.test(this.email);
+            if (this.emailError) {
+                this.loginErrorMessage = 'Please enter a valid email.';
+            }
+        },
+        async login() {
+    this.validateEmail();
+    if (this.emailError) return;
+
+    try {
+        const response = await fetch('http://localhost:8000/login/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: this.email, password: this.password }) // Change 'email' to 'username' if necessary
+        });
+        const responseData = await response.json();
+        if (response.ok) {
+            localStorage.setItem('authToken', responseData.token);
+            localStorage.setItem('user', JSON.stringify(responseData.user));
+            this.$router.push('/dashboard');
+        } else {
+            this.loginErrorMessage = responseData.error || 'Email or password is incorrect.';
+        }
+    } catch (error) {
+        console.error('Login failed:', error);
+        this.loginErrorMessage = 'An error occurred while trying to log in.';
+    }
+},
+        goToRegister() {
+            this.$router.push('/register');
+        }
+    }
 };
 </script>
