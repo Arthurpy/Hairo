@@ -2,8 +2,9 @@
     <div class="bg-[#F4FBFF] flex">
         <sidebar :activeButton="'caspratiques'"/>
         <div class="flex flex-col ml-80">
-            <div class="flex mt-[40px] bg-black w-[70vw] h-[56px] ml-[50px] rounded-lg">
-                <h4> Révisions </h4>
+            <div class="flex flex-row bg-white rounded-2xl mt-4">
+                <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-20">Révision et préparation</h1>
+                <img src="../assets/book.png" alt="search" class="pb-8  w-auto ml-96" />
             </div>
             <div class="flex flex-row bg-black w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px]">
                 <button> retour</button>

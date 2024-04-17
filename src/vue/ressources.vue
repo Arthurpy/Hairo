@@ -1,20 +1,20 @@
 <template>
-  <div class="bg-[#F4FBFF] flex">
+  <div class="bg-blue-200 flex">
     <sidebar :activeButton="'ressources'"/>
     <div class="flex flex-col ml-80">
-      <div class="flex mt-[40px] bg-black w-[70vw] h-[56px] ml-[50px] rounded-lg">
-        <h4> Révisions </h4>
+      <div class="flex flex-row bg-white rounded-2xl mt-4 ml-12 jus">
+        <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-20">Ressources</h1>
+        <img src="../assets/book.png" alt="search" class="pb-8  w-auto ml-96" />
       </div>
-      <div class="bg-black w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
-        que rechercher vous?
-        <input type="text" v-model="searchQuery" class="ml-[50px] mt-[10px] p-[5px] rounded-lg w-[75%]">
+      <div class="bg-white text-[#2176FF] w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
+        <h1 class="text-[#2176FF] text-2xl font-semibold">Que rechercher vous?</h1>
+        <input type="text" v-model="searchQuery" class="input-rounded input ml-56" placeholder="Rechercher un thème">
       </div>
       <p class="text-black ml-[50px] mt-[30px]"> Thème adapté à vos exam</p>
-      <!-- Divisez la liste des cours en sous-listes de 4 éléments chacune -->
-      <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] space-x-[23px] h-[273px]">
-        <!-- Parcourez chaque sous-liste pour afficher les cours -->
-        <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="bg-[#2176FF] w-[25%] rounded-lg">
-          {{ course }}
+      <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] ">
+        <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="bg-[#2176FF] w-[21.5%] rounded-lg m-2">
+          <img src="../assets/Anat.jpeg" class=" rounded-t-lg"/>
+          <h1 class="text-white font-semibold text-2xl mx-2 p-2 items-center"> {{ course }} </h1>
         </router-link>
       </div>
     </div>
