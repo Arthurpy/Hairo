@@ -2,8 +2,9 @@
   <div class="bg-[#F4FBFF] flex w-[100vw] min-h-screen">
     <sidebar :activeButton="'ressources'"/>
     <div class="flex flex-col ml-80">
-      <div class="flex mt-[40px] bg-black w-[70vw] h-[56px] ml-[50px] rounded-lg">
-        <h4> Révisions </h4>
+      <div class="flex flex-row bg-white rounded-2xl mt-4 ml-12 jus">
+        <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-20">Ressources</h1>
+        <img src="../assets/book.png" alt="search" class="pb-8  w-auto ml-96" />
       </div>
       <div class="bg-black w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
         Que recherchez-vous ?

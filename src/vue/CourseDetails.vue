@@ -1,3 +1,4 @@
+
   <template>
     <div class="bg-[#F4FBFF] flex w-[100vw] min-h-screen">
       <sidebar :activeButton="'ressources'"/>
@@ -71,3 +72,5 @@
   };
   </script>
   
+
+
