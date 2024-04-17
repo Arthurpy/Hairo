@@ -14,14 +14,21 @@ from googleapiclient.discovery import build
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from allauth.socialaccount.models import SocialToken
-
+from rest_framework import generics
 import jwt
 from datetime import datetime, timedelta
 from django.conf import settings
+from .models import Cours
+from .serializers import CoursSerializer
 
 
 def landing_page(request):
     return render(request, 'landing.html')
+
+
+class CoursList(generics.ListAPIView):
+    queryset = Cours.objects.all()
+    serializer_class = CoursSerializer
 
 @csrf_exempt
 def login_view(request):

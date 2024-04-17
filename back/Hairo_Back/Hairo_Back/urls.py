@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from .views import landing_page, login_view, signup_view
+from .views import landing_page, login_view, signup_view, CoursList
 from . import views
 
 urlpatterns = [
@@ -28,4 +28,5 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
     path('api/events/', views.agenda, name='events'),
+    path('api/cours/', CoursList.as_view(), name='cours-list'),
 ]

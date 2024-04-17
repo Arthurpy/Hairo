@@ -40,3 +40,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class Cours(models.Model):
+    nom = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images_cours/')
+
+    def __str__(self):
+        return self.nom
+
+class FichierPDF(models.Model):
+    cours = models.ForeignKey(Cours, related_name='fichiers', on_delete=models.CASCADE)
+    nom = models.CharField(max_length=100)
+    fichier = models.FileField(upload_to='fichiers_cours/')
+    image = models.ImageField(upload_to='images_fichiers/')
+
+    def __str__(self):
+        return self.nom
