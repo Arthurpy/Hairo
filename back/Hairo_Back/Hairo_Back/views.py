@@ -18,6 +18,11 @@ from rest_framework import generics
 import jwt
 from datetime import datetime, timedelta
 from django.conf import settings
+from .models import Cours, FichierPDF
+from .serializers import CoursSerializer
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import Cours
 from .serializers import CoursSerializer
 
@@ -26,9 +31,30 @@ def landing_page(request):
     return render(request, 'landing.html')
 
 
-class CoursList(generics.ListAPIView):
-    queryset = Cours.objects.all()
-    serializer_class = CoursSerializer
+def course_details(request, course_id):
+    try:
+        cours = Cours.objects.get(id=course_id)
+        pdfs = list(cours.fichierpdf_set.all().values('id', 'nom', 'url'))  # Adapté pour les modèles existants
+        data = {
+            'nom': cours.nom,
+            'pdfs': pdfs
+        }
+        return JsonResponse(data, safe=True)
+    except Cours.DoesNotExist:
+        return JsonResponse({'error': 'Course not found'}, status=404)
+
+@csrf_exempt
+def ressources_pages(request):
+    if request.method == 'POST':
+        # Récupérer tous les cours de la base de données
+        cours_list = Cours.objects.all()
+        # Transformer les données en liste de dictionnaires
+        cours_data = [{'id': cours.id, 'nom': cours.nom} for cours in cours_list]
+        # Retourner les données en JSON
+        return JsonResponse(cours_data, safe=False)
+    else:
+        # Si la méthode n'est pas POST, vous pouvez choisir de renvoyer une réponse appropriée
+        return JsonResponse({'error': 'Invalid method'}, status=405)
 
 @csrf_exempt
 def login_view(request):
