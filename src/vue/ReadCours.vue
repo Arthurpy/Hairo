@@ -22,48 +22,22 @@ User
     components: {
       sidebar,
     },
+    props: ['courseName', 'fileName'],
     data() {
       return {
         selectedPdfUrl: null,
       };
     },
     methods: {
-      openNoteTaker() {
-        console.log("Ouvrir le composant de prise de notes");
-      },
-      loadPdf(courseName, fileName) {
-        this.selectedPdfUrl = `/src/assets/PACES/${courseName}/${fileName}`;
-        console.log("URL :", this.selectedPdfUrl);
-        this.loadPdfPages();
-      },
-      loadPdfPages() {
-        const loadingTask = pdfjsLib.getDocument(this.selectedPdfUrl);
-        loadingTask.promise.then(pdf => {
-          for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-            pdf.getPage(pageNum).then(page => {
-              const scale = 1.5;
-              const viewport = page.getViewport({ scale });
-              const canvas = document.createElement('canvas');
-              const context = canvas.getContext('2d');
-              canvas.height = viewport.height;
-              canvas.width = viewport.width;
-              page.render({
-                canvasContext: context,
-                viewport: viewport
-              }).promise.then(() => {
-                this.$refs.pdfContainer.appendChild(canvas);
-              });
-            });
-          }
-        });
+      loadPdf() {
+        this.selectedPdfUrl = `http://localhost:5173/src/assets/PACES/${this.courseName}/${this.fileName}`;
+        console.log("Loaded PDF URL:", this.selectedPdfUrl);
+        // ici, chargez et affichez le PDF comme vous le souhaitez
       }
     },
     mounted() {
-      const urlSegments = this.$route.path.split('/');
-      const courseName = urlSegments[urlSegments.indexOf('cours') + 1];
-      const fileName = urlSegments[urlSegments.length - 1];
-      if (courseName && fileName) {
-        this.loadPdf(courseName, fileName);
+      if (this.courseName && this.fileName) {
+        this.loadPdf();
       }
     },
   };

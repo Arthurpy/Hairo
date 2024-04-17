@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#F4FBFF] flex">
+  <div class="bg-[#F4FBFF] flex w-[100vw] min-h-screen">
     <sidebar :activeButton="'ressources'"/>
     <div class="flex flex-col ml-80">
       <div class="flex mt-[40px] bg-black w-[70vw] h-[56px] ml-[50px] rounded-lg">
@@ -11,7 +11,7 @@
       </div>
       <p class="text-black ml-[50px] mt-[30px]"> Thème adapté à vos examens</p>
       <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] space-x-[23px] h-[273px]">
-        <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course.nom } }" class="bg-[#2176FF] w-[25%] rounded-lg">
+        <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course.nom } }" class="bg-[#2176FF] w-[23%] rounded-lg">
           {{ course.nom }}
         </router-link>
       </div>
