@@ -1,3 +1,45 @@
 node_modules
 .DS_Store
 venv
+*.pyc
+
+# Medias
+medias
+.static
+
+# Access
+access.py
+
+# Old files
+*.old
+
+# Database
+*.sqlite*
+*.db
+
+# Python
+*.pyc
+
+# Tmp elements
+*_old.*
+*-old.*
+
+# Node modules
+node_modules/
+
+# MacOS
+
+.DS_Store
+
+# Dev Tools
+.vscode
+launch.json
+
+# # Translation
+# language
+# *.po
+# *.mo
+
+# Generated files only location dependant
+./adminsys/minio/prometheus.yml
+not_linked_file.txt

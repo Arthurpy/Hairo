@@ -14,14 +14,63 @@ from googleapiclient.discovery import build
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from allauth.socialaccount.models import SocialToken
-
+from rest_framework import generics
 import jwt
 from datetime import datetime, timedelta
 from django.conf import settings
+from .models import Cours, FichierPDF
+from .serializers import CoursSerializer
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import Cours
+from .serializers import CoursSerializer
 
 
 def landing_page(request):
     return render(request, 'landing.html')
+
+
+@csrf_exempt
+def course_details_by_name(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))  # ensure decoding from bytes if needed
+        course_name = data.get('courseName')
+        if not course_name:
+            return JsonResponse({'error': 'No course name provided'}, status=400)
+
+        cours = Cours.objects.get(nom__iexact=course_name)  # Case insensitive search
+        pdfs = cours.fichiers.all()
+        pdf_data = [{
+            'id': pdf.id,
+            'nom': pdf.nom,
+            'url': request.build_absolute_uri(pdf.fichier.url)  # Accessing the file url correctly
+        } for pdf in pdfs]
+        return JsonResponse({
+            'nom': cours.nom,
+            'pdfs': pdf_data
+        }, safe=True)
+    except Cours.DoesNotExist:
+        return JsonResponse({'error': 'Course not found'}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        # Log the exception to help with debugging
+        print(f"Error in course_details_by_name: {str(e)}")
+        return JsonResponse({'error': 'Server error'}, status=500)
+
+@csrf_exempt
+def ressources_pages(request):
+    if request.method == 'POST':
+        # Récupérer tous les cours de la base de données
+        cours_list = Cours.objects.all()
+        # Transformer les données en liste de dictionnaires
+        cours_data = [{'id': cours.id, 'nom': cours.nom} for cours in cours_list]
+        # Retourner les données en JSON
+        return JsonResponse(cours_data, safe=False)
+    else:
+        # Si la méthode n'est pas POST, vous pouvez choisir de renvoyer une réponse appropriée
+        return JsonResponse({'error': 'Invalid method'}, status=405)
 
 @csrf_exempt
 def login_view(request):
