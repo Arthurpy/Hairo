@@ -31,17 +31,33 @@ def landing_page(request):
     return render(request, 'landing.html')
 
 
-def course_details(request, course_id):
+@csrf_exempt
+def course_details_by_name(request):
     try:
-        cours = Cours.objects.get(id=course_id)
-        pdfs = list(cours.fichierpdf_set.all().values('id', 'nom', 'url'))  # Adapté pour les modèles existants
-        data = {
+        data = json.loads(request.body.decode('utf-8'))  # ensure decoding from bytes if needed
+        course_name = data.get('courseName')
+        if not course_name:
+            return JsonResponse({'error': 'No course name provided'}, status=400)
+
+        cours = Cours.objects.get(nom__iexact=course_name)  # Case insensitive search
+        pdfs = cours.fichiers.all()
+        pdf_data = [{
+            'id': pdf.id,
+            'nom': pdf.nom,
+            'url': request.build_absolute_uri(pdf.fichier.url)  # Accessing the file url correctly
+        } for pdf in pdfs]
+        return JsonResponse({
             'nom': cours.nom,
-            'pdfs': pdfs
-        }
-        return JsonResponse(data, safe=True)
+            'pdfs': pdf_data
+        }, safe=True)
     except Cours.DoesNotExist:
         return JsonResponse({'error': 'Course not found'}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        # Log the exception to help with debugging
+        print(f"Error in course_details_by_name: {str(e)}")
+        return JsonResponse({'error': 'Server error'}, status=500)
 
 @csrf_exempt
 def ressources_pages(request):
