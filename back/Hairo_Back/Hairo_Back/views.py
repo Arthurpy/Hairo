@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import LoginForm
-from .models import User
+from .models import User, Cours, FichierPDF, QCM, Resultat
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
@@ -18,13 +18,13 @@ from rest_framework import generics
 import jwt
 from datetime import datetime, timedelta
 from django.conf import settings
-from .models import Cours, FichierPDF
 from .serializers import CoursSerializer
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Cours
-from .serializers import CoursSerializer
+from rest_framework import status
+from rest_framework import viewsets
+from .serializers import QCMSerializer, ResultatSerializer
+from django.views.generic import ListView
 
 
 def landing_page(request):
@@ -195,3 +195,32 @@ def token_required(f):
 def send_token_response(user):
     token = generate_token_for(user)  # Générer le jeton d'authentification ici
     return JsonResponse({'token': token, 'message': 'Logged in successfully'})
+
+
+
+class QCMViewSet(viewsets.ModelViewSet):
+    queryset = QCM.objects.all()
+    serializer_class = QCMSerializer
+
+    def get_queryset(self):
+        cours_id = self.request.query_params.get('cours_id')
+        if cours_id is not None:
+            return QCM.objects.filter(cours_id=cours_id)
+        return super().get_queryset()
+
+class ResultatViewSet(viewsets.ModelViewSet):
+    queryset = Resultat.objects.all()
+    serializer_class = ResultatSerializer
+
+def get_all_qcms(request):
+    qcms = QCM.objects.all()
+    serializer = QCMSerializer(qcms, many=True)
+    return JsonResponse(serializer.data, safe=False)
+
+class QCMListView(ListView):
+    model = QCM
+    # Optionally specify a template or define how the data is rendered
+    # template_name = 'qcm_list.html'
+    
+    def get_queryset(self):
+        return QCM.objects.all()
