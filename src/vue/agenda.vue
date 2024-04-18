@@ -2,15 +2,9 @@
   <div :class="{ 'light-theme': isLightMode, 'dark-theme': !isLightMode }" style="display: flex;">
     <sidebar />
     <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center;max-width: 800px; margin: auto;">
-      <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
-    <ul>
-      <li v-for="event in events" :key="event.id" >{{ event.title }}</li>
-    </ul>
-    <div v-for="event in events" :key="event.id">
-      <h2>{{ event.title }}</h2>
-      <p>{{ event.date }}</p>
-      <p>{{ event.description }}</p>
-    </div>
+    <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
+    <button v-if="!microsoftToken" @click="openMicrosoftLogin">Se connecter avec Microsoft</button>
+      <p v-else class="mt-5" style="text-align: center;">Bienvenue, utilisateur Microsoft!</p>
     <button class="my-button" @click="redirectToDashboard">Retour au Dashboard</button>
     </div>
   </div>
@@ -27,9 +21,7 @@ export default {
   },
   mounted() {
     const microsoftToken = localStorage.getItem('microsoftToken');
-    if (!microsoftToken) {
-      this.openMicrosoftLogin();
-    } else {
+    if (microsoftToken) {
       this.checkMicrosoftValidity(microsoftToken);
     }
     this.updateTheme();
@@ -39,10 +31,20 @@ export default {
   },
   methods: {
     openMicrosoftLogin() {
-      window.open('http://login.microsoftonline.com/common/oauth2/v2.0/authorize', '_self');
+      fetch('http://localhost:8000/auth/microsoft/login', {
+        method: 'GET',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.url) {
+            window.open(data.url, '_self');
+          }
+        });
     },
     checkMicrosoftValidity(token) {
-      fetch('http://localhost:8000/auth/microsoft/validity', {
+      console.log('Checking Microsoft token validity');
+      fetch('http://localhost:8000/auth/microsoft/callback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,10 +53,13 @@ export default {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           if (data.valid) {
             localStorage.setItem('microsoftToken', token);
+            this.microsoftToken = token;
             this.$router.push('/ressources');
           } else {
+            this.microsoftToken = null;
             this.openMicrosoftLogin();
           }
         });

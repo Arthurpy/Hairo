@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from allauth.socialaccount.models import SocialToken
@@ -26,7 +26,8 @@ from .serializers import CoursSerializer
 from functools import wraps
 from flask import request
 import requests
-
+import msal
+import webbrowser
 
 def landing_page(request):
     return render(request, 'landing.html')
@@ -93,7 +94,7 @@ def login_view(request):
         return JsonResponse({'token': token})
     else:
         return JsonResponse({'error': 'Invalid Credentials'}, status=400)
-    
+
 def protected_view(request):
     if request.user is not None:
         return JsonResponse({'message': 'Welcome!'})
@@ -179,46 +180,79 @@ def get_user_info(access_token):
     else:
         return None
 
-def microsoft_callback(request):
-    code = request.GET.get('code')
-    if not code:
-        return JsonResponse({'error': 'No code provided'}, status=400)
-    token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'
-    token_params = {
-        'client_id': 'f14c32e8-369d-4474-b06e-7d506073f86e',
-        'scope': 'User.Read',
-        'code': code,
-        'redirect_uri': 'http://localhost:8000/auth/microsoft/callback/',
-        'grant_type': 'authorization_code',
-        'client_secret': '67d92e47-2a8f-43db-bf45-9aea4c240436'
-    }
-    response = requests.post(token_url, data=token_params)
+# def microsoft_callback(request):
+#     code = request.GET.get('code')
+#     if not code:
+#         return JsonResponse({'error': 'No code provided'}, status=400)
+#     token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'
+#     token_params = {
+#         'client_id': 'f14c32e8-369d-4474-b06e-7d506073f86e',
+#         'scope': 'User.Read',
+#         'code': code,
+#         'redirect_uri': 'http://localhost:8000/auth/microsoft/callback/',
+#         'grant_type': 'authorization_code',
+#         'client_secret': '67d92e47-2a8f-43db-bf45-9aea4c240436'
+#     }
+#     response = requests.post(token_url, data=token_params)
 
-    if response.status_code == 200:
-        data = response.json()
-        access_token = data['access_token']
-        user_info = get_user_info(access_token)
-        if user_info:
-            # Créer un utilisateur ou le récupérer s'il existe déjà
-            user, created = User.objects.get_or_create(email=user_info['mail'])
-            if created:
-                send_welcome_email(user)
-                user.profile_picture = 'default.jpg'
-                user.save()
-            return send_token_response(user)
-        else:
-            return JsonResponse({'error': 'Failed to get user info'}, status=500)
-    else:
-        return JsonResponse({'error': 'Failed to get access token'}, status=500)
+#     if response.status_code == 200:
+#         data = response.json()
+#         access_token = data['access_token']
+#         user_info = get_user_info(access_token)
+#         if user_info:
+#             # Créer un utilisateur ou le récupérer s'il existe déjà
+#             user, created = User.objects.get_or_create(email=user_info['mail'])
+#             if created:
+#                 send_welcome_email(user)
+#                 user.profile_picture = 'default.jpg'
+#                 user.save()
+#             return send_token_response(user)
+#         else:
+#             return JsonResponse({'error': 'Failed to get user info'}, status=500)
+#     else:
+#         return JsonResponse({'error': 'Failed to get access token'}, status=500)
 
+CLIENT_ID = 'f14c32e8-369d-4474-b06e-7d506073f86e'
+CLIENT_SECRET = 'uIH8Q~SmrG-jJMCeSPbD4uSLBdyWSog-CFOaubhl'
+AUTHORITY = 'https://login.microsoftonline.com/consumers/'
+base_url = 'https://graph.microsoft.com/v1.0/'
+endpoint = base_url + 'me'
+SCOPES = ['User.Read', 'Calendars.Read', 'Calendars.Read.Shared', 'Calendars.ReadBasic', 'Calendars.ReadWrite', 'Calendars.ReadWrite.Shared', 'Notes.Create', 'Notes.Read', 'Notes.Read.All', 'Notes.ReadWrite', 'Notes.ReadWrite.All', 'Notes.ReadWrite.CreatedByApp']
 
+@csrf_exempt
 def microsoft_login(request):
-    auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
-    client_id = 'f14c32e8-369d-4474-b06e-7d506073f86e'
-    redirect_uri = 'http://localhost:8000/auth/microsoft/callback/'
-    scope = 'User.Read'
-    response_type = 'token'
-    return redirect(f'{auth_url}?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&response_type={response_type}')
+    if request.method == 'GET':
+        client_instance = msal.ConfidentialClientApplication(
+            client_id=CLIENT_ID,
+            client_credential=CLIENT_SECRET,
+            authority=AUTHORITY
+        )
+        auth_url = client_instance.get_authorization_request_url(SCOPES)
+        webbrowser.open(auth_url, new=True)
+        return JsonResponse({'message': 'Redirecting to Microsoft login page'})
+
+def microsoft_callback(request):
+    if request.method == 'GET':
+        client_instance = msal.ConfidentialClientApplication(
+            client_id=CLIENT_ID,
+            client_credential=CLIENT_SECRET,
+            authority=AUTHORITY
+        )
+        authorization_code = request.GET.get('code')
+        access_token = client_instance.acquire_token_by_authorization_code(authorization_code, SCOPES)
+        access_token_id = access_token['access_token']
+        headers = { 'Authorization': 'Bearer {}'.format(access_token_id) }
+        print('Headers:', headers)
+
+        response = requests.get(endpoint, headers)
+        return response.json()
+
+    # auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
+    # client_id = 'f14c32e8-369d-4474-b06e-7d506073f86e'
+    # redirect_uri = 'http://localhost:8000/auth/microsoft/callback/'
+    # scope = 'User.Read'
+    # response_type = 'token'
+    # return redirect(f'{auth_url}?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&response_type={response_type}')
 
 def send_welcome_email(user):
     # Définissez le sujet, le message, l'expéditeur et le destinataire de l'email

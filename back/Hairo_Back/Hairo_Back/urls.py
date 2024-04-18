@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from .views import landing_page, login_view, signup_view, ressources_pages, course_details_by_name
+from .views import landing_page, login_view, signup_view, ressources_pages, microsoft_login
 from . import views
 
 urlpatterns = [
@@ -27,9 +27,8 @@ urlpatterns = [
     path('', landing_page, name='landing'),
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
-    path('api/events/', views.agenda, name='events'),
     path('api/cours/', ressources_pages, name='cours-list'),
     path('api/course-details-by-name/', views.course_details_by_name, name='course-details-by-name'),
-    path('auth/microsoft/callback/', views.microsoft_login, name='microsoft-login'),
-    path('agenda/', views.agenda, name='agenda'),
+    path('microsoft-login/', microsoft_login, name='microsft-login'),
+    path('microsoft-callback', views.microsoft_callback, name='microsoft-callback'),
 ]
