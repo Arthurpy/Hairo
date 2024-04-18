@@ -1,0 +1,204 @@
+{
+    "questions": [
+      {
+        "question": "1. Quand a été commercialisé le Thalidomide ?",
+        "answers": {
+          "A": "1954",
+          "B": "1956",
+          "C": "1961",
+          "D": "1972"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "2. Quelle était l'une des utilisations originales du Thalidomide ?",
+        "answers": {
+          "A": "Antidépresseur",
+          "B": "Antibiotique",
+          "C": "Anti-nauséeux",
+          "D": "Antiviral"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "3. Quelle malformation est associée à l'exposition au Thalidomide pendant la grossesse ?",
+        "answers": {
+          "A": "Atrophie musculaire",
+          "B": "Phocomélie",
+          "C": "Hypertrophie",
+          "D": "Polydactylie"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "4. Quelle année la Pharmacovigilance a-t-elle été définie par l'OMS ?",
+        "answers": {
+          "A": "1968",
+          "B": "1972",
+          "C": "1973",
+          "D": "1982"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "5. Quels professionnels sont autorisés à déclarer les effets indésirables des médicaments ?",
+        "answers": {
+          "A": "Médecins uniquement",
+          "B": "Infirmières et médecins",
+          "C": "Tout professionnel de santé",
+          "D": "Pharmaciens et médecins"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "6. Que signifie AMM en contexte médical ?",
+        "answers": {
+          "A": "Autorisation de Mise sur le Marché",
+          "B": "Association Médicale Mondiale",
+          "C": "Analyse Médicale Majeure",
+          "D": "Aucune des mentions ci-dessus"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "7. Que cherche-t-on à évaluer à travers la pharmacovigilance ?",
+        "answers": {
+          "A": "L'efficacité du personnel médical",
+          "B": "La qualité des hôpitaux",
+          "C": "Le rapport bénéfice/risque des médicaments",
+          "D": "La rentabilité des traitements médicaux"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "8. Quelle méthode est utilisée pour le signalement des effets indésirables des médicaments ?",
+        "answers": {
+          "A": "Notification spontanée",
+          "B": "Audit interne",
+          "C": "Surveillance directe",
+          "D": "Études longitudinales"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "9. Quelle proportion d'effets indésirables est généralement déclarée ?",
+        "answers": {
+          "A": "Entre 1% et 5%",
+          "B": "Entre 5% et 10%",
+          "C": "Entre 10% et 20%",
+          "D": "Plus de 20%"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "10. En quelle année les patients ont-ils été autorisés à déclarer eux-mêmes leurs effets indésirables ?",
+        "answers": {
+          "A": "2001",
+          "B": "2005",
+          "C": "2011",
+          "D": "2015"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "11. Quel était le pourcentage de létalité associé aux malformations dues au Thalidomide ?",
+        "answers": {
+          "A": "10%",
+          "B": "25%",
+          "C": "40%",
+          "D": "55%"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "12. Quelle est la mission principale des Centres Hospitaliers de Pharmacovigilance ?",
+        "answers": {
+          "A": "Promouvoir les médicaments",
+          "B": "Collecter et valider les notifications d'effets indésirables",
+          "C": "Développer de nouveaux médicaments",
+          "D": "Réguler les prix des médicaments"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "13. Quel est le rôle de l'ANSM dans le contexte de la pharmacovigilance ?",
+        "answers": {
+          "A": "Formation médicale continue",
+          "B": "Contrôle de qualité des médicaments",
+          "C": "Surveillance des effets indésirables des médicaments",
+          "D": "Publicité des médicaments"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "14. Quelles informations les CRPV fournissent-ils en général ?",
+        "answers": {
+          "A": "Rapports financiers des entreprises pharmaceutiques",
+          "B": "Analyses statistiques de consommation de médicaments",
+          "C": "Informations sur les médicaments et conseils",
+          "D": "Brevets des nouveaux médicaments"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "15. Quel type de préparations est inclut dans le champ d'application de la pharmacovigilance ?",
+        "answers": {
+          "A": "Préparations magistrales",
+          "B": "Suppléments alimentaires",
+          "C": "Cosmétiques",
+          "D": "Produits de nettoyage"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "16. Quelle méthode complémentaire à la notification spontanée est mentionnée pour étudier les effets indésirables des médicaments ?",
+        "answers": {
+          "A": "Pharmacoéconomie",
+          "B": "Pharmacogénétique",
+          "C": "Pharmacoépidémiologie",
+          "D": "Pharmacologie clinique"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "17. Quelle année a marqué la création des premiers Centres Hospitaliers de Pharmacovigilance en France ?",
+        "answers": {
+          "A": "1963",
+          "B": "1973",
+          "C": "1983",
+          "D": "1993"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "18. Quels produits sont spécifiquement mentionnés comme faisant partie du champ d'application de la pharmacovigilance ?",
+        "answers": {
+          "A": "Vaccins et sérums",
+          "B": "Herbes médicinales",
+          "C": "Vitamines",
+          "D": "Suppléments de fer"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "19. Quel problème majeur est associé à la méthode de notification spontanée des effets indésirables ?",
+        "answers": {
+          "A": "Coût élevé",
+          "B": "Sous-notification",
+          "C": "Complexité technique",
+          "D": "Manque de confidentialité"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "20. Quelle est la proportion d'effets indésirables déclarés qui est considérée comme basse et problématique ?",
+        "answers": {
+          "A": "1-3%",
+          "B": "5-10%",
+          "C": "15-20%",
+          "D": "Plus de 25%"
+        },
+        "good_answers": ["B"]
+      }
+    ]
+}
