@@ -30,4 +30,6 @@ urlpatterns = [
     path('api/events/', views.agenda, name='events'),
     path('api/cours/', ressources_pages, name='cours-list'),
     path('api/course-details-by-name/', views.course_details_by_name, name='course-details-by-name'),
- ]
+    path('auth/microsoft/callback/', views.microsoft_login, name='microsoft-login'),
+    path('agenda/', views.agenda, name='agenda'),
+]
