@@ -31,9 +31,7 @@
     },
     methods: {
       loadPdf() {
-        console.log("Loading PDF...");
         this.selectedPdfUrl = `http://localhost:8000/media/${this.fileName}`;
-        console.log("fileName:", this.fileName)
         console.log("Loaded PDF URL:", this.selectedPdfUrl);
       }
     },

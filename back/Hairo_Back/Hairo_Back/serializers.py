@@ -19,7 +19,7 @@ from .models import QCM, Resultat
 class QCMSerializer(serializers.ModelSerializer):
     class Meta:
         model = QCM
-        fields = ['id', 'cours', 'contenu_json']
+        fields = ['id', 'cours', 'contenu_json', 'qcm_name']
 
 class ResultatSerializer(serializers.ModelSerializer):
     class Meta:

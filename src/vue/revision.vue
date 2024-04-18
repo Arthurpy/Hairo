@@ -73,6 +73,7 @@ export default {
             <p class="card-header justify-center bg-[#2176FF] rounded-b-xl flex text-white w-48">{{ revision.prog }}</p>
           </div>
           <div class="flex items-center">
+            {{ revision.red }}
             <h3 class="text-xl font-semibold mb-2 card-body mr-96 justify-start">{{ revision.titre }}</h3>
             <img :src="revision.img_src" alt="Image" class="w-20 h-20 justify-center" />
           </div>
@@ -112,15 +113,15 @@ export default {
   },
   methods: {
     loadRevisions() {
-    axios.get('http://localhost:8000/api/qcms/names')
+    axios.get('http://localhost:8000/qcms/names/')
         .then(response => {
             this.myRevision = response.data.map(qcm => ({
-                prog: qcm.prog,
-                red: qcm.red,
-                temp_form: qcm.temp_form,
-                nbr_qcm: qcm.nbr_qcm,
-                titre: qcm.titre,
-                img_src: qcm.img_src
+                prog: "60%",
+                red: qcm.contenu_json,
+                temp_form: "30 min",
+                nbr_qcm: "20",
+                titre: qcm.qcm_name,
+                img_src: "src/assets/coeur.png"
             }));
         })
         .catch(error => {

@@ -99,26 +99,6 @@ def protected_view(request):
     else:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
 
-# @csrf_exempt
-# def login_view(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         email = data.get('email')
-#         password = data.get('password')
-#         user = authenticate(request, username=email, password=password)
-#         if user is not None:
-#             login(request, user)
-
-#             # Générer ou récupérer le jeton JWT
-#             token_payload = {
-#                 'id': user.id,
-#                 'exp': datetime.utcnow() + timedelta(days=2)
-#             }
-#             token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm='HS256')
-#             return JsonResponse({'token': token, 'message': 'Logged in successfully'})
-#         else:
-#             return JsonResponse({'error': 'Invalid email or password'}, status=400)
-#     return render(request, 'login.html')
 
 @csrf_exempt
 def signup_view(request):
@@ -224,3 +204,9 @@ class QCMListView(ListView):
     
     def get_queryset(self):
         return QCM.objects.all()
+
+ 
+def get_all_qcms(request):
+    qcms = QCM.objects.all()
+    serializer = QCMSerializer(qcms, many=True)
+    return JsonResponse(serializer.data, safe=False)

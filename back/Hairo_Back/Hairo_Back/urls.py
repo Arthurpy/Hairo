@@ -10,21 +10,14 @@ from .views import QCMViewSet, ResultatViewSet, QCMListView # Assure-toi de modi
 from django.urls import path, include
 
 
-router = DefaultRouter()
-router.register(r'qcms', QCMViewSet)
-router.register(r'resultats', ResultatViewSet)
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("accounts/", include("accounts.urls")),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('qcms/names/', views.get_all_qcms , name='qcm-names'),
     path('', landing_page, name='landing'),
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
     path('api/events/', views.agenda, name='events'),
     path('api/cours/', ressources_pages, name='cours-list'),
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
-    path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
     # Intégration des routes du router pour les API QCM et résultats
-    path('api/', include(router.urls)),
 ]
