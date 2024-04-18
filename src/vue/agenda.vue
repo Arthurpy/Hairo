@@ -1,9 +1,8 @@
 <template>
-  <div :class="{ 'light-theme': isLightMode, 'dark-theme': !isLightMode }" style="display: flex; justify-content: center;">
+  <div :class="{ 'light-theme': isLightMode, 'dark-theme': !isLightMode }" style="display: flex;">
     <sidebar />
     <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center;max-width: 800px; margin: auto;">
       <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
-    <button class="my-button" @click="signInWithGoogle">Se connecter avec Google</button>
     <ul>
       <li v-for="event in events" :key="event.id" >{{ event.title }}</li>
     </ul>
@@ -18,7 +17,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import sidebar from '../components/sidebar.vue';
 export default {
   data() {
@@ -28,66 +26,38 @@ export default {
     };
   },
   mounted() {
-    this.checkGoogleAuth();
+    const microsoftToken = localStorage.getItem('microsoftToken');
+    if (!microsoftToken) {
+      this.openMicrosoftLogin();
+    } else {
+      this.checkMicrosoftValidity(microsoftToken);
+    }
     this.updateTheme();
   },
   components: {
     sidebar,
   },
   methods: {
-    async checkGoogleAuth() {
-      const jwt = localStorage.getItem('jwt');
-      console.log('first jwt', jwt);
-      if (!jwt) {
-        await this.signInWithGoogle();
-      }
-      this.fetchEvents();
+    openMicrosoftLogin() {
+      window.open('http://login.microsoftonline.com/common/oauth2/v2.0/authorize', '_self');
     },
-    async signInWithGoogle() {
-      try {
-        const response = await axios.get('https://accounts.google.com/o/oauth2/auth', {
-        params: {
-          redirect_uri: 'http://localhost:5173/agenda/auth/google/callback',
-          scope: 'https://www.googleapis.com/auth/calendar.readonly',
-          response_type: 'code',
-          client_id: '281350104013-egts6r5aqhpim3je7c3kdf6t1a04trah.apps.googleusercontent.com',
-        }
-    });
-      const authorizationCode = response.data.code;
-      const tokenResponse = await axios.post('https://oauth2.googleapis.com/token', {
-      code: authorizationCode,
-      client_id: '281350104013-egts6r5aqhpim3je7c3kdf6t1a04trah.apps.googleusercontent.com',
-      client_secret: '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',
-      redirect_uri: 'http://localhost:5173/agenda/auth/google/callback',
-      grant_type: 'authorization_code',
-      });
-      const accessToken = tokenResponse.data.access_token;
-      const calendarResponse = await axios.get('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      });
-      console.log('Événements du Google Calendar :', calendarResponse.data);
-      } catch (error) {
-        console.error('Erreur lors de la connexion à Google :', error);
-      }
-    },
-    fetchEvents() {
-      console.log('Récupération des événements...');
-      const jwt = localStorage.getItem('jwt');
-      console.log('jwt', jwt);
-      axios.get('http://localhost:8000/api/events/', {
-      headers: {
-      'Authorization': `Bearer ${jwt}`
-      }
+    checkMicrosoftValidity(token) {
+      fetch('http://localhost:8000/auth/microsoft/validity', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
       })
-      .then(response => {
-      console.log('Evénements récupérés :', response.data)
-      this.events = response.data;
-      })
-      .catch(error => {
-      console.error('Erreur lors de la récupération des événements :', error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.valid) {
+            localStorage.setItem('microsoftToken', token);
+            this.$router.push('/ressources');
+          } else {
+            this.openMicrosoftLogin();
+          }
+        });
     },
     redirectToDashboard() {
       // Rediriger vers le Dashboard (à adapter selon ton chemin d'accès)

@@ -9,8 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import json
 from django.http import JsonResponse
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from allauth.socialaccount.models import SocialToken
@@ -20,11 +18,14 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from .models import Cours, FichierPDF
 from .serializers import CoursSerializer
-
+from django.core.mail import send_mail
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Cours
 from .serializers import CoursSerializer
+from functools import wraps
+from flask import request
+import requests
 
 
 def landing_page(request):
@@ -143,36 +144,7 @@ def signup_view(request):
 
 @login_required
 def agenda(request):
-     # Récupérer le jeton d'accès OAuth de l'utilisateur depuis Django
-    token = SocialToken.objects.get(account__user=request.user, account__provider='google')
-
-    # Créer un objet Credentials à partir du jeton d'accès OAuth
-    credentials = Credentials(token)
-
-    # Créer un client Google Calendar à partir des credentials
-    calendar_service = build('calendar', 'v3', credentials=credentials)
-
-    # Récupérer la date de début et de fin de la semaine actuelle
-    today = datetime.today()
-    start_of_week = today - timedelta(days=today.weekday())
-    end_of_week = start_of_week + timedelta(days=6)
-
-    # Récupérer les événements de la semaine actuelle
-    events = calendar_service.events().list(
-        calendarId='primary',
-        timeMin=start_of_week.isoformat() + 'Z',
-        timeMax=end_of_week.isoformat() + 'Z',
-        singleEvents=True,
-        orderBy='startTime'
-    ).execute()
-
-    # Passer les événements au template
-    context = {
-        'events': events.get('items', [])
-    }
-
-    return JsonResponse(context)
-
+    return JsonResponse({'message': 'Cette fonction est en cours de développement.'}, status=200)
 
 def token_required(f):
     @wraps(f)
@@ -195,3 +167,65 @@ def token_required(f):
 def send_token_response(user):
     token = generate_token_for(user)  # Générer le jeton d'authentification ici
     return JsonResponse({'token': token, 'message': 'Logged in successfully'})
+
+def get_user_info(access_token):
+    # Utilisez le jeton d'accès pour récupérer les informations de l'utilisateur
+    # à partir du service d'authentification de Microsoft
+    headers = {'Authorization': 'Bearer ' + access_token}
+    response = requests.get('https://graph.microsoft.com/v1.0/me', headers=headers)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+def microsoft_callback(request):
+    code = request.GET.get('code')
+    if not code:
+        return JsonResponse({'error': 'No code provided'}, status=400)
+    token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'
+    token_params = {
+        'client_id': 'f14c32e8-369d-4474-b06e-7d506073f86e',
+        'scope': 'User.Read',
+        'code': code,
+        'redirect_uri': 'http://localhost:8000/auth/microsoft/callback/',
+        'grant_type': 'authorization_code',
+        'client_secret': '67d92e47-2a8f-43db-bf45-9aea4c240436'
+    }
+    response = requests.post(token_url, data=token_params)
+
+    if response.status_code == 200:
+        data = response.json()
+        access_token = data['access_token']
+        user_info = get_user_info(access_token)
+        if user_info:
+            # Créer un utilisateur ou le récupérer s'il existe déjà
+            user, created = User.objects.get_or_create(email=user_info['mail'])
+            if created:
+                send_welcome_email(user)
+                user.profile_picture = 'default.jpg'
+                user.save()
+            return send_token_response(user)
+        else:
+            return JsonResponse({'error': 'Failed to get user info'}, status=500)
+    else:
+        return JsonResponse({'error': 'Failed to get access token'}, status=500)
+
+
+def microsoft_login(request):
+    auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
+    client_id = 'f14c32e8-369d-4474-b06e-7d506073f86e'
+    redirect_uri = 'http://localhost:8000/auth/microsoft/callback/'
+    scope = 'User.Read'
+    response_type = 'token'
+    return redirect(f'{auth_url}?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&response_type={response_type}')
+
+def send_welcome_email(user):
+    # Définissez le sujet, le message, l'expéditeur et le destinataire de l'email
+    subject = 'Bienvenue sur notre site !'
+    message = 'Nous sommes ravis de vous avoir parmi nous.'
+    from_email = 'votre@adresse.email'
+    to_email = [user.email]
+
+    # Envoyez l'email
+    send_mail(subject, message, from_email, to_email)

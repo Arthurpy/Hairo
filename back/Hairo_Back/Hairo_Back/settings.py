@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
     'django.contrib.sites',
 ]
 
@@ -173,21 +172,6 @@ AUTHENTICATION_BACKENDS = [
     ]
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-            'https://www.googleapis.com/auth/calendar',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'offline',
-        },
-        'APP': {
-            'client_id': '281350104013-egts6r5aqhpim3je7c3kdf6t1a04trah.apps.googleusercontent.com',
-            'secret': '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',
-        }
-    }
-
 }
 
 SITE_ID = 1
