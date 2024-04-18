@@ -2,7 +2,7 @@
     <div class="bg-blue-200 flex">
       <sidebar :activeButton="'dashboard'"/>
       <div class="flex flex-col ml-80 h-screen">
-        <div class="flex bg-white text-[#2176FF] w-[70vw] h-[56px] ml-[50px] rounded-lg justify-between items-center mt-10 py-16">
+        <div class="flex bg-white text-[#2176FF] w-[70vw] h-[56px] ml-[50px] rounded-lg justify-between items-center mt-6 py-16">
           <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-10">Dashboard</h1>
           <img src="../assets/Rocket.png" alt="search" class="w-auto h-[150px] drop-shadow-lg" />
         </div>
@@ -39,7 +39,7 @@
             </div>
             <div class="flex flex-row justify-around mb-4 mt-6">
               <div class="flex btn bg-[#2176FF] font-semibold">voir le profil</div>
-              <div class="flex btn bg-[#2176FF] font-semibold">voir le profil</div>
+              <div class="flex btn bg-[#2176FF] font-semibold " disabled>messagerie</div>
             </div>
           </div>
         </div>
@@ -54,21 +54,46 @@
             </div>
         </div>
         <div class="flex flex-row">
-          <div class="flex flex-row bg-black w-[50%] h-[219px] ml-[50px] mt-[30px] rounded-lg">
-            <div class="w-[65%]">
-              <h4> Dates proches</h4>
-            </div>
-            <div class="bg-[#2176FF] w-[35%] rounded-r-lg">
-              ffw
-            </div>
+          <div class="flex flex-col bg-white justify-around w-[50%] h-[219px] ml-[50px] mt-[30px] rounded-lg text-[#2176FF]">
+              <h4 class=" text-xl font-bold ml-4 mt-4 "> Dernière révision </h4>
+              <div class="bg-blue-200 flex flex-row justify-between font-semibold m-4 rounded-xl items-center ">
+                <h4 class="ml-3 ">theme 1</h4>
+                <h4> 2h </h4>
+                <h4> 81% </h4>
+                <div class="btn bg-[#FDC221] text-white">Reprendre</div>
+              </div>
+              <div class="bg-blue-200 flex flex-row justify-between font-semibold m-4 rounded-xl items-center ">
+                <h4 class="ml-3 ">theme 2</h4>
+                <h4> 2h </h4>
+                <h4> 81% </h4>
+                <div class="btn bg-[#FDC221] text-white">Reprendre</div>
+              </div>
+              <div class="bg-blue-200 flex flex-row justify-between font-semibold m-4 rounded-xl items-center">
+                <h4 class="ml-3 ">theme 3</h4>
+                <h4> 2h </h4>
+                <h4> 81% </h4>
+                <div class="btn bg-[#FDC221] text-white">Reprendre</div>
+              </div>
           </div>
-          <div class="flex flex-row bg-black w-[50%] h-[219px] ml-[50px] mt-[30px] rounded-lg">
-            <div class="w-[65%]">
-              <h4> Dates proches</h4>
-            </div>
-            <div class="bg-[#2176FF] w-[35%] rounded-r-lg">
-              ffw
-            </div>
+          <div class="flex flex-row bg-white justify-around w-[50%] h-[219px] ml-[50px] mt-[30px] rounded-lg text-[#2176FF]">
+                <div class="bg-blue-200 flex flex-col justify-between font-semibold m-4 rounded-xl items-center ">
+                    <h4 class="mt-3 ">theme 1</h4>
+                    <h4> 2h </h4>
+                    <h4> 81% </h4>
+                    <div class="btn bg-[#FDC221] text-white">Reprendre</div>
+                </div>
+                <div class="bg-blue-200 flex flex-col justify-between font-semibold m-4 rounded-xl items-center ">
+                    <h4 class="mt-3 ">theme 2</h4>
+                    <h4> 2h </h4>
+                    <h4> 81% </h4>
+                    <div class="btn bg-[#FDC221] text-white">Reprendre</div>
+                </div>
+                <div class="bg-blue-200 flex flex-col justify-between font-semibold m-4 rounded-xl items-center ">
+                    <h4 class="mt-3 ">theme 3</h4>
+                    <h4> 2h </h4>
+                    <h4> 81% </h4>
+                    <div class="btn bg-[#FDC221] text-white">Reprendre</div>
+                </div>
           </div>
         </div>
       </div>
@@ -78,14 +103,14 @@
   <script>
   import sidebar from '../components/sidebar.vue';
   import ChartCamembert from '../components/ChartCamembert.vue';
-  import LineChart from '../components/LineChart.vue'; // Import du composant LineChart
+  import LineChart from '../components/LineChart.vue';
   
   export default {
     name: 'dashboard',
     components: {
       sidebar,
       ChartCamembert,
-      LineChart, // Ajout du composant LineChart aux composants de la page
+      LineChart,
     },
     created() {
       this.checkUserLoggedIn();
@@ -94,7 +119,6 @@
     data() {
       return {
         pieChartData: {
-          // Données pour le graphique camembert
           labels: ['a faire', 'rater', 'fini'],
           title: 'resultat des QCMs',
           data: [60, 10, 30],
@@ -114,7 +138,6 @@
           },
         },
         lineChartData: {
-          // Données pour le graphique en courbes
           labels: ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil'],
           datasets: [
             {
