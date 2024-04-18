@@ -41,12 +41,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-
 class Cours(models.Model):
     nom = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='images_cours/')
+    image = models.ImageField(upload_to='images_cours/', blank=True, null=True)
 
 class FichierPDF(models.Model):
     cours = models.ForeignKey(Cours, related_name='fichiers', on_delete=models.CASCADE)
     nom = models.CharField(max_length=255)
     fichier = models.FileField(upload_to='fichiers_cours/')
+
+class QCM(models.Model):
+    cours = models.ForeignKey(Cours, related_name='qcms', on_delete=models.CASCADE)
+    contenu_json = models.FileField(upload_to='qcms/')
+
+class Resultat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    qcm = models.ForeignKey(QCM, on_delete=models.CASCADE)
+    score = models.DecimalField(max_digits=5, decimal_places=2)  # Exemple : 87.50 pour 87,50%

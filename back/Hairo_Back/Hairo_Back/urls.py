@@ -1,24 +1,18 @@
-"""
-URL configuration for Hairo_Back project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from .views import landing_page, login_view, signup_view, ressources_pages, microsoft_login
+from .views import landing_page, login_view, signup_view, ressources_pages, microsoft_login, course_details_by_name
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from .views import QCMViewSet, ResultatViewSet, QCMListView # Assure-toi de modifier 'my_app' avec le nom de ton application Django
+from django.urls import path, include
+
+
+router = DefaultRouter()
+router.register(r'qcms', QCMViewSet)
+router.register(r'resultats', ResultatViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +25,8 @@ urlpatterns = [
     path('api/course-details-by-name/', views.course_details_by_name, name='course-details-by-name'),
     path('microsoft-login/', microsoft_login, name='microsft-login'),
     path('microsoft-callback', views.microsoft_callback, name='microsoft-callback'),
+    path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
+    path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
+    # Intégration des routes du router pour les API QCM et résultats
+    path('api/', include(router.urls)),
 ]

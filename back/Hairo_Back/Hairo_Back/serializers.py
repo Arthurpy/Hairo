@@ -12,3 +12,16 @@ class CoursSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cours
         fields = ('id', 'nom', 'image', 'fichiers')
+
+from rest_framework import serializers
+from .models import QCM, Resultat
+
+class QCMSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QCM
+        fields = ['id', 'cours', 'contenu_json']
+
+class ResultatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Resultat
+        fields = ['id', 'user', 'qcm', 'score']

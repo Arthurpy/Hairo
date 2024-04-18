@@ -16,7 +16,7 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -63,6 +63,11 @@ MIDDLEWARE = [
     'Hairo_Back.middleware.JWTAuthenticationMiddleware',
     'allauth.account.middleware.AccountMiddleware',
 ]
+
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_BROWSER_XSS_FILTER = True
+# Exemple d'une CSP très permissive, ajuste selon tes besoins de sécurité
+CSP_DEFAULT_SRC = "'self' data: https:; default-src 'self' http://localhost:8000"
 
 ROOT_URLCONF = 'Hairo_Back.urls'
 
@@ -145,8 +150,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
 ]
@@ -176,3 +179,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 SITE_ID = 1
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'fichiers_cours')
