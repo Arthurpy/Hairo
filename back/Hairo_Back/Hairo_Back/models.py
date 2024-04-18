@@ -44,9 +44,28 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Cours(models.Model):
     nom = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='images_cours/')
+    image = models.ImageField(upload_to='images_cours/', blank=True, null=True)
 
 class FichierPDF(models.Model):
     cours = models.ForeignKey(Cours, related_name='fichiers', on_delete=models.CASCADE)
     nom = models.CharField(max_length=255)
     fichier = models.FileField(upload_to='fichiers_cours/')
+
+
+class QCM_Globale(models.Model):
+    cours = models.ForeignKey(Cours, related_name='qcms_globale', on_delete=models.CASCADE)
+    titre = models.CharField(max_length=255)
+    json = models.JSONField()
+
+    def __str__(self):
+        return self.titre
+
+class QCM_by_user(models.Model):
+    qcm = models.ForeignKey(QCM_Globale, related_name='qcms_by_user', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='qcms_by_user', on_delete=models.CASCADE)
+    json = models.JSONField()
+    score = models.IntegerField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.titre

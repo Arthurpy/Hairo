@@ -19,6 +19,8 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from .views import landing_page, login_view, signup_view, ressources_pages, course_details_by_name
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,3 +33,7 @@ urlpatterns = [
     path('api/cours/', ressources_pages, name='cours-list'),
     path('api/course-details-by-name/', views.course_details_by_name, name='course-details-by-name'),
  ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
