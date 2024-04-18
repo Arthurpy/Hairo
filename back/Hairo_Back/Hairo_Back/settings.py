@@ -44,9 +44,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'webpack_loader',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     'django.contrib.sites',
 ]
 
@@ -61,7 +58,6 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sites.middleware.CurrentSiteMiddleware',
     'Hairo_Back.middleware.JWTAuthenticationMiddleware',
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 SECURE_CONTENT_TYPE_NOSNIFF = False

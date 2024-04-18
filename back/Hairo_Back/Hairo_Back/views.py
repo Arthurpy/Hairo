@@ -11,7 +11,6 @@ import json
 from django.http import JsonResponse, HttpResponse
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
-from allauth.socialaccount.models import SocialToken
 from rest_framework import generics
 import jwt
 from datetime import datetime, timedelta
@@ -23,7 +22,6 @@ from rest_framework.response import Response
 from .models import Cours
 from .serializers import CoursSerializer
 from functools import wraps
-from flask import request
 import requests
 import msal
 import webbrowser
