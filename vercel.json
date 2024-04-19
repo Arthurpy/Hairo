@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "builds": [
+      { "src": "/back/Hairo_Back", "use": "python3 manage.py runserver" },
+      { "src": "./", "use": "npm run dev" }
+    ],
+    "routes": [
+      { "src": "/api/(.*)", "dest": "/backend/backend/\1" },
+      { "src": "/(.*)", "dest": "/frontend/dist/\1" }
+    ]
+  }
