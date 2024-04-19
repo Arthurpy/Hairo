@@ -9,7 +9,12 @@ SECRET_KEY = 'django-insecure-4ip@6fwhvtkypke2c+1hc7^t@j5r($3^xz)@4(xt%_x%0qhahb
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '0.0.0.0',
+    'https://hairo-back.herokuapp.com',
+    'http://localhost:8000',
+    'http://localhost:5173',
+]
 
 
 INSTALLED_APPS = [
@@ -107,6 +112,10 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+    '0.0.0.0',
+    'https://hairo-back.herokuapp.com',
+    'http://localhost:8000',
     'http://localhost:5173',
 ]
 APPEND_SLASH = False

@@ -1,16 +1,18 @@
 
 <template>
-  <div>
-    <sidebar :activeButton="'ressources'" @openNoteTaker="openNoteTaker" />
-    <div class="main-content">
+  <div class="bg-white w-screen h-screen">
+    <sidebar :activeButton="'ressources'"/>
+    <div class="main-content bg-blue">
       <div class="pdf-container" v-if="selectedPdfUrl" ref="pdfContainer">
-        <embed :src="selectedPdfUrl" type="application/pdf" width="80%" height="600px" class="ml">
+        <object :data="selectedPdfUrl" type="application/pdf" width="70%" class="ml-80 pt-20 h-screen">
+          <button @click="openNoteTaker" class="black absolute top-0 right-0 mt-4 mr-4">Ouvrir le bloc-notes</button>
+        </object>
+        </div>
+        <div v-else class="no-pdf-selected">
+          <p>Aucun PDF sélectionné.</p>
+        </div>
       </div>
-      <div v-else class="no-pdf-selected">
-        <p>Aucun PDF sélectionné.</p>
-      </div>
-      <button @click="openNoteTaker" class="note-button">Ouvrir le bloc-notes</button>
-    </div>
+      vcfd
   </div>
 </template>
 
@@ -33,7 +35,10 @@
       loadPdf() {
         this.selectedPdfUrl = `http://localhost:8000/media/${this.fileName}`;
         console.log("Loaded PDF URL:", this.selectedPdfUrl);
-      }
+      },
+      openNoteTaker() {
+        console.log("Opening note taker...");
+      },
     },
     mounted() {
       if (this.courseName && this.fileName) {
