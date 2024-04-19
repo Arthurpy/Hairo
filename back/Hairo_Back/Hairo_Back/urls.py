@@ -24,6 +24,7 @@ urlpatterns = [
     path('microsoft-login/', microsoft_login, name='microsft-login'),
     path('microsoft-callback', views.microsoft_callback, name='microsoft-callback'),
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
+    path('upload/', views.upload_file, name='upload'),
     path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
 ]
 
