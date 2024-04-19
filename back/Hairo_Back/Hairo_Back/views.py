@@ -184,38 +184,6 @@ def get_user_info(access_token):
     else:
         return None
 
-# def microsoft_callback(request):
-#     code = request.GET.get('code')
-#     if not code:
-#         return JsonResponse({'error': 'No code provided'}, status=400)
-#     token_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/token'
-#     token_params = {
-#         'client_id': 'f14c32e8-369d-4474-b06e-7d506073f86e',
-#         'scope': 'User.Read',
-#         'code': code,
-#         'redirect_uri': 'http://localhost:8000/auth/microsoft/callback/',
-#         'grant_type': 'authorization_code',
-#         'client_secret': '67d92e47-2a8f-43db-bf45-9aea4c240436'
-#     }
-#     response = requests.post(token_url, data=token_params)
-
-#     if response.status_code == 200:
-#         data = response.json()
-#         access_token = data['access_token']
-#         user_info = get_user_info(access_token)
-#         if user_info:
-#             # Créer un utilisateur ou le récupérer s'il existe déjà
-#             user, created = User.objects.get_or_create(email=user_info['mail'])
-#             if created:
-#                 send_welcome_email(user)
-#                 user.profile_picture = 'default.jpg'
-#                 user.save()
-#             return send_token_response(user)
-#         else:
-#             return JsonResponse({'error': 'Failed to get user info'}, status=500)
-#     else:
-#         return JsonResponse({'error': 'Failed to get access token'}, status=500)
-
 CLIENT_ID = 'f14c32e8-369d-4474-b06e-7d506073f86e'
 CLIENT_SECRET = 'uIH8Q~SmrG-jJMCeSPbD4uSLBdyWSog-CFOaubhl'
 AUTHORITY = 'https://login.microsoftonline.com/consumers/'
@@ -231,9 +199,8 @@ def microsoft_login(request):
             client_credential=CLIENT_SECRET,
             authority=AUTHORITY
         )
-        auth_url = client_instance.get_authorization_request_url(SCOPES)
-        webbrowser.open(auth_url, new=True)
-        return JsonResponse({'message': 'Redirecting to Microsoft login page'})
+        auth_url = client_instance.get_authorization_request_url(SCOPES, redirect_uri='http://localhost:8000/microsoft-callback')
+        return redirect(auth_url)
 
 def microsoft_callback(request):
     if request.method == 'GET':
@@ -243,31 +210,40 @@ def microsoft_callback(request):
             authority=AUTHORITY
         )
         authorization_code = request.GET.get('code')
-        access_token = client_instance.acquire_token_by_authorization_code(authorization_code, SCOPES)
-        access_token_id = access_token['access_token']
-        headers = { 'Authorization': 'Bearer {}'.format(access_token_id) }
-        print('Headers:', headers)
+        if not authorization_code:
+            return JsonResponse({'error': 'Authorization code not found'}, status=400)
 
-        response = requests.get(endpoint, headers)
-        return response.json()
+        result = client_instance.acquire_token_by_authorization_code(
+            authorization_code,
+            SCOPES,
+            redirect_uri='http://localhost:8000/microsoft-callback'
+        )
+        
+        if 'access_token' in result:
+            access_token_id = result['access_token']
+            return redirect(f'http://localhost:5173/agenda/?access_token={access_token_id}')
+        else:
+            error_description = result.get('error_description', 'No error description provided')
+            return JsonResponse({'error': error_description}, status=500)
 
-    # auth_url = 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize'
-    # client_id = 'f14c32e8-369d-4474-b06e-7d506073f86e'
-    # redirect_uri = 'http://localhost:8000/auth/microsoft/callback/'
-    # scope = 'User.Read'
-    # response_type = 'token'
-    # return redirect(f'{auth_url}?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&response_type={response_type}')
+    if request.method == 'POST':
+        token = request.POST.get('token')
+        if not token:
+            return JsonResponse({'error': 'Token not provided'}, status=400)
 
-def send_welcome_email(user):
-    # Définissez le sujet, le message, l'expéditeur et le destinataire de l'email
-    subject = 'Bienvenue sur notre site !'
-    message = 'Nous sommes ravis de vous avoir parmi nous.'
-    from_email = 'votre@adresse.email'
-    to_email = [user.email]
+        client_instance = msal.ConfidentialClientApplication(
+            client_id=CLIENT_ID,
+            client_credential=CLIENT_SECRET,
+            authority=AUTHORITY
+        )
 
-    # Envoyez l'email
-    send_mail(subject, message, from_email, to_email)
+        result = client_instance.acquire_token_silent(SCOPES, account=None, token=token)
 
+        if 'access_token' in result:
+            return JsonResponse({'message': 'The token is valid.'})
+        else:
+            error_description = result.get('error_description', 'Token is invalid or expired.')
+            return JsonResponse({'error': error_description}, status=400)
 
 class QCMViewSet(viewsets.ModelViewSet):
     queryset = QCM.objects.all()

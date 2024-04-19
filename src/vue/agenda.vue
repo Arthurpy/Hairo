@@ -1,11 +1,14 @@
 <template>
   <div :class="{ 'light-theme': isLightMode, 'dark-theme': !isLightMode }" style="display: flex;">
     <sidebar />
-    <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center;max-width: 800px; margin: auto;">
-    <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
-    <button v-if="!microsoftToken" @click="openMicrosoftLogin">Se connecter avec Microsoft</button>
+    <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto;">
+      <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
+      <button v-if="!microsoftToken" @click="openMicrosoftLogin">Se connecter avec Microsoft</button>
       <p v-else class="mt-5" style="text-align: center;">Bienvenue, utilisateur Microsoft!</p>
-    <button class="my-button" @click="redirectToDashboard">Retour au Dashboard</button>
+      <ul v-if="events.length">
+        <li v-for="event in events" :key="event.id">{{ event.subject }}</li>
+      </ul>
+      <button class="my-button" @click="redirectToDashboard">Retour au Dashboard</button>
     </div>
   </div>
 </template>
@@ -20,9 +23,13 @@ export default {
     };
   },
   mounted() {
-    const microsoftToken = localStorage.getItem('microsoftToken');
-    if (microsoftToken) {
-      this.checkMicrosoftValidity(microsoftToken);
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get('access_token');
+    if (accessToken) {
+      localStorage.setItem('microsoft_access_token', accessToken);
+      console.log('Microsoft Access Token:', localStorage.getItem('microsoft_access_token'));
+      window.history.pushState({}, document.title, "/");
+      this.fetchCalendarData();
     }
     this.updateTheme();
   },
@@ -31,41 +38,9 @@ export default {
   },
   methods: {
     openMicrosoftLogin() {
-      fetch('http://localhost:8000/auth/microsoft/login', {
-        method: 'GET',
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          if (data.url) {
-            window.open(data.url, '_self');
-          }
-        });
-    },
-    checkMicrosoftValidity(token) {
-      console.log('Checking Microsoft token validity');
-      fetch('http://localhost:8000/auth/microsoft/callback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          if (data.valid) {
-            localStorage.setItem('microsoftToken', token);
-            this.microsoftToken = token;
-            this.$router.push('/ressources');
-          } else {
-            this.microsoftToken = null;
-            this.openMicrosoftLogin();
-          }
-        });
+      window.location.href = 'http://localhost:8000/microsoft-login/';
     },
     redirectToDashboard() {
-      // Rediriger vers le Dashboard (à adapter selon ton chemin d'accès)
       this.$router.push('/dashboard');
     },
     updateTheme() {
@@ -76,6 +51,28 @@ export default {
         document.documentElement.style.backgroundColor = '#000000'; // Fond noir
         document.documentElement.style.color = '#ffffff'; // Texte blanc
       }
+    },
+    fetchCalendarData() {
+      const headers = new Headers({
+        'Authorization': `Bearer ${this.microsoftToken}`,
+        'Content-Type': 'application/json'
+      });
+      const url = 'https://graph.microsoft.com/v1.0/me/calendars';
+      fetch(url, { headers })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch calendar data');
+          }
+        })
+        .then(data => {
+          this.events = data.value; // Assuming the response contains a 'value' key with the events
+          console.log('Calendar Data:', this.events);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
     }
   }
 };
