@@ -9,6 +9,10 @@
       <div class="bg-white text-[#2176FF] w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
         <h1 class="text-[#2176FF] text-2xl font-semibold">Que rechercher vous?</h1>
         <input type="text" v-model="searchQuery" class="input-rounded input ml-56" placeholder="Rechercher un thème">
+        <div>
+          <input type="file" @change="handleFileUpload" accept=".pdf" />
+          <button @click="submitFile">Upload PDF</button>
+      </div>
       </div>
       <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] ">
         <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="bg-[#2176FF] w-[21.5%] rounded-lg m-2">
@@ -56,6 +60,31 @@ export default {
         chunkedArray.push(this.filteredCourses.slice(i, i + chunkSize));
       }
       return chunkedArray;
+    },
+    handleFileUpload(event) {
+      this.file = event.target.files[0];
+    },
+    async submitFile() {
+      if (!this.file) {
+        alert('Please select a file!');
+        return;
+      }
+      let formData = new FormData();
+      formData.append('file', this.file);
+
+      try {
+        let response = await fetch('http://localhost:8000/upload/', {
+          method: 'POST',
+          body: formData,
+        });
+        if (response.ok) {
+          alert('File uploaded successfully');
+        } else {
+          alert('Upload failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     },
   },
 };

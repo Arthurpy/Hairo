@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/events/', views.agenda, name='events'),
     path('api/cours/', ressources_pages, name='cours-list'),
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
+    path('upload/', views.upload_file, name='upload'),
     # Intégration des routes du router pour les API QCM et résultats
 ]
 

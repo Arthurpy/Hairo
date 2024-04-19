@@ -210,3 +210,36 @@ def get_all_qcms(request):
     qcms = QCM.objects.all()
     serializer = QCMSerializer(qcms, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+def upload_pdf(request):
+    user_id = request.user.id
+    cours_nom = "Mes cours"
+    pdf_file = request.FILES.get('file')
+    if pdf_file and pdf_file.name.endswith('.pdf'):
+        is_linked = (cours_nom == "Mes cours")
+        cours, created = Cours.objects.get_or_create(
+            nom=cours_nom,
+            defaults={'is_linked_to_user': is_linked}
+        )
+        if is_linked:
+            cours.user = request.user
+            cours.save()
+
+        FichierPDF.objects.create(
+            cours=cours,
+            nom=pdf_file.name,
+            fichier=pdf_file
+        )
+        return JsonResponse({'message': 'PDF uploaded successfully'}, status=200)
+    return JsonResponse({'message': 'Invalid file'}, status=400)
+
+
+def create_qcm(request):
+    if request.method == 'POST':
+        json_generated =  generate_json(request.pdf_file, request.cours_id)
+        if json_generated:
+            QCM.objects.create(cours_id=request.cours_id, contenu_json=json_generated)
+            return JsonResponse({'message': 'QCM created successfully'})
+        else:
+            return JsonResponse({'error': 'Error generating QCM JSON'}, status=500)
+        
