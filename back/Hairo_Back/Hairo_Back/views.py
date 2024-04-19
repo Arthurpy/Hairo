@@ -84,6 +84,7 @@ def protected_view(request):
     else:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
 
+
 @csrf_exempt
 def signup_view(request):
     if request.method == 'POST':
@@ -219,3 +220,8 @@ class QCMListView(ListView):
     model = QCM
     def get_queryset(self):
         return QCM.objects.all()
+
+def get_all_qcms(request):
+    qcms = QCM.objects.all()
+    serializer = QCMSerializer(qcms, many=True)
+    return JsonResponse(serializer.data, safe=False)

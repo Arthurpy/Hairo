@@ -53,6 +53,10 @@ class QCM(models.Model):
     cours = models.ForeignKey(Cours, related_name='qcms', on_delete=models.CASCADE)
     contenu_json = models.FileField(upload_to='qcms/')
 
+    @property
+    def qcm_name(self):
+        return self.cours.nom
+
 class Resultat(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     qcm = models.ForeignKey(QCM, on_delete=models.CASCADE)

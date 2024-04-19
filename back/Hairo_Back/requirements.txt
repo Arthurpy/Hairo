@@ -10,8 +10,6 @@ boto3==1.17.44
 botocore==1.20.112
 cachetools==5.3.3
 celery==5.1.2
-certifi @ file:///private/tmp/certifi-20240307-4874-p3lgkm/certifi-2024.2.2
-cffi @ file:///private/tmp/cffi-20231211-40239-j25k6o/cffi-1.16.0
 channels==3.0.3
 channels-redis==3.2.0
 charset-normalizer==3.3.2
@@ -21,7 +19,6 @@ click-plugins==1.1.1
 click-repl==0.3.0
 constantly==23.10.4
 contourpy==1.1.1
-cryptography @ file:///private/tmp/python-cryptography-20240305-6137-odptlu/cryptography-42.0.5
 cycler==0.12.1
 daphne==3.0.2
 defusedxml==0.7.1
@@ -47,12 +44,9 @@ httplib2==0.22.0
 hyperlink==21.0.0
 idna==3.7
 incremental==22.10.0
-Jinja2 @ file:///private/tmp/python-jinja-20231112-5434-1yb7qop/Jinja2-3.1.2
 jmespath==0.10.0
 kiwisolver==1.4.5
 kombu==5.3.7
-lxml @ file:///private/tmp/python-lxml-20230830-6138-1l0cdh0/lxml-4.9.3
-MarkupSafe @ file:///private/tmp/python-markupsafe-20231211-21580-wvs9hr/MarkupSafe-2.1.3
 matplotlib==3.8.0
 msgpack==1.0.8
 numpy==1.26.1
@@ -67,14 +61,10 @@ psycopg2==2.9.9
 psycopg2-binary==2.9.9
 pyasn1==0.6.0
 pyasn1_modules==0.4.0
-pycparser @ file:///private/tmp/pycparser-20231211-25057-cypg40/pycparser-2.21
 PyJWT==2.8.0
 pyOpenSSL==24.1.0
 pyparsing==3.1.1
-python-dateutil @ file:///private/tmp/python-dateutil-20231119-5156-1u9krby/python-dateutil-2.8.2
 python3-openid==3.2.0
-pytz @ file:///private/tmp/python-pytz-20231211-67357-pjloep/pytz-2023.3.post1
-PyYAML @ file:///private/tmp/pyyaml-20231018-5610-1rdh755/PyYAML-6.0.1
 redis==3.5.3
 requests==2.31.0
 requests-oauthlib==2.0.0
