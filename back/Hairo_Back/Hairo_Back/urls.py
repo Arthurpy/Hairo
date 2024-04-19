@@ -10,6 +10,11 @@ from .views import QCMViewSet, ResultatViewSet, QCMListView # Assure-toi de modi
 from django.urls import path, include
 
 
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
+from django.contrib import admin
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('qcms/names/', views.get_all_qcms , name='qcm-names'),
@@ -21,3 +26,7 @@ urlpatterns = [
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
     # Intégration des routes du router pour les API QCM et résultats
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

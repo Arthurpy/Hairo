@@ -122,7 +122,7 @@ export default {
                 nbr_qcm: "20",
                 titre: qcm.qcm_name,
                 img_src: "src/assets/coeur.png"
-            }));
+              }));
         })
         .catch(error => {
             console.error("Error loading the revisions: ", error.response);
