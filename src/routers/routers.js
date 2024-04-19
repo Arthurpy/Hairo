@@ -6,6 +6,7 @@ import Landing from './../vue/landing.vue';
 import ressources from './../vue/ressources.vue';
 import revisions from './../vue/revision.vue';
 import Agenda from "../vue/agenda.vue";
+import Quiz from "../vue/quiz.vue";
 
 import CourseDetails from './../vue/CourseDetails.vue';
 import ReadCours from './../vue/ReadCours.vue';
@@ -65,6 +66,12 @@ const routes = [
       meta: { requiresAuth: true }
     },
     {
+      path: '/quiz',
+      name: 'quiz',
+      component: Quiz,
+      meta: { requiresAuth: true }
+    },
+    {
       path: '/:catchAll(.*)',
       redirect: '/'
     }
@@ -76,20 +83,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // Vérifiez si la route nécessite une authentification
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        // Assurez-vous que l'utilisateur est connecté en vérifiant le jeton d'authentification
         if (!localStorage.getItem('authToken')) {
-            // Rediriger vers la page de connexion si l'utilisateur n'est pas authentifié
             next({
                 path: '/login',
                 query: { redirect: to.fullPath }
             });
         } else {
-            next(); // Tout est bon, continuez vers la route demandée
+            next();
         }
     } else {
-        next(); // Assurez-vous de toujours appeler next() sinon la page sera bloquée ici
+        next();
     }
 });
 

@@ -26,6 +26,7 @@
 
 <script> 
 import sidebar from './../components/sidebar.vue';
+import pacesFolders from './../assets/pacesFolders.json';
 
 export default {
   name: 'ressources',

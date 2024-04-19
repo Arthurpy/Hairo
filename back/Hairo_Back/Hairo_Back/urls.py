@@ -1,12 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
-from .views import landing_page, login_view, signup_view, ressources_pages, course_details_by_name
+from .views import landing_page, login_view, signup_view, ressources_pages, microsoft_login, course_details_by_name
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.routers import DefaultRouter
-from .views import QCMViewSet, ResultatViewSet, QCMListView # Assure-toi de modifier 'my_app' avec le nom de ton application Django
+from .views import QCMListView
 from django.urls import path, include
 
 
@@ -21,13 +19,14 @@ urlpatterns = [
     path('', landing_page, name='landing'),
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
-    path('api/events/', views.agenda, name='events'),
     path('api/cours/', ressources_pages, name='cours-list'),
+    path('api/course-details-by-name/', views.course_details_by_name, name='course-details-by-name'),
+    path('microsoft-login/', microsoft_login, name='microsft-login'),
+    path('microsoft-callback', views.microsoft_callback, name='microsoft-callback'),
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
     path('upload/', views.upload_file, name='upload'),
-    # Intégration des routes du router pour les API QCM et résultats
+    path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
