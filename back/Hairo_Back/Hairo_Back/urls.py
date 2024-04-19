@@ -6,7 +6,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
-from .views import QCMViewSet, ResultatViewSet, QCMListView # Assure-toi de modifier 'my_app' avec le nom de ton application Django
+from .views import QCMViewSet, ResultatViewSet, QCMListView
 from django.urls import path, include
 
 
@@ -27,6 +27,5 @@ urlpatterns = [
     path('microsoft-callback', views.microsoft_callback, name='microsoft-callback'),
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
     path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
-    # Intégration des routes du router pour les API QCM et résultats
     path('api/', include(router.urls)),
 ]

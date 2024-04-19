@@ -1,33 +1,18 @@
-# views.py
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import LoginForm
-from .models import User, Cours, FichierPDF, QCM, Resultat
-from django.contrib.auth.hashers import check_password
+from .models import User, Cours, QCM, Resultat
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 import json
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
-from rest_framework import generics
 import jwt
 from datetime import datetime, timedelta
 from django.conf import settings
-from .serializers import CoursSerializer
-from django.core.mail import send_mail
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from .models import Cours
-from .serializers import CoursSerializer
 from functools import wraps
 import requests
 import msal
-import webbrowser
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework import viewsets
 from .serializers import QCMSerializer, ResultatSerializer
 from django.views.generic import ListView
@@ -40,17 +25,17 @@ def landing_page(request):
 @csrf_exempt
 def course_details_by_name(request):
     try:
-        data = json.loads(request.body.decode('utf-8'))  # ensure decoding from bytes if needed
+        data = json.loads(request.body.decode('utf-8'))
         course_name = data.get('courseName')
         if not course_name:
             return JsonResponse({'error': 'No course name provided'}, status=400)
 
-        cours = Cours.objects.get(nom__iexact=course_name)  # Case insensitive search
+        cours = Cours.objects.get(nom__iexact=course_name)
         pdfs = cours.fichiers.all()
         pdf_data = [{
             'id': pdf.id,
             'nom': pdf.nom,
-            'url': request.build_absolute_uri(pdf.fichier.url)  # Accessing the file url correctly
+            'url': request.build_absolute_uri(pdf.fichier.url)
         } for pdf in pdfs]
         return JsonResponse({
             'nom': cours.nom,
@@ -61,26 +46,20 @@ def course_details_by_name(request):
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON data'}, status=400)
     except Exception as e:
-        # Log the exception to help with debugging
         print(f"Error in course_details_by_name: {str(e)}")
         return JsonResponse({'error': 'Server error'}, status=500)
 
 @csrf_exempt
 def ressources_pages(request):
     if request.method == 'POST':
-        # Récupérer tous les cours de la base de données
         cours_list = Cours.objects.all()
-        # Transformer les données en liste de dictionnaires
         cours_data = [{'id': cours.id, 'nom': cours.nom} for cours in cours_list]
-        # Retourner les données en JSON
         return JsonResponse(cours_data, safe=False)
     else:
-        # Si la méthode n'est pas POST, vous pouvez choisir de renvoyer une réponse appropriée
         return JsonResponse({'error': 'Invalid method'}, status=405)
 
 @csrf_exempt
 def login_view(request):
-    # Add logging
     data = json.loads(request.body)
     print("Data received:", data)
 
@@ -105,27 +84,6 @@ def protected_view(request):
     else:
         return JsonResponse({'error': 'Unauthorized'}, status=401)
 
-# @csrf_exempt
-# def login_view(request):
-#     if request.method == 'POST':
-#         data = json.loads(request.body)
-#         email = data.get('email')
-#         password = data.get('password')
-#         user = authenticate(request, username=email, password=password)
-#         if user is not None:
-#             login(request, user)
-
-#             # Générer ou récupérer le jeton JWT
-#             token_payload = {
-#                 'id': user.id,
-#                 'exp': datetime.utcnow() + timedelta(days=2)
-#             }
-#             token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm='HS256')
-#             return JsonResponse({'token': token, 'message': 'Logged in successfully'})
-#         else:
-#             return JsonResponse({'error': 'Invalid email or password'}, status=400)
-#     return render(request, 'login.html')
-
 @csrf_exempt
 def signup_view(request):
     if request.method == 'POST':
@@ -134,15 +92,11 @@ def signup_view(request):
         password = data.get('password')
         user = User.objects.create_user(email=email, password=password)
         login(request, user)
-
-        # Générer un jeton JWT
         token_payload = {
             'id': user.id,
-            'exp': datetime.utcnow() + timedelta(days=2)  # Expiration dans 2 jours
+            'exp': datetime.utcnow() + timedelta(days=2)
         }
         token = jwt.encode(token_payload, settings.SECRET_KEY, algorithm='HS256')
-
-        # Stocker le jeton si nécessaire ou le renvoyer directement
         return JsonResponse({'token': token, 'message': 'User created successfully'})
 
     return render(request, 'signup.html')
@@ -170,12 +124,10 @@ def token_required(f):
 
 
 def send_token_response(user):
-    token = generate_token_for(user)  # Générer le jeton d'authentification ici
+    token = generate_token_for(user)
     return JsonResponse({'token': token, 'message': 'Logged in successfully'})
 
 def get_user_info(access_token):
-    # Utilisez le jeton d'accès pour récupérer les informations de l'utilisateur
-    # à partir du service d'authentification de Microsoft
     headers = {'Authorization': 'Bearer ' + access_token}
     response = requests.get('https://graph.microsoft.com/v1.0/me', headers=headers)
 
@@ -218,7 +170,6 @@ def microsoft_callback(request):
             SCOPES,
             redirect_uri='http://localhost:8000/microsoft-callback'
         )
-        
         if 'access_token' in result:
             access_token_id = result['access_token']
             return redirect(f'http://localhost:5173/agenda/?access_token={access_token_id}')
@@ -266,8 +217,5 @@ def get_all_qcms(request):
 
 class QCMListView(ListView):
     model = QCM
-    # Optionally specify a template or define how the data is rendered
-    # template_name = 'qcm_list.html'
-    
     def get_queryset(self):
         return QCM.objects.all()

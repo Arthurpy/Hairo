@@ -27,7 +27,6 @@ export default {
     const accessToken = urlParams.get('access_token');
     if (accessToken) {
       localStorage.setItem('microsoft_access_token', accessToken);
-      console.log('Microsoft Access Token:', localStorage.getItem('microsoft_access_token'));
       window.history.pushState({}, document.title, "/");
       this.fetchCalendarData();
     }
@@ -45,16 +44,16 @@ export default {
     },
     updateTheme() {
       if (this.isLightMode) {
-        document.documentElement.style.backgroundColor = '#ffffff'; // Fond blanc
-        document.documentElement.style.color = '#000000'; // Texte noir
+        document.documentElement.style.backgroundColor = '#ffffff';
+        document.documentElement.style.color = '#000000';
       } else {
-        document.documentElement.style.backgroundColor = '#000000'; // Fond noir
-        document.documentElement.style.color = '#ffffff'; // Texte blanc
+        document.documentElement.style.backgroundColor = '#000000';
+        document.documentElement.style.color = '#ffffff';
       }
     },
     fetchCalendarData() {
       const headers = new Headers({
-        'Authorization': `Bearer ${this.microsoftToken}`,
+        'Authorization': `Bearer ${localStorage.getItem('microsoft_access_token')}`,
         'Content-Type': 'application/json'
       });
       const url = 'https://graph.microsoft.com/v1.0/me/calendars';
@@ -67,19 +66,23 @@ export default {
           }
         })
         .then(data => {
-          this.events = data.value; // Assuming the response contains a 'value' key with the events
-          console.log('Calendar Data:', this.events);
+          this.events = data.value;
+          console.log('Calendar Data: ++++++++++++++++++++++++++++++++++++++++++++++++++++', this.events);
         })
         .catch(error => {
           console.error('Error:', error);
         });
-    }
+    },
+    data() {
+        return {
+          events: [],
+        }
+      }
   }
 };
 </script>
 
 <style scoped>
-/* Ajoute du style CSS au besoin */
 .main-content {
   display: flex;
   flex-direction: column;

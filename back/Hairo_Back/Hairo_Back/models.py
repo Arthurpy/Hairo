@@ -34,8 +34,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['password']  # example field that is required on user creation
-
+    REQUIRED_FIELDS = ['password']
     objects = UserManager()
 
     def __str__(self):
@@ -57,4 +56,4 @@ class QCM(models.Model):
 class Resultat(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     qcm = models.ForeignKey(QCM, on_delete=models.CASCADE)
-    score = models.DecimalField(max_digits=5, decimal_places=2)  # Exemple : 87.50 pour 87,50%
+    score = models.DecimalField(max_digits=5, decimal_places=2)
