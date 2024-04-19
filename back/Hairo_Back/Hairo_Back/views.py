@@ -211,7 +211,7 @@ def get_all_qcms(request):
     serializer = QCMSerializer(qcms, many=True)
     return JsonResponse(serializer.data, safe=False)
 
-def upload_pdf(request):
+def upload_file(request):
     user_id = request.user.id
     cours_nom = "Mes cours"
     pdf_file = request.FILES.get('file')
