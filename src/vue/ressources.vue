@@ -16,7 +16,7 @@
       </div>
       <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] ">
         <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="bg-[#2176FF] w-[21.5%] rounded-lg m-2">
-          <img src="../assets/Anat.jpeg" class=" rounded-t-lg"/>
+          <img src="../assets/Anat.jpeg" id="course_src" class="rounded-t-lg"/>
           <h1 class="text-white font-semibold text-2xl mx-2 p-2 items-center"> {{ course }} </h1>
         </router-link>
       </div>
@@ -24,9 +24,8 @@
   </div>
 </template>
 
-<script>
+<script> 
 import sidebar from './../components/sidebar.vue';
-import pacesFolders from './../assets/pacesFolders.json';
 
 export default {
   name: 'ressources',
@@ -86,6 +85,12 @@ export default {
         console.error('Error:', error);
       }
     },
+    formatCourseName(courseName) {
+      let formattedName = `../assets/${courseName}.jpeg`;
+      console.log(formattedName);
+      getElementsById('course_src').src = formattedName;
+      return formattedName;
+    }
   },
 };
 </script>
