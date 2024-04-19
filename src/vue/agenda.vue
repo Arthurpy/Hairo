@@ -1,13 +1,9 @@
 <template>
   <div :class="{ 'light-theme': isLightMode, 'dark-theme': !isLightMode }" style="display: flex;">
     <sidebar />
-    <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto;">
-      <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
-      <button v-if="!microsoftToken" @click="openMicrosoftLogin">Se connecter avec Microsoft</button>
-      <p v-else class="mt-5" style="text-align: center;">Bienvenue, utilisateur Microsoft!</p>
-      <ul v-if="events.length">
-        <li v-for="event in events" :key="event.id">{{ event.subject }}</li>
-      </ul>
+    <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto; gap: 80px;">
+      <button @click="openMicrosoftLogin">Se connecter avec Microsoft</button>
+      <vue-cal :events="events" style="height: 600px; width: 1200px;" class="vuecal--blue-theme"></vue-cal>
       <button class="my-button" @click="redirectToDashboard">Retour au Dashboard</button>
     </div>
   </div>
@@ -15,6 +11,8 @@
 
 <script>
 import sidebar from '../components/sidebar.vue';
+import VueCal from 'vue-cal';
+import 'vue-cal/dist/vuecal.css';
 export default {
   data() {
     return {
@@ -31,9 +29,11 @@ export default {
       this.fetchCalendarData();
     }
     this.updateTheme();
+    this.events.push();
   },
   components: {
     sidebar,
+    VueCal,
   },
   methods: {
     openMicrosoftLogin() {
@@ -58,26 +58,34 @@ export default {
       });
       const url = 'https://graph.microsoft.com/v1.0/me/calendars';
       fetch(url, { headers })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch calendar data');
-          }
-        })
+        .then(response => response.json())
         .then(data => {
-          this.events = data.value;
-          console.log('Calendar Data: ++++++++++++++++++++++++++++++++++++++++++++++++++++', this.events);
-        })
+          const calendarPromises = data.value.map(calendar => {
+          const eventsUrl = `https://graph.microsoft.com/v1.0/me/calendars/${calendar.id}/events`;
+          return fetch(eventsUrl, { headers }).then(response => response.json());
+        });
+        return Promise.all(calendarPromises);
+      })
+        .then(calendarsData => {
+      this.events = calendarsData.flatMap(data =>
+        data.value.map(event => {
+          if (event.start && event.end) {
+            return {
+              start: new Date(event.start.dateTime),
+              end: new Date(event.end.dateTime),
+              title: event.subject,
+              body: event.bodyPreview,
+              class: 'microsoft-event',
+            };
+          }
+        }).filter(Boolean)
+      );
+      console.log('All Events:', this.events);
+    })
         .catch(error => {
           console.error('Error:', error);
         });
-    },
-    data() {
-        return {
-          events: [],
-        }
-      }
+    }
   }
 };
 </script>
@@ -114,7 +122,12 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.my-button:hover {
-  background-color: rgba(255, 208, 0, 0.603);
+.vuecal__event {
+  border-radius: 4px;
+  padding: 4px;
+}
+.vuecal__event.microsoft-event {
+  background-color: #0078d4;
+  color: white;
 }
 </style>
