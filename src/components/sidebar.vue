@@ -3,42 +3,48 @@
       <logo />
       <div class="titre-sb">
         <RouterLink to="/revisions">
-          <button class="page" :class="{ active: activeButton === 'revisions' }">
+          <button class="page btn-hover first-button" :class="{ active: activeButton === 'revisions' }">
             <img class="icon" src="../assets/Revision.png">
             Révision
           </button>
         </RouterLink>
         <RouterLink to="/ressources">
-          <button class="page" :class="{ active: activeButton === 'ressources' }">
+          <button class="page btn-hover" :class="{ active: activeButton === 'ressources' }">
             <img class="icon" src="../assets/Ressources.png">
             Ressource
           </button>
         </RouterLink>
         <RouterLink to="/dashboard">
-          <button class="page" :class="{ active: activeButton === 'dashboard' }">
+          <button class="page btn-hover" :class="{ active: activeButton === 'dashboard' }">
             <img class="icon" src="../assets/Dashboard.png">
             Dashboard
           </button>
         </RouterLink>
         <RouterLink to="/agenda">
-          <button class="page" :class="{ active: activeButton === 'agenda' }">
+          <button class="page btn-hover" :class="{ active: activeButton === 'agenda' }">
             <img class="icon" src="../assets/Agenda.png">
             Agenda
           </button>
         </RouterLink>
         <RouterLink to="/messagerie">
-          <button class="page" :class="{ active: activeButton === 'messagerie' }">
+          <button class="page btn-hover" :class="{ active: activeButton === 'messagerie' }">
             <img class="icon" src="../assets/Messagerie.png">
             Messagerie
           </button>
         </RouterLink>
+        <RouterLink to="/notes">
+          <button class="page btn-hover" :class="{ active: activeButton === 'notes' }">
+            <img class="icon" src="../assets/Revision.png">
+            Prise de notes
+          </button>
+        </RouterLink>
       </div>
       <footer class="sett">
-        <button class="page" :class="{ active: activeButton === 'settings' }">
+        <button class="page btn-hover" :class="{ active: activeButton === 'settings' }">
           <img class="icon" src="../assets/logo-setting.png">
           Settings
         </button>
-        <button class="page" :class="{ active: activeButton === 'logout'}" @click="logout" >
+        <button class="page btn-hover" :class="{ active: activeButton === 'logout'}" @click="logout" >
           <img class="icon" src="../assets/logo-logout.png">
           Logout
         </button>
@@ -61,7 +67,6 @@
     props: {
       activeButton: {
         type: String,
-        default: 'dashboard'
       }
     },
     data() {
@@ -130,9 +135,18 @@
 
 .page.active {
     border-radius: 4px;
-    background: #FCD19C;
+    background: #D2E3FF;
     color: black;
     border-radius: 4px;;
+}
+
+.btn-hover:hover {
+    background-color: #FFA93E;
+    border-radius: 20px;
+}
+
+.first-button {
+  margin-top: 30px
 }
 
 

@@ -103,7 +103,7 @@ def signup_view(request):
     return render(request, 'signup.html')
 
 @login_required
-def agenda(request):
+def agenda():
     return JsonResponse({'message': 'Cette fonction est en cours de développement.'}, status=200)
 
 def token_required(f):

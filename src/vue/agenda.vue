@@ -1,39 +1,86 @@
 <template>
-  <div :class="{ 'light-theme': isLightMode, 'dark-theme': !isLightMode }" style="display: flex;">
-    <sidebar />
-    <div class="main-content" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto;">
-      <h1 class="mt-5" style="text-align: center;">Liste des événements</h1>
-      <button v-if="!microsoftToken" @click="openMicrosoftLogin">Se connecter avec Microsoft</button>
-      <p v-else class="mt-5" style="text-align: center;">Bienvenue, utilisateur Microsoft!</p>
-      <ul v-if="events.length">
-        <li v-for="event in events" :key="event.id">{{ event.subject }}</li>
-      </ul>
-      <button class="my-button" @click="redirectToDashboard">Retour au Dashboard</button>
+  <sidebar :active-button="'agenda'"/>
+  <div class="bg-blue-200">
+  <div class="flex flex-col ml-80">
+    <div class="flex bg-white text-[#2176FF] w-[70vw] h-[56px] ml-[50px] rounded-lg justify-between items-center mt-10 py-16">
+      <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-10">Agenda</h1>
+    </div>
+  </div>
+    <div class="main-content h-screen" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto;">
+      <vue-cal :events="events" style="height: 500px; width: 1200px; margin: 80px; margin-right: -100px;" class="vuecal--blue-theme vuecal__event--microsoft-event"></vue-cal>
+      <div style="display: flex; justify-content: space-between; width: 160%; margin-bottom: 300px; margin-right: -250px;">
+      <button v-if="!accessToken" @click="openMicrosoftLogin" class="my-button btn-hover" style="width: 250px; height: 80px;">Se connecter avec Microsoft</button>
+      <button class="my-button btn-hover" @click="redirectToDashboard" style="width: 250px; height: 80px;">Retour au Dashboard</button>
+      <button class="my-button btn-hover" @click="showEventForm = true" style="width: 250px; height: 80px;">Nouvel évènement</button>
+      <button class="my-button btn-hover" @click="showDeleteModal = true" style="width: 250px; height: 80px;">Retirer un évènement</button>
+      <button class="my-button btn-hover" @click="" style="width: 250px; height: 80px;">Conseils de planning</button>
+    </div>
+      <div v-if="showEventForm" class="event-modal">
+      <input v-model="newEvent.title" placeholder="Event Title" style="background-color: aliceblue;">
+      <input v-model="newEvent.start" type="datetime-local" placeholder="Start Time" style="background-color: aliceblue;">
+      <input v-model="newEvent.end" type="datetime-local" placeholder="End Time" style="background-color: aliceblue;">
+      <textarea v-model="newEvent.description" placeholder="Description" style="background-color: aliceblue;"></textarea>
+      <div style="display: flex; justify-content: space-between; width: 23%; margin-right: -250px;">
+      <button class="my-button" @click="addEventToCalendar">Valider</button>
+      <button class="my-button" @click="showEventForm = false">Annuler</button>
+    </div>
+    </div>
+      <div v-if="showDeleteModal" class="delete-modal">
+        <h3>Select an Event to Delete</h3>
+        <ul>
+          <li v-for="event in events" :key="event.id">
+            {{ event.title }} - {{ event.start }}
+            <button @click="prepareEventForDeletion(event)">Delete</button>
+          </li>
+        </ul>
+        <button @click="showDeleteModal = false">Close</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import sidebar from '../components/sidebar.vue';
+import VueCal from 'vue-cal';
+import 'vue-cal/dist/vuecal.css';
 export default {
   data() {
     return {
+      showDeleteModal: false,
+      eventToDelete: null,
+      showEventForm: false,
+      newEvent: {
+        id: '',
+        title: '',
+        start: '',
+        end: '',
+        description: ''
+      },
       events: [],
       isLightMode: true,
+      accessToken: null,
     };
   },
   mounted() {
+  this.accessToken = localStorage.getItem('microsoft_access_token');
+  if (!this.accessToken) {
     const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get('access_token');
-    if (accessToken) {
-      localStorage.setItem('microsoft_access_token', accessToken);
+    if (urlParams.has('access_token')) {
+      this.accessToken = urlParams.get('access_token');
+      localStorage.setItem('microsoft_access_token', this.accessToken);
       window.history.pushState({}, document.title, "/");
-      this.fetchCalendarData();
+    } else {
+      this.openMicrosoftLogin();
+      return;
     }
-    this.updateTheme();
-  },
+  }
+  this.fetchCalendarData();
+  this.updateTheme();
+  this.events.push();
+},
   components: {
     sidebar,
+    VueCal,
   },
   methods: {
     openMicrosoftLogin() {
@@ -58,29 +105,130 @@ export default {
       });
       const url = 'https://graph.microsoft.com/v1.0/me/calendars';
       fetch(url, { headers })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch calendar data');
-          }
-        })
+        .then(response => response.json())
         .then(data => {
-          this.events = data.value;
-          console.log('Calendar Data: ++++++++++++++++++++++++++++++++++++++++++++++++++++', this.events);
-        })
+          if (data.value === undefined) {
+            this.accessToken = null;
+            localStorage.removeItem('microsoft_access_token');
+            this.refreshPage();
+            return;
+          }
+          const calendarPromises = data.value.map(calendar => {
+          const eventsUrl = `https://graph.microsoft.com/v1.0/me/calendars/${calendar.id}/events`;
+          return fetch(eventsUrl, { headers }).then(response => response.json());
+        });
+        return Promise.all(calendarPromises);
+      })
+        .then(calendarsData => {
+      this.events = calendarsData.flatMap(data =>
+        data.value.map(event => {
+          if (event.start && event.end) {
+            return {
+              id: event.id,
+              start: new Date(event.start.dateTime),
+              end: new Date(event.end.dateTime),
+              title: event.subject,
+              body: event.bodyPreview,
+              class: 'microsoft-event',
+              background: true,
+            };
+          }
+        }).filter(Boolean)
+      );
+    })
         .catch(error => {
           console.error('Error:', error);
         });
     },
-    data() {
-        return {
-          events: [],
+    async addEventToCalendar() {
+    try {
+      const event = {
+        subject: this.newEvent.title,
+        start: {
+          dateTime: this.newEvent.start,
+          timeZone: "UTC"
+        },
+        end: {
+          dateTime: this.newEvent.end,
+          timeZone: "UTC"
+        },
+        body: {
+          contentType: "text",
+          content: this.newEvent.description
         }
+      };
+      const response = await fetch('https://graph.microsoft.com/v1.0/me/events', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + this.accessToken,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(event)
+      });
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
+
+      const data = await response.json();
+      this.events.push({
+        id: data.id,
+        title: this.newEvent.title,
+        start: this.newEvent.start,
+        end: this.newEvent.end,
+        description: this.newEvent.description
+      });
+
+      this.newEvent = {
+        id: '',
+        title: '',
+        start: '',
+        end: '',
+        description: ''
+      };
+      this.showEventForm = false;
+      this.fetchCalendarData();
+    } catch (error) {
+      console.error('Error adding event to calendar:', error);
+    }
+  },
+  prepareEventForDeletion(event) {
+    this.eventToDelete = event;
+    if (confirm(`Are you sure you want to delete the event: ${event.title}?`)) {
+      this.deleteEvent();
+    }
+  },
+  async deleteEvent() {
+  if (!this.eventToDelete) return;
+
+  try {
+    const response = await fetch(`https://graph.microsoft.com/v1.0/me/events/${this.eventToDelete.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      alert('Event deleted successfully');
+      this.events = this.events.filter(event => event.id !== this.eventToDelete.id);
+      this.eventToDelete = null;
+      this.showDeleteModal = false;
+    } else {
+      throw new Error(`Failed to delete the event: ${response.status} ${response.statusText}`);
+    }
+    this.fetchCalendarData();
+  } catch (error) {
+    alert(`Error deleting the event: ${error.message}`);
+  }
+  },
+  refreshPage() {
+    window.location.reload();
+  }
   }
 };
-</script>
+    </script>
+
 
 <style scoped>
 .main-content {
@@ -100,7 +248,7 @@ export default {
 }
 
 .my-button {
-  background-color: blue;
+  background-color: #2176FF;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -110,11 +258,40 @@ export default {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 10px;
   transition: background-color 0.3s ease;
 }
 
-.my-button:hover {
-  background-color: rgba(255, 208, 0, 0.603);
+.vuecal__event--microsoft-event {
+  background-color: #f7dd88b6;
+}
+
+.btn-hover:hover {
+    background-color: #FFA93E;
+    border-radius: 20px;
+}
+
+.event-modal {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  background: rgb(247, 113, 113);
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 100;
+}
+
+.delete-modal {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  z-index: 100;
 }
 </style>
