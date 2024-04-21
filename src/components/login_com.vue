@@ -40,7 +40,7 @@
         <div class="form-group">
             <div class="form-field">
                 <label class="form-label text-black">Email address</label>
-                <input v-model="email" @blur="validateEmail" placeholder="Type here" type="email" class="input max-w-full bg-white" />
+                <input v-model="email" @blur="validateEmail" placeholder="Type here" type="email" class="input max-w-full bg-white text-black" />
                 <p v-if="emailError" class="text-red-500">Please enter a valid email.</p>
             </div>
             <div class="form-field">
