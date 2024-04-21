@@ -6,13 +6,15 @@
           <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-10">Dashboard</h1>
           <img src="../assets/Rocket.png" alt="search" class="w-auto h-[150px] drop-shadow-lg" />
         </div>
-        <div class="flex flex-row">
+        <div class="flex flex-row" style="color: aliceblue;">
           <div class="flex flex-row bg-black w-[50%] h-[219px] ml-[50px] mt-[30px] rounded-lg">
-            <div class="w-[50%]">
+            <div class="w-[50%] flex">
               <h4> Dates proches</h4>
+              <img src="../assets/Calender.png" alt="search" class="w-auto" />
             </div>
-            <div class="bg-[#2176FF] w-[50%] rounded-r-lg">
-              ffw
+            <div class="bg-[#2176FF] w-[50%] rounded-r-lg flex">
+              Aperçu de l'agenda
+              <img src="../assets/Calender.png" alt="search" class="w-auto" />
             </div>
           </div>
           <div class="flex flex-col bg-white w-1/2 ml-[50px] mt-[30px] rounded-lg">
@@ -44,7 +46,7 @@
           </div>
         </div>
         <div class="mt-[40px] bg-white text-black ml-[50px] rounded-lg overflow-hidden justify-around items-center flex flex-row p-6">
-            <div class="flex flex-col items-center my-4 ">
+            <div class="flex flex-col items-center my-4" ref="chartContainer">
                 <h4 class="text-[#2176FF] font-semibold">Moyenne des QCMs</h4>
                 <ChartCamembert :chartData="pieChartData" />
             </div>
@@ -111,6 +113,12 @@
       sidebar,
       ChartCamembert,
       LineChart,
+    },
+    mounted() {
+      this.$refs.chartContainer.style.transform = 'scale(0.67)';
+    },
+    beforeDestroy() {
+      this.$refs.chartContainer.style.transform = 'scale(1)';
     },
     created() {
       this.checkUserLoggedIn();

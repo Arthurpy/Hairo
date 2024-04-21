@@ -1,9 +1,14 @@
 <template>
-  <div class="bg-blue-200 flex">
-    <sidebar :active-button="'agenda'"/>
-    <div class="main-content h-screen" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto; gap: 80px;">
-      <vue-cal :events="events" style="height: 500px; width: 1200px; margin: 80px; margin-right: -200px;" class="vuecal--blue-theme vuecal__event--microsoft-event"></vue-cal>
-      <div style="display: flex; justify-content: space-between; width: 160%; margin-bottom: 80px; margin-right: -250px;">
+  <sidebar :active-button="'agenda'"/>
+  <div class="bg-blue-200">
+  <div class="flex flex-col ml-80">
+    <div class="flex bg-white text-[#2176FF] w-[70vw] h-[56px] ml-[50px] rounded-lg justify-between items-center mt-10 py-16">
+      <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-10">Agenda</h1>
+    </div>
+  </div>
+    <div class="main-content h-screen" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto;">
+      <vue-cal :events="events" style="height: 500px; width: 1200px; margin: 80px; margin-right: -100px;" class="vuecal--blue-theme vuecal__event--microsoft-event"></vue-cal>
+      <div style="display: flex; justify-content: space-between; width: 160%; margin-bottom: 300px; margin-right: -250px;">
       <button v-if="!accessToken" @click="openMicrosoftLogin" class="my-button btn-hover" style="width: 250px; height: 80px;">Se connecter avec Microsoft</button>
       <button class="my-button btn-hover" @click="redirectToDashboard" style="width: 250px; height: 80px;">Retour au Dashboard</button>
       <button class="my-button btn-hover" @click="showEventForm = true" style="width: 250px; height: 80px;">Nouvel évènement</button>
@@ -69,7 +74,6 @@ export default {
       return;
     }
   }
-
   this.fetchCalendarData();
   this.updateTheme();
   this.events.push();
@@ -103,6 +107,12 @@ export default {
       fetch(url, { headers })
         .then(response => response.json())
         .then(data => {
+          if (data.value === undefined) {
+            this.accessToken = null;
+            localStorage.removeItem('microsoft_access_token');
+            this.refreshPage();
+            return;
+          }
           const calendarPromises = data.value.map(calendar => {
           const eventsUrl = `https://graph.microsoft.com/v1.0/me/calendars/${calendar.id}/events`;
           return fetch(eventsUrl, { headers }).then(response => response.json());
@@ -211,9 +221,11 @@ export default {
   } catch (error) {
     alert(`Error deleting the event: ${error.message}`);
   }
-},
-
-}
+  },
+  refreshPage() {
+    window.location.reload();
+  }
+  }
 };
     </script>
 

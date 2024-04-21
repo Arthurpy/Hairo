@@ -32,6 +32,12 @@
             Messagerie
           </button>
         </RouterLink>
+        <RouterLink to="/notes">
+          <button class="page btn-hover" :class="{ active: activeButton === 'notes' }">
+            <img class="icon" src="../assets/Revision.png">
+            Prise de notes
+          </button>
+        </RouterLink>
       </div>
       <footer class="sett">
         <button class="page btn-hover" :class="{ active: activeButton === 'settings' }">

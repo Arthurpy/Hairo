@@ -7,6 +7,8 @@ import ressources from './../vue/ressources.vue';
 import revisions from './../vue/revision.vue';
 import Agenda from "../vue/agenda.vue";
 import Quiz from "../vue/quiz.vue";
+import messagerie from './../vue/messagerie.vue';
+import notes from './../vue/notes.vue';
 
 import CourseDetails from './../vue/CourseDetails.vue';
 import ReadCours from './../vue/ReadCours.vue';
@@ -37,6 +39,18 @@ const routes = [
       path: '/ressources',
       name: 'ressources',
       component: ressources,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/messagerie',
+      name: 'messagerie',
+      component: messagerie,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/notes',
+      name: 'notes',
+      component: notes,
       meta: { requiresAuth: true }
     },
     {
