@@ -11,7 +11,11 @@ HAIRO est une application web développée pour aider les étudiants en premièr
 - [Fonctionnalités](#fonctionnalités)
 - [Dépendances](#dépendances)
 - [Configuration](#configuration)
+- [Documentation](#documentation)
+- [Exemples](#exemples)
+- [Dépannage](#dépannage)
 - [Contributeurs](#contributeurs)
+- [Licence](#licence)
 
 ## Installation
 
@@ -39,7 +43,7 @@ Vous devez avoir installé sur votre machine :
 
     ```bash
     cd back/Hairo_Back
-    python3 -m venv env
+    python -m venv env
     source env/bin/activate  # Sur Windows utilisez `env\Scripts\activate`
     ```
 
@@ -60,15 +64,15 @@ Vous devez avoir installé sur votre machine :
     Ouvrez un nouveau terminal, naviguez vers le dossier racine du projet, puis :
 
     ```bash
-    npm install
-    npm run dev
+    npm install  # ou `yarn install` si vous utilisez yarn
+    npm run serve  # ou `yarn serve`
     ```
 
-    Le front-end sera accessible à `http://localhost:5173/`.
+    Le front-end sera accessible à `http://localhost:8080/`.
 
 ## Usage
 
-Après avoir lancé les serveurs backend et frontend, accédez à `http://localhost:5173/` sur votre navigateur pour utiliser l'application.
+Après avoir lancé les serveurs backend et frontend, accédez à `http://localhost:8080/` sur votre navigateur pour utiliser l'application.
 
 ## Fonctionnalités
 
@@ -84,10 +88,24 @@ Après avoir lancé les serveurs backend et frontend, accédez à `http://localh
 
 ## Configuration
 
-La configuration par défaut devrait suffire pour un lancement local.
+La configuration par défaut devrait suffire pour un lancement local. Pour le déploiement ou des configurations avancées, veuillez consulter la documentation technique supplémentaire.
+
+## Documentation
+
+La documentation complète est disponible dans les dossiers `/docs` pour plus de détails sur l'architecture et l'utilisation.
+
+## Exemples
+
+Pour voir comment utiliser les différentes fonctionnalités, veuillez consulter les scénarios d'utilisation dans `/examples`.
+
+## Dépannage
+
+Pour tout problème lors de l'installation ou de l'exécution, veuillez vérifier les logs et les erreurs courantes dans la section `/troubleshooting`.
 
 ## Contributeurs
-Arthur Py
-Ayman Tebini
-Pierre Bouillard
 
+Listez ici tous ceux qui ont contribué au projet.
+
+## Licence
+
+Spécifiez ici le type de licence sous laquelle le projet est distribué, par exemple MIT, GPL, etc.
