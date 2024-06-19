@@ -1,18 +1,17 @@
 <template>
   <div class="bg-blue-200 flex">
     <sidebar :activeButton="'revisions'" />
-    <div class="flex flex-col ml-80 h-screen">
+    <div class="flex flex-col ml-80 h-[100%] mr-[3rem] mb-[50px]" style="width: -webkit-fill-available; margin-right: 5%;">
       <SearchBar />
       <div
         v-for="(revision, index) in myRevision"
         :key="index"
-        class="flex ml-[5%] flex-col mt-5 bg-white text-[#2176FF] border-b-8 border-r-8 border-[#2176FF] rounded-3xl relative" 
+        class="flex ml-[5%] mr-[3rem] flex-col mt-5 bg-white text-[#2176FF] border-b-8 border-r-8 border-[#2176FF] rounded-3xl relative" 
       >
         <div class="flex justify-center">
           <p class="card-header justify-center bg-[#2176FF] rounded-b-xl flex text-white w-48">{{ revision.prog }}</p>
         </div>
-        <div class="flex items-center">
-          {{ revision.red }}
+        <div class="flex items-center" style="justify-content: space-between; margin-right: 100px;">
           <h3 class="text-xl font-semibold mb-2 card-body mr-96 justify-start">{{ revision.titre }}</h3>
           <img :src="revision.img_src" alt="Image" class="w-20 h-20 justify-center" />
         </div>

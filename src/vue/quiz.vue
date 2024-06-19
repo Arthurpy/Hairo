@@ -141,5 +141,12 @@
   .final-score {
     margin-top: 20px;
   }
+
+  body {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: row
+  }
   </style>
   

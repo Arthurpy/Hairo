@@ -149,6 +149,9 @@
   margin-top: 30px
 }
 
+.sidebar {
+  position: ;
+}
 
 </style>
 ```
