@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-white p-4 mx-10 w-96">
+    <div class="card bg-white p-4 lg:mx-10 mt-10">
         <div class="bg-red-300 h-[40px]  w-[40px] flex justify-center items-center rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                 <g clip-path="url(#clip0_716_891)">
@@ -12,8 +12,8 @@
                 </defs>
             </svg>
         </div>
-        <h2 class="card-header">{{ title }}</h2>
-		<p class="text-content2">{{ value }}</p>
+            <h2 class="card-header text-xl lg:text-md">{{ title }}</h2>
+            <p class="text-content2 text-md lg:text-sm">{{ value }}</p>
         </div>
 </template>
 
