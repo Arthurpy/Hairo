@@ -137,7 +137,7 @@
     border-radius: 4px;
     background: #D2E3FF;
     color: black;
-    border-radius: 4px;;
+    border-radius: 35px;;
 }
 
 .btn-hover:hover {

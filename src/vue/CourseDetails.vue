@@ -8,7 +8,7 @@
         </div>
         <div class="bg-white text-[#2176FF] w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
           <h1 class="text-[#2176FF] text-2xl font-semibold">Que recherchez-vous ?</h1>
-          <input type="text" v-model="searchQuery" class="input-rounded input ml-56" placeholder="Rechercher un thème">
+          <input type="text" v-model="searchQuery" class="input-rounded input ml-56" style="color: white;" placeholder="Rechercher un thème">
         </div>
         <div class="flex flex-wrap ml-[50px] mt-[10px]">
           <router-link v-for="(file, index) in pdfFiles" :key="index" :to="{ name: 'ReadCours', params: { courseName: courseName, fileName: file } }" class="bg-[#2176FF] w-[21.5%] rounded-lg m-2">
