@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import landing_page, login_view, signup_view, ressources_pages, microsoft_login, course_details_by_name
+from .views import landing_page, login_view, signup_view, ressources_pages, agenda_login, course_details_by_name
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -21,10 +21,12 @@ urlpatterns = [
     path('signup/', signup_view, name='signup'),
     path('api/cours/', ressources_pages, name='cours-list'),
     path('api/course-details-by-name/', views.course_details_by_name, name='course-details-by-name'),
-    path('microsoft-login/', microsoft_login, name='microsft-login'),
-    path('microsoft-callback', views.microsoft_callback, name='microsoft-callback'),
+    path('agenda-login/', agenda_login, name='microsft-login'),
+    path('agenda-callback', views.agenda_callback, name='agenda-callback'),
     path('api/course-details-by-name/', course_details_by_name, name='course-details-by-name'),
     path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
+    path('notes-login/', views.notes_login, name='notes-login'),
+    path('notes-callback', views.notes_callback, name='notes-callback'),
 ]
 
 if settings.DEBUG:

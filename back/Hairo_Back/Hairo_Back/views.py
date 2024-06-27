@@ -145,17 +145,17 @@ endpoint = base_url + 'me'
 SCOPES = ['User.Read', 'Calendars.Read', 'Calendars.Read.Shared', 'Calendars.ReadBasic', 'Calendars.ReadWrite', 'Calendars.ReadWrite.Shared', 'Notes.Create', 'Notes.Read', 'Notes.Read.All', 'Notes.ReadWrite', 'Notes.ReadWrite.All', 'Notes.ReadWrite.CreatedByApp']
 
 @csrf_exempt
-def microsoft_login(request):
+def agenda_login(request):
     if request.method == 'GET':
         client_instance = msal.ConfidentialClientApplication(
             client_id=CLIENT_ID,
             client_credential=CLIENT_SECRET,
             authority=AUTHORITY
         )
-        auth_url = client_instance.get_authorization_request_url(SCOPES, redirect_uri='http://localhost:8000/microsoft-callback')
+        auth_url = client_instance.get_authorization_request_url(SCOPES, redirect_uri='http://localhost:8000/agenda-callback')
         return redirect(auth_url)
 
-def microsoft_callback(request):
+def agenda_callback(request):
     if request.method == 'GET':
         client_instance = msal.ConfidentialClientApplication(
             client_id=CLIENT_ID,
@@ -169,7 +169,7 @@ def microsoft_callback(request):
         result = client_instance.acquire_token_by_authorization_code(
             authorization_code,
             SCOPES,
-            redirect_uri='http://localhost:8000/microsoft-callback'
+            redirect_uri='http://localhost:8000/agenda-callback'
         )
         if 'access_token' in result:
             access_token_id = result['access_token']
@@ -225,3 +225,56 @@ def get_all_qcms(request):
     qcms = QCM.objects.all()
     serializer = QCMSerializer(qcms, many=True)
     return JsonResponse(serializer.data, safe=False)
+
+@csrf_exempt
+def notes_login(request):
+    if request.method == 'GET':
+        client_instance = msal.ConfidentialClientApplication(
+            client_id=CLIENT_ID,
+            client_credential=CLIENT_SECRET,
+            authority=AUTHORITY
+        )
+        auth_url = client_instance.get_authorization_request_url(SCOPES, redirect_uri='http://localhost:8000/notes-callback')
+        return redirect(auth_url)
+
+def notes_callback(request):
+    if request.method == 'GET':
+        client_instance = msal.ConfidentialClientApplication(
+            client_id=CLIENT_ID,
+            client_credential=CLIENT_SECRET,
+            authority=AUTHORITY
+        )
+        authorization_code = request.GET.get('code')
+        if not authorization_code:
+            return JsonResponse({'error': 'Authorization code not found'}, status=400)
+
+        result = client_instance.acquire_token_by_authorization_code(
+            authorization_code,
+            SCOPES,
+            redirect_uri='http://localhost:8000/notes-callback'
+        )
+        if 'access_token' in result:
+            access_token_id = result['access_token']
+            return redirect(f'http://localhost:5173/notes/?access_token={access_token_id}')
+        else:
+            error_description = result.get('error_description', 'No error description provided')
+            return JsonResponse({'error': error_description}, status=500)
+
+    if request.method == 'POST':
+        token = request.POST.get('token')
+        if not token:
+            return JsonResponse({'error': 'Token not provided'}, status=400)
+
+        client_instance = msal.ConfidentialClientApplication(
+            client_id=CLIENT_ID,
+            client_credential=CLIENT_SECRET,
+            authority=AUTHORITY
+        )
+
+        result = client_instance.acquire_token_silent(SCOPES, account=None, token=token)
+
+        if 'access_token' in result:
+            return JsonResponse({'message': 'The token is valid.'})
+        else:
+            error_description = result.get('error_description', 'Token is invalid or expired.')
+            return JsonResponse({'error': error_description}, status=400)

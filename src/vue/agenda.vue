@@ -84,7 +84,7 @@ export default {
   },
   methods: {
     openMicrosoftLogin() {
-      window.location.href = 'http://localhost:8000/microsoft-login/';
+      window.location.href = 'http://localhost:8000/agenda-login/';
     },
     redirectToDashboard() {
       this.$router.push('/dashboard');
