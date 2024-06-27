@@ -16,6 +16,7 @@
               </label>
             </li>
           </ul>
+          <h1 class="warning">⚠️Veuillez selectionner une réponse. ⚠️</h1>
         </div>
         <button class="next-button" @click="submitAnswer">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -97,12 +98,12 @@ export default {
             "Authorization": `Bearer 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` // Remplacez YOUR_OPENAI_API_KEY par votre clé API réelle
           },
           body: JSON.stringify({
-            model: "gpt-4o",
+            model: "gpt-3.5-turbo",
             messages: [
               {role: "system", content: "You are a helpful assistant."},
               {role: "user", content: this.generatePrompt()}
             ],
-            max_tokens: 1000, // Augmentez le nombre de tokens pour permettre une réponse plus longue
+            max_tokens: 150,
             temperature: 0.7
           })
         });
@@ -119,7 +120,7 @@ export default {
       }
     },
     generatePrompt() {
-      let prompt = "Can you provide concise feedback in French, with a maximum of 1000 characters, based on the following incorrect responses? Provide a summary of the key points and concepts that need to be reviewed:\n";
+      let prompt = "Can you provide concise feedback in French based on the following incorrect responses? Highlight the key points and concepts that need to be reviewed:\n";
       this.incorrectAnswers.forEach((answer, index) => {
         prompt += `${index + 1}. ${answer}\n`;
       });
@@ -127,10 +128,7 @@ export default {
       return prompt;
     },
     formatFeedback(feedback) {
-      let formattedFeedback = feedback.split('\n').map(line => line.trim()).filter(line => line.length > 0).join(' ');
-      if (formattedFeedback.length > 1000) {
-        formattedFeedback = formattedFeedback.slice(0, 1000) + '...';
-      }
+      const formattedFeedback = feedback.split('\n').map(line => line.trim()).filter(line => line.length > 0).join('\n');
       return formattedFeedback;
     },
     async finishQuiz() {
@@ -146,6 +144,14 @@ export default {
       this.quizResults.push(isCorrect ? "Bonne réponse" : "Mauvaise réponse");
       if (!isCorrect) {
         if (this.currentQuestion.answers[this.selectedAnswer] === undefined) {
+          // Si l'utilisateur n'a pas répondu à la question
+          // var element = document.querySelector('.warning');
+          // if (element) {
+          //   element.style.display = 'block';
+          //   exit;
+          // } else {
+          //   console.log('Aucun élément trouvé avec la classe "votre-classe".');
+          // }
           this.currentQuestion.answers[this.selectedAnswer] = "Non répondue";
         }
         this.incorrectAnswers.push(this.currentQuestion.question + " : " + this.currentQuestion.answers[this.selectedAnswer]);
@@ -186,6 +192,15 @@ export default {
 </script>
 
 <style scoped>
+
+.warning {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  font-size: 20px;
+  display: none;
+}
+
 .quiz-container {
   display: flex;
   align-items: center;
