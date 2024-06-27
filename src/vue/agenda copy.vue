@@ -1,39 +1,52 @@
 <template>
-  <sidebar :active-button="'agenda'"/>
-  <div class="bg-blue-200">
-  <div class="flex flex-col ml-80">
-    <div class="flex bg-white text-[#2176FF] w-[70vw] h-[56px] ml-[50px] rounded-lg justify-between items-center mt-10 py-16">
-      <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-10">Agenda</h1>
-    </div>
-  </div>
-    <div class="main-content h-screen" style="display: flex; flex-direction: column; justify-content: center; align-items: center; max-width: 800px; margin: auto;">
-      <vue-cal :events="events" style="height: 500px; width: 1200px; margin: 80px; margin-right: -100px;" class="vuecal--blue-theme vuecal__event--microsoft-event"></vue-cal>
-      <div style="display: flex; justify-content: space-between; width: 160%; margin-bottom: 300px; margin-right: -250px;">
-      <button v-if="!accessToken" @click="openMicrosoftLogin" class="my-button btn-hover" style="width: 250px; height: 80px;">Se connecter avec Microsoft</button>
-      <button class="my-button btn-hover" @click="redirectToDashboard" style="width: 250px; height: 80px;">Retour au Dashboard</button>
-      <button class="my-button btn-hover" @click="showEventForm = true" style="width: 250px; height: 80px;">Nouvel évènement</button>
-      <button class="my-button btn-hover" @click="showDeleteModal = true" style="width: 250px; height: 80px;">Retirer un évènement</button>
-      <button class="my-button btn-hover" @click="" style="width: 250px; height: 80px;">Conseils de planning</button>
-    </div>
-      <div v-if="showEventForm" class="event-modal">
-      <input v-model="newEvent.title" placeholder="Event Title" style="background-color: aliceblue;">
-      <input v-model="newEvent.start" type="datetime-local" placeholder="Start Time" style="background-color: aliceblue;">
-      <input v-model="newEvent.end" type="datetime-local" placeholder="End Time" style="background-color: aliceblue;">
-      <textarea v-model="newEvent.description" placeholder="Description" style="background-color: aliceblue;"></textarea>
-      <div style="display: flex; justify-content: space-between; width: 23%; margin-right: -250px;">
-      <button class="my-button" @click="addEventToCalendar">Valider</button>
-      <button class="my-button" @click="showEventForm = false">Annuler</button>
-    </div>
-    </div>
-      <div v-if="showDeleteModal" class="delete-modal">
-        <h3>Select an Event to Delete</h3>
-        <ul>
-          <li v-for="event in events" :key="event.id">
-            {{ event.title }} - {{ event.start }}
-            <button @click="prepareEventForDeletion(event)">Delete</button>
-          </li>
-        </ul>
-        <button @click="showDeleteModal = false">Close</button>
+  <div>
+    <sidebar :active-button="'agenda'"/>
+    <div class="bg-blue-200" style="margin-left: 18rem; display: flex; flex-direction: column; align-items: center;">
+      <div class="flex flex-col">
+        <div class="flex bg-white text-[#2176FF] w-[70vw] h-[56px] rounded-lg justify-between items-center mt-10 py-16">
+          <h1 class="search-title text-[#2176FF] text-5xl font-bold flex items-center ml-10">Agenda</h1>
+        </div>
+      </div>
+      <div class="main-content h-screen" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="carousel-container">
+          <button @click="prevMonth" class="carousel-button">‹</button>
+          <div class="calendars-wrapper">
+            <vue-cal
+              v-for="index in 1"
+              :key="index"
+              :default-view="'month'"
+              :time="getMonthTime(index)"
+              :events="events"
+              :locales="locales"
+              :locale="'fr'"
+              style="height: 500px; width: 400px; margin: 0 10px; background-color: white; border-radius: 10px; padding: 20px; color: black; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
+              class="custom-vuecal"
+            ></vue-cal>
+          </div>
+          <button @click="nextMonth" class="carousel-button">›</button>
+        </div>
+        <div class="event-list">
+          <h2>Upcoming Events</h2>
+          <div class="events-container">
+            <ul>
+              <li v-for="event in sortedEvents" :key="event.id">
+                {{ event.title }} - {{ new Date(event.start).toLocaleDateString('fr-FR') }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="revision-planner">
+          <h2>Planificateur de Révision</h2>
+          <form @submit.prevent="generateRevisionPlan">
+            <label for="weekly-hours">Heures de révision hebdomadaires:</label>
+            <input type="number" id="weekly-hours" v-model="weeklyHours" required>
+
+            <label for="session-length">Durée de chaque session (en minutes):</label>
+            <input type="number" id="session-length" v-model="sessionLength" required>
+
+            <button type="submit">Générer le planning</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -43,60 +56,73 @@
 import sidebar from '../components/sidebar.vue';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
+
+const fr = {
+  weekDays: ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+  months: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+  years: 'Années',
+  year: 'An',
+  month: 'Mois',
+  week: 'Semaine',
+  day: 'Jour',
+  today: "Aujourd'hui",
+  noEvent: 'Aucun événement',
+  allDay: 'Toute la journée',
+  deleteEvent: 'Supprimer',
+  createEvent: 'Créer un événement',
+  dateFormat: 'dddd D MMMM YYYY',
+  timeFormat: 'HH:mm',
+  eventModalSave: 'Sauvegarder',
+  eventModalClose: 'Fermer',
+  eventModalDelete: 'Supprimer',
+};
+
 export default {
   data() {
     return {
-      showDeleteModal: false,
-      eventToDelete: null,
-      showEventForm: false,
-      newEvent: {
-        id: '',
-        title: '',
-        start: '',
-        end: '',
-        description: ''
-      },
       events: [],
-      isLightMode: true,
+      currentMonth: new Date(),
       accessToken: null,
+      weeklyHours: 0,
+      sessionLength: 0,
+      locales: {
+        'fr': fr
+      }
     };
   },
   mounted() {
-  this.accessToken = localStorage.getItem('microsoft_access_token');
-  if (!this.accessToken) {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('access_token')) {
-      this.accessToken = urlParams.get('access_token');
-      localStorage.setItem('microsoft_access_token', this.accessToken);
-      window.history.pushState({}, document.title, "/");
-    } else {
-      this.openMicrosoftLogin();
-      return;
+    this.accessToken = localStorage.getItem('microsoft_access_token');
+    if (!this.accessToken) {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('access_token')) {
+        this.accessToken = urlParams.get('access_token');
+        localStorage.setItem('microsoft_access_token', this.accessToken);
+        window.history.pushState({}, document.title, "/");
+      } else {
+        this.openMicrosoftLogin();
+        return;
+      }
     }
-  }
-  this.fetchCalendarData();
-  this.updateTheme();
-  this.events.push();
-},
+    this.fetchCalendarData();
+  },
   components: {
     sidebar,
     VueCal,
   },
+  computed: {
+    sortedEvents() {
+      const today = new Date();
+      const twoMonthsLater = new Date();
+      twoMonthsLater.setMonth(today.getMonth() + 2);
+
+      return this.events
+        .filter(event => new Date(event.start) >= today && new Date(event.start) <= twoMonthsLater)
+        .sort((a, b) => new Date(a.start) - new Date(b.start));
+    }
+  },
   methods: {
     openMicrosoftLogin() {
       window.location.href = 'http://localhost:8000/microsoft-login/';
-    },
-    redirectToDashboard() {
-      this.$router.push('/dashboard');
-    },
-    updateTheme() {
-      if (this.isLightMode) {
-        document.documentElement.style.backgroundColor = '#ffffff';
-        document.documentElement.style.color = '#000000';
-      } else {
-        document.documentElement.style.backgroundColor = '#000000';
-        document.documentElement.style.color = '#ffffff';
-      }
     },
     fetchCalendarData() {
       const headers = new Headers({
@@ -114,184 +140,177 @@ export default {
             return;
           }
           const calendarPromises = data.value.map(calendar => {
-          const eventsUrl = `https://graph.microsoft.com/v1.0/me/calendars/${calendar.id}/events`;
-          return fetch(eventsUrl, { headers }).then(response => response.json());
-        });
-        return Promise.all(calendarPromises);
-      })
+            const eventsUrl = `https://graph.microsoft.com/v1.0/me/calendars/${calendar.id}/events`;
+            return fetch(eventsUrl, { headers }).then(response => response.json());
+          });
+          return Promise.all(calendarPromises);
+        })
         .then(calendarsData => {
-      this.events = calendarsData.flatMap(data =>
-        data.value.map(event => {
-          if (event.start && event.end) {
-            return {
-              id: event.id,
-              start: new Date(event.start.dateTime),
-              end: new Date(event.end.dateTime),
-              title: event.subject,
-              body: event.bodyPreview,
-              class: 'microsoft-event',
-              background: true,
-            };
-          }
-        }).filter(Boolean)
-      );
-    })
+          this.events = calendarsData.flatMap(data =>
+            data.value.map(event => {
+              if (event.start && event.end) {
+                return {
+                  id: event.id,
+                  start: new Date(event.start.dateTime),
+                  end: new Date(event.end.dateTime),
+                  title: event.subject,
+                  body: event.bodyPreview,
+                  class: 'microsoft-event',
+                  background: true,
+                };
+              }
+            }).filter(Boolean)
+          );
+        })
         .catch(error => {
           console.error('Error:', error);
         });
     },
-    async addEventToCalendar() {
-    try {
-      const event = {
-        subject: this.newEvent.title,
-        start: {
-          dateTime: this.newEvent.start,
-          timeZone: "UTC"
-        },
-        end: {
-          dateTime: this.newEvent.end,
-          timeZone: "UTC"
-        },
-        body: {
-          contentType: "text",
-          content: this.newEvent.description
-        }
-      };
-      const response = await fetch('https://graph.microsoft.com/v1.0/me/events', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + this.accessToken,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(event)
-      });
-      if (!response.ok) {
-        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+    prevMonth() {
+      const newTime = new Date(this.currentMonth);
+      newTime.setMonth(newTime.getMonth() - 1);
+      this.currentMonth = newTime;
+    },
+    nextMonth() {
+      const newTime = new Date(this.currentMonth);
+      newTime.setMonth(newTime.getMonth() + 1);
+      this.currentMonth = newTime;
+    },
+    getMonthTime(index) {
+      const newDate = new Date(this.currentMonth);
+      newDate.setMonth(newDate.getMonth() + (index - 2));
+      return newDate;
+    },
+    refreshPage() {
+      window.location.reload();
+    },
+    async generateRevisionPlan() {
+      try {
+        const response = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ailQ8oCys1xqRhIClx4ET3BlbkFJwDXtUdP4wGEaQhRgCkdY`
+          },
+          body: JSON.stringify({
+            prompt: `Plan a study schedule with the following criteria: Weekly study hours: ${this.weeklyHours}, Session length in minutes: ${this.sessionLength}, using the spaced repetition method.`,
+            max_tokens: 150
+          })
+        });
+        const data = await response.json();
+        const schedule = JSON.parse(data.choices[0].text);
+        this.events.push(...schedule);
+      } catch (error) {
+        console.error('Error:', error);
       }
-
-      const data = await response.json();
-      this.events.push({
-        id: data.id,
-        title: this.newEvent.title,
-        start: this.newEvent.start,
-        end: this.newEvent.end,
-        description: this.newEvent.description
-      });
-
-      this.newEvent = {
-        id: '',
-        title: '',
-        start: '',
-        end: '',
-        description: ''
-      };
-      this.showEventForm = false;
-      this.fetchCalendarData();
-    } catch (error) {
-      console.error('Error adding event to calendar:', error);
     }
   },
-  prepareEventForDeletion(event) {
-    this.eventToDelete = event;
-    if (confirm(`Are you sure you want to delete the event: ${event.title}?`)) {
-      this.deleteEvent();
-    }
-  },
-  async deleteEvent() {
-  if (!this.eventToDelete) return;
-
-  try {
-    const response = await fetch(`https://graph.microsoft.com/v1.0/me/events/${this.eventToDelete.id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (response.ok) {
-      alert('Event deleted successfully');
-      this.events = this.events.filter(event => event.id !== this.eventToDelete.id);
-      this.eventToDelete = null;
-      this.showDeleteModal = false;
-    } else {
-      throw new Error(`Failed to delete the event: ${response.status} ${response.statusText}`);
-    }
-    this.fetchCalendarData();
-  } catch (error) {
-    alert(`Error deleting the event: ${error.message}`);
-  }
-  },
-  refreshPage() {
-    window.location.reload();
-  }
-  }
 };
-    </script>
-
+</script>
 
 <style scoped>
-.main-content {
+.carousel-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
 }
 
-.light-theme {
-  background-color: #ffffff;
-  color: #000000;
+.calendars-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 1200px;
+  overflow: hidden;
 }
 
-.dark-theme {
-  background-color: #000000;
-  color: #ffffff;
+.carousel-button {
+  background: none;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
 }
 
-.my-button {
+.event-list {
+  margin-top: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+.event-list h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.events-container {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.event-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.event-list li {
+  background: none;
+  margin: 5px 0;
+  padding: 10px;
+}
+
+.custom-vuecal {
+  --vuecal-primary: #2176FF; /* Change primary color */
+  --vuecal-text-color: #000000; /* Change text color */
+  --vuecal-border-color: #ddd; /* Change border color */
+  --vuecal-today-bg: #e6f0ff; /* Change today's background color */
+  --vuecal-weekday-bg: white; /* Change weekday background color */
+}
+
+.revision-planner {
+  margin-top: 20px;
+  width: 80%;
+  text-align: center;
+}
+
+.revision-planner h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.revision-planner form {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.revision-planner label {
+  display: block;
+  margin-bottom: 5px;
+  color: black;
+}
+
+.revision-planner input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background: white;
+  color: black;
+  border: 1px black solid;
+  border-radius: 20px;
+}
+
+.revision-planner button {
   background-color: #2176FF;
   color: white;
-  border: none;
   padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
 }
 
-.vuecal__event--microsoft-event {
-  background-color: #fdc2217d;
-}
-
-.btn-hover:hover {
-    background-color: #FFA93E;
-    border-radius: 20px;
-}
-
-.event-modal {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -20%);
-  background: rgb(247, 113, 113);
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  z-index: 100;
-}
-
-.delete-modal {
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -30%);
-  background: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  z-index: 100;
+.revision-planner button:hover {
+  background-color: #0056b3;
 }
 </style>

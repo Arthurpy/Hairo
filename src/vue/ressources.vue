@@ -20,16 +20,15 @@
           </div>
         </div>
       </div>
-      <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] ">
-        <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="bg-[#2176FF] w-[21.5%] rounded-lg m-2">
-          <img src="../assets/Anat.jpeg" id="course_src" class="rounded-t-lg"/>
-          <h1 class="text-white font-semibold text-2xl mx-2 p-2 items-center"> {{ course }} </h1>
+      <div v-for="(row, rowIndex) in filteredChunkedCourses" :key="rowIndex" class="flex flex-row ml-[50px] mt-[10px] h-[200px]">
+        <router-link v-for="(course, index) in row" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course.name } }" class="bg-[#2176FF]  w-[21.5%] rounded-lg m-2 flex flex-col items-center justify-center p-4">
+          <div class="text-white font-semibold text-5xl mb-2">{{ course.count }} cours</div>
+          <h1 class="text-white font-semibold text-2xl mx-2 p-2 items-center"> {{ course.name }} </h1>
         </router-link>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import sidebar from './../components/sidebar.vue';
@@ -45,7 +44,7 @@ export default {
       isLightTheme: true,
       courses: pacesFolders,
       searchQuery: '',
-      recommendedCourses: ['Anatomie', 'Physiologie', 'Biologie'] // Vos cours conseillés
+      recommendedCourses: ['Anat', 'Génome', 'Biomol'] // Vos cours conseillés
     };
   },
   computed: {
@@ -59,7 +58,7 @@ export default {
     },
     filteredCourses() {
       const query = this.searchQuery.toLowerCase();
-      return this.courses.filter(course => course.toLowerCase().includes(query));
+      return this.courses.filter(course => course.name.toLowerCase().includes(query));
     },
     filteredChunkedCourses() {
       const chunkSize = 4;
@@ -68,12 +67,6 @@ export default {
         chunkedArray.push(this.filteredCourses.slice(i, i + chunkSize));
       }
       return chunkedArray;
-    },
-    formatCourseName(courseName) {
-      let formattedName = `../assets/${courseName}.jpeg`;
-      console.log(formattedName);
-      getElementsById('course_src').src = formattedName;
-      return formattedName;
     }
   },
 };

@@ -1,15 +1,15 @@
 [
-  "Anat",
-  "Biocell",
-  "Biologie du developpement",
-  "Biomol",
-  "Chimie",
-  "Génome",
-  "Histo Embryo",
-  "Medicaments",
-  "Physio",
-  "Recherche",
-  "Santé Société Humanité",
-  "spé medecine",
-  "spé pharma"
+  { "name": "Anat", "count": 18 },
+  { "name": "Biocell", "count": 15 },
+  { "name": "Biologie du developpement", "count": 8 },
+  { "name": "Biomol", "count": 3 },
+  { "name": "Chimie", "count": 2 },
+  { "name": "Génome", "count": 7 },
+  { "name": "Histo Embryo", "count": 10 },
+  { "name": "Medicaments", "count": 37 },
+  { "name": "Physio", "count": 7 },
+  { "name": "Recherche", "count": 1 },
+  { "name": "Santé Société Humanité", "count": 7 },
+  { "name": "spé medecine", "count": 3 },
+  { "name": "spé pharma", "count": 1 }
 ]

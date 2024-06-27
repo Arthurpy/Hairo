@@ -23,6 +23,7 @@
     "vue-google-oauth2": "^1.5.10",
     "vue-router": "^4.2.5",
     "vue-routers": "^1.0.9",
+    "vue3-datepicker": "^0.4.0",
     "vue3-google-oauth2": "^1.0.7"
   },
   "devDependencies": {
