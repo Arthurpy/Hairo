@@ -94,7 +94,7 @@ export default {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer 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` // Remplacez YOUR_OPENAI_API_KEY par votre clé API réelle
+            "Authorization": `Bearer ` // Remplacez YOUR_OPENAI_API_KEY par votre clé API réelle
           },
           body: JSON.stringify({
             model: "gpt-4o",
