@@ -1,9 +1,9 @@
 <template>
     <form class="mx-auto flex w-full max-w-lg flex-col rounded-xl border border-border bg-backgroundSecondary p-4 sm:pl-20 pr-20 pt-8 pb-8 bg-white"
           @submit.prevent="login">
-		  <div class="flex w-full flex-col gap-2">
-		<p class="text-black p">Sign in with</p>
-		<div class="flex w-full flex-col gap-2">
+		  <div class="flex w-full flex-col gap-2 blur-[1px]">
+		<p class="text-black p">Se connecter avec</p>
+		<div class="flex w-full flex-col gap-2 bg-slate-500 p-4" style="background-color: aqua; border-radius: 5%;">
 			<button type="button" class="btn gap-2 bg-gray-5">
 				<svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 48 48" enablebackground="new 0 0 48 48" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
 					<path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
@@ -15,13 +15,13 @@
               c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
 					></path>
 				</svg>
-				<span class="text-white">Sign up with google</span>
+				<span class="text-white">Se connecter avec google</span>
 			</button>
 			<button type="button" class="btn gap-2 bg-gray-5">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-5 w-5 fill-primary">
 					<path d="M31.937 6.093c-1.177 0.516-2.437 0.871-3.765 1.032 1.355-0.813 2.391-2.099 2.885-3.631-1.271 0.74-2.677 1.276-4.172 1.579-1.192-1.276-2.896-2.079-4.787-2.079-3.625 0-6.563 2.937-6.563 6.557 0 0.521 0.063 1.021 0.172 1.495-5.453-0.255-10.287-2.875-13.52-6.833-0.568 0.964-0.891 2.084-0.891 3.303 0 2.281 1.161 4.281 2.916 5.457-1.073-0.031-2.083-0.328-2.968-0.817v0.079c0 3.181 2.26 5.833 5.26 6.437-0.547 0.145-1.131 0.229-1.724 0.229-0.421 0-0.823-0.041-1.224-0.115 0.844 2.604 3.26 4.5 6.14 4.557-2.239 1.755-5.077 2.801-8.135 2.801-0.521 0-1.041-0.025-1.563-0.088 2.917 1.86 6.36 2.948 10.079 2.948 12.067 0 18.661-9.995 18.661-18.651 0-0.276 0-0.557-0.021-0.839 1.287-0.917 2.401-2.079 3.281-3.396z"></path>
 				</svg>
-				<span>Sign up with twitter</span>
+				<span class="text-white">Se connecter avec twitter</span>
 			</button>
 			<button type="button" class="btn gap-2 bg-gray-5">
 				<svg width="21" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="github" class="svg-inline--fa fa-github fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
@@ -31,47 +31,48 @@
 					></path>
 				</svg>
 
-				<span class="text-white">Sign up with github</span>
+				<span class="text-white">Se connecter avec with github</span>
 			</button>
 		</div>
 	</div>
-        <div class="divider my-6 text-xs text-content2">or continue with</div>
+    <p> C'est dans les bac</p>
+    <div class="divider my-6 text-xs text-content2">ou continue avec</div>
 
         <div class="form-group">
             <div class="form-field">
-                <label class="form-label text-black">Email address</label>
-                <input v-model="email" @blur="validateEmail" placeholder="Type here" type="email" class="input max-w-full bg-white text-black" />
-                <p v-if="emailError" class="text-red-500">Please enter a valid email.</p>
+                <label class="form-label text-black">adresse email</label>
+                <input v-model="email" @blur="validateEmail" placeholder="adresse email" type="email" class="input max-w-full bg-white text-black" />
+                <p v-if="emailError" class="text-red-500">Rentré un adresse valide.</p>
             </div>
             <div class="form-field">
                 <label class="form-label">
-                    <span class="text-black">Password</span>
+                    <span class="text-black">Mot de passe</span>
                 </label>
                 <div class="form-control">
-                    <input v-model="password" placeholder="Type here" type="password" class="input max-w-full text-black bg-white" />
+                    <input v-model="password" placeholder="Mot de passe" type="password" class="input max-w-full text-black bg-white" />
                 </div>
             </div>
             <div class="form-field">
                 <div class="form-control justify-between">
                     <div class="flex gap-2">
                         <input type="checkbox" class="checkbox" />
-                        <a class="text-sm text-black" href="#">Remember me</a>
+                        <a class="text-sm text-black" href="#">Se souvenire de moi</a>
                     </div>
                     <label class="form-label">
-                        <a class="link link-underline-hover link-primary text-sm">Forgot your password?</a>
+                        <a class="link link-underline-hover link-primary text-sm">Mot de passe oublié?</a>
                     </label>
                 </div>
             </div>
             <div class="form-field pt-5">
                 <div class="form-control justify-between">
-                    <button type="submit" class="btn btn-primary w-full bg-blue-600">Sign in</button>
+                    <button type="submit" class="btn btn-primary w-full bg-blue-600">Se connecter</button>
                 </div>
             </div>
             <p v-if="loginError" class="text-red-500">{{ loginErrorMessage }}</p>
             <div class="form-field">
                 <div class="form-control">
                     <button @click="goToRegister">
-                        <a class="link link-underline-hover link-primary text-sm">Don't have an account? Sign up</a>
+                        <a class="link link-underline-hover link-primary text-sm">Toujours pas de compte ? Inscrit toi</a>
                     </button>
                 </div>
             </div>

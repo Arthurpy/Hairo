@@ -19,6 +19,7 @@
     "vue": "^3.3.4",
     "vue-advanced-chat": "^2.0.11",
     "vue-cal": "^4.8.1",
+    "vue-carousel": "^0.18.0",
     "vue-google-oauth2": "^1.5.10",
     "vue-router": "^4.2.5",
     "vue-routers": "^1.0.9",

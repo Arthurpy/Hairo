@@ -1,12 +1,12 @@
 <template>
-    <div class="flex flex-row-reverse justify-between mr-14 ">
-        <div class="mt-40" >
-            <h1 class="font-extrabold text-7xl lg:text-5xl">Permet aux étudiants </h1>
-            <h1 class="text-7xl lg:text-5xl">de s'exercer à tout moment</h1>
-            <text class="flex text-xl w-96 mt-5">Proposition de cas pratiques et de QCM accessibles à tous et à n'importe quel moment pour des révisions efficaces et adaptées.</text>
+    <div class="relative flex flex-row-reverse justify-between max-w-none">
+        <div class="ml-20 lg:mt-64 my-20" >
+            <h1 class="ont-extrabold sm:text-7xl text-4xl">Permet aux étudiants </h1>
+            <h1 class="sm:text-7xl text-4xl">de s'exercer à tout moment</h1>
+            <text class="flex sm:text-xl text-sm w-9/12 mt-5">Proposition de cas pratiques et de QCM accessibles à tous et à n'importe quel moment pour des révisions efficaces et adaptées.</text>
         </div>
-        <div class=" -mt-36 -mb-44 ">
-            <img src="../assets/about.png" alt="about"/>
+        <div class="w-full hidden xl:flex">
+            <img src="../assets/about.png" alt="We" class="object-contain"/>
         </div>
     </div>
 </template>

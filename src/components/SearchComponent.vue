@@ -7,8 +7,8 @@
       <div class="flex flex-row bg-white z-10 p-5 px-5 mt-5 rounded-2xl">
         <h1 class=" text-2xl mx-10 mt-1">Que recherchez vous ?</h1>
         <div class="search-bar flex w-80 ml-56">
-          <input class="input-rounded input " placeholder="Rechercher un thème" />
-          <button class="btn btn-warning">
+          <input class="input-rounded input" style="border-radius: 9999px 0px 0px 9999px; background: white; border: 1px solid black; border-right: 0px; color: white" placeholder="Rechercher un thème" />
+          <button class="btn btn-warning" style="border-radius: 0px 9999px 9999px 0px; border: 1px solid black; border-left: 0px;">
             <img src="../assets/search.svg" class=""/>
           </button>
         </div>
