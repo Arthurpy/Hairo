@@ -206,6 +206,7 @@ async fetchPages(sectionId) {
       throw new Error(`API request failed: ${response.status} ${response.statusText}`);
     }
     const content = await response.text();
+    console.log('Note content:', content)
     return content;
   } catch (error) {
     console.error('Error fetching note content:', error);
