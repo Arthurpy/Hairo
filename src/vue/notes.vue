@@ -102,8 +102,9 @@ export default {
         });
         const url = 'https://graph.microsoft.com/v1.0/me/onenote/notebooks';
         const response = await fetch(url, { headers });
-        if (response.status === 401) {
+        if (response.status === 401 || response.status === 403) {
           localStorage.removeItem('microsoft_access_token');
+          this.accessToken = null;
           this.openMicrosoftLogin();
           return;
         }
@@ -196,23 +197,24 @@ async fetchPages(sectionId) {
       this.selectedNote = null;
     },
     async fetchNoteContent(contentUrl) {
-  try {
-    const headers = new Headers({
-      'Authorization': `Bearer ${this.accessToken}`,
-      'Content-Type': 'application/json'
-    });
-    const response = await fetch(contentUrl, { headers });
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-    const content = await response.text();
-    console.log('Note content:', content)
-    return content;
-  } catch (error) {
-    console.error('Error fetching note content:', error);
-    return '';
-  }
-},
+      try {
+        const headers = new Headers({
+          'Authorization': `Bearer ${this.accessToken}`,
+          'Content-Type': 'application/xhtml+xml'
+        });
+        const response = await fetch(contentUrl, { headers });
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+        }
+        const content = await response.text();
+        this.noteContent = content;
+        return content;
+      } catch (error) {
+        console.error('Error fetching note content:', error);
+        this.noteContent = '';
+        return '';
+      }
+    },
 
     handleAddButtonClick() {
   if (this.selectedNotebook && !this.selectedSection) {
@@ -299,58 +301,58 @@ async fetchPages(sectionId) {
         console.error('Error creating notebook:', error);
       }
     },
-    async openEditNoteModal() {
-  this.isEditNoteModalOpen = true;
-  this.editNoteTitle = this.selectedNote.title;
-  this.editNoteInput = await this.fetchNoteContent(this.selectedNote.contentUrl);
-},
-
-  closeEditNoteModal() {
-    this.isEditNoteModalOpen = false;
+  async openEditNoteModal() {
+    this.isEditNoteModalOpen = true;
+    this.editNoteTitle = this.selectedNote.title;
+    this.editNoteInput = this.noteContent;
+    await this.fetchNoteContent(this.selectedNote.contentUrl);
   },
+
+    closeEditNoteModal() {
+      this.isEditNoteModalOpen = false;
+    },
 
   async saveNoteChanges() {
-  const contentUrl = this.selectedNote.contentUrl;
+    const contentUrl = this.selectedNote.contentUrl;
+    const commands = [
+      {
+        "target": "body",
+        "action": "replace",
+        "content": `<div id="divId" data-id="_default"><p>${this.editNoteInput}</p></div>`
+      }
+    ];
 
-  const commands = [
-    {
-      "target": "body",
-      "action": "replace",
-      "content": `<div id="divId" data-id="_default"><p>${this.editNoteInput}</p></div>`
+    const formData = new FormData();
+    formData.append('commands', new Blob([JSON.stringify(commands)], { type: 'application/json' }));
+
+    try {
+      const headers = new Headers({
+        'Authorization': `Bearer ${this.accessToken}`,
+      });
+
+      const response = await fetch(contentUrl, {
+        method: 'PATCH',
+        headers,
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        console.error('Error body:', errorBody);
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+
+      this.closeEditNoteModal();
+      await this.fetchNoteContent(contentUrl);
+      this.isEditNoteModalOpen = false;
+    } catch (error) {
+      console.error('Error updating note:', error);
     }
-  ];
-
-  const formData = new FormData();
-  formData.append('commands', new Blob([JSON.stringify(commands)], { type: 'application/json' }));
-
-  try {
-    const headers = new Headers({
-      'Authorization': `Bearer ${this.accessToken}`,
-    });
-
-    const response = await fetch(contentUrl, {
-      method: 'PATCH',
-      headers,
-      body: formData
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      console.error('Error body:', errorBody);
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    this.closeEditNoteModal();
-    await this.fetchNoteContent(contentUrl);
-  } catch (error) {
-    console.error('Error updating note:', error);
-  }
+  },
+  async handleDeleteButtonClick() {
+    },
 },
-async handleDeleteButtonClick() {
-  },
-
-  },
-  async mounted() {
+mounted() {
     this.accessToken = localStorage.getItem('microsoft_access_token');
     if (!this.accessToken) {
       const urlParams = new URLSearchParams(window.location.search);
@@ -364,7 +366,7 @@ async handleDeleteButtonClick() {
       }
     }
     this.fetchNotebooks();
-  },
+  }
 };
 </script>
 
