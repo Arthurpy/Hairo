@@ -122,7 +122,7 @@ export default {
                 } else {
                     const responseData = await response.json();
                     this.loginErrorMessage = 'Email ou mot de passe incorrect.';
-                    this.loginErrorMessage = responseData.error;  // Affiche le message d'erreur retourné par la vue Django
+                    this.loginErrorMessage = responseData.error;
                 }
             } catch (error) {
                 console.error('Login failed:', error);

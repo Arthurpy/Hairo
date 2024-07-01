@@ -73,20 +73,29 @@
   "Génome": {
     "image": "src/assets/Anat.jpeg",
     "fichiers": [
-      "B. Couderc 2.pdf",
-      "B. Couderc.pdf",
-      "R. Salveyre 2.pdf",
-      "R. Salveyre 3.pdf",
-      "R. Salveyre.pdf",
-      "T. Levade.pdf",
-      "TECHNIQUES LEVADE .pdf"
+      "B Couderc.pdf",
+      "B Couderc 2.pdf",
+      "R Salveyre.pdf",
+      "R Salveyre 2.pdf",
+      "R Salveyre 3.pdf",
+      "T Levade.pdf",
+      "TECHNIQUES LEVADE.pdf"
     ]
   },
   "Histo Embryo": {
     "image": "src/assets/Anat.jpeg",
     "fichiers": [
-      "Embryo",
-      "Histo"
+      "CSEh.pdf",
+      "EMBRYOGENESE.pdf",
+      "01 Techniques histo.pdf ",
+      "02 Tissu epithelial.pdf ",
+      "03 Tissu conjonctif.pdf ",
+      "04 Tissu cartilagineux (TC).pdf ",
+      "05 Ossification.pdf",
+      "05 Tissu osseux.pdf",
+      "06 Tissu Musculaire.pdf",
+      "07 Tissu sanguin.pdf ",
+      "08 Tissu Nerveux.pdf"
     ]
   },
   "Medicaments": {

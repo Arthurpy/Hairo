@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-blue-200 flex">
+  <div class="bg-blue-200 flex" style="min-height: 100vh;">
     <sidebar :activeButton="'ressources'"/>
     <div class="flex flex-col ml-80">
       <div>
@@ -8,7 +8,7 @@
         </div>
         <div class="bg-white text-[#2176FF] w-[70vw] h-[91px] rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
           <h1 class="text-[#2176FF] text-2xl font-semibold">Que recherchez-vous ?</h1>
-          <input type="text" v-model="searchQuery" class="input-rounded input ml-56" style="color: white;" placeholder="Rechercher un thème">
+          <input type="text" v-model="searchQuery" class="input-rounded input ml-56" style="color: white; border-radius: 9999px; background: white;border: 1px solid black;" placeholder="Rechercher un thème">
         </div>
         <div class="flex flex-wrap ml-[50px] mt-[10px]">
           <router-link v-for="(file, index) in pdfFiles" :key="index" :to="{ name: 'ReadCours', params: { courseName: courseName, fileName: file } }" class="bg-[#2176FF] w-[21.5%] rounded-lg m-2">
@@ -25,7 +25,7 @@
 
 <script>
 import sidebar from './../components/sidebar.vue';
-import pdfFilesData from '../assets/PACES/course.json'; // Assurez-vous que le chemin d'accès est correct
+import pdfFilesData from '../assets/PACES/course.json';
 import pacesFolders from './../assets/pacesFolders.json';
 
 
@@ -59,7 +59,7 @@ export default {
       }
     },
     removePdfExtension(fileName) {
-      return fileName.split('.')[0]; // Récupérer le nom du fichier avant le premier point (.)
+      return fileName.split('.')[0];
     }
   },
   computed: {

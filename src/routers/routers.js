@@ -9,6 +9,7 @@ import Agenda from "../vue/agenda.vue";
 import Quiz from "../vue/quiz.vue";
 import messagerie from './../vue/messagerie.vue';
 import notes from './../vue/notes.vue';
+import settings from './../vue/setting.vue';
 
 import CourseDetails from './../vue/CourseDetails.vue';
 import ReadCours from './../vue/ReadCours.vue';
@@ -88,6 +89,12 @@ const routes = [
     {
       path: '/:catchAll(.*)',
       redirect: '/'
+    },
+    {
+      path: '/settings',
+      name: 'settings',
+      component: settings,
+      meta: { requiresAuth: true }
     }
 ];
 

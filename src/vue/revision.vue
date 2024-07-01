@@ -1,7 +1,7 @@
 <template>
   <div class="bg-blue-200 flex">
     <sidebar :activeButton="'revisions'" />
-    <div class="flex flex-col ml-80 h-[100%] mr-[3rem] mb-[50px]" style="width: -webkit-fill-available; margin-right: 5%;">
+    <div class="flex flex-col ml-80 bg-blue-200 flex mr-[3rem] mb-[50px]" style="width: -webkit-fill-available; margin-right: 5%;">
       <SearchBar />
       <div
         v-for="(revision, index) in myRevision"

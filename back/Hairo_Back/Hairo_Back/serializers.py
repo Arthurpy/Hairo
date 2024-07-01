@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cours, FichierPDF
+from .models import Cours, FichierPDF, QCM, Resultat, User
 
 class FichierPDFSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,3 +25,9 @@ class ResultatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resultat
         fields = ['id', 'user', 'qcm', 'score']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

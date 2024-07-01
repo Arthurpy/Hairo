@@ -46,6 +46,9 @@
         <div class="feedback-message">
           {{ feedbackMessage }}
         </div>
+        <button @click="retry" class="retry-button">
+          Recommencer le quiz
+        </button>
         <h2 class="final-score">Note finale : {{ calculateScore() }}/{{ questions.length }}</h2>
       </div>
     </div>
@@ -89,25 +92,26 @@ export default {
     },
     async fetchFeedbackMessage() {
       try {
-        console.log("fetchFeedbackMessage called");  // Point de débogage
+        console.log("fetchFeedbackMessage called");
+        this.feedbackMessage = "Génération du retour en cours...";
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer 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` // Remplacez YOUR_OPENAI_API_KEY par votre clé API réelle
+            "Authorization": `Bearer sk-proj-1LF3pVb76eEUghxqa3ePT3BlbkFJ4kjaCJoEg393npfDYse3`
           },
           body: JSON.stringify({
-            model: "gpt-4o",
+            model: "gpt-3.5-turbo",
             messages: [
               {role: "system", content: "You are a helpful assistant."},
               {role: "user", content: this.generatePrompt()}
             ],
-            max_tokens: 1000, // Augmentez le nombre de tokens pour permettre une réponse plus longue
+            max_tokens: 500,
             temperature: 0.7
           })
         });
         const data = await response.json();
-        console.log("API response:", data);  // Point de débogage
+        console.log("API response:", data);
         if (data.choices && data.choices.length > 0) {
           this.feedbackMessage = this.formatFeedback(data.choices[0].message.content.trim());
         } else {
@@ -123,7 +127,7 @@ export default {
       this.incorrectAnswers.forEach((answer, index) => {
         prompt += `${index + 1}. ${answer}\n`;
       });
-      console.log("Generated prompt:", prompt);  // Point de débogage
+      console.log("Generated prompt:", prompt);
       return prompt;
     },
     formatFeedback(feedback) {
@@ -160,6 +164,16 @@ export default {
       } else {
         this.finishQuiz();
       }
+    },
+    retry() {
+      this.currentIndex = 0;
+      this.currentQuestion = this.questions[this.currentIndex];
+      this.selectedAnswer = null;
+      this.quizResults = [];
+      this.incorrectAnswers = [];
+      this.quizCompleted = false;
+      this.feedbackMessage = "";
+      this.score = 0;
     },
     calculateScore() {
       return this.score;
@@ -243,6 +257,9 @@ export default {
 
 .question-content {
   margin-bottom: 20px;
+  width: 80%;
+  max-width: 80%;
+  min-width: 80%;
 }
 
 .question-text {
@@ -359,7 +376,7 @@ export default {
 
 .feedback-message {
   margin-bottom: 20px;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .final-score {
@@ -372,4 +389,18 @@ body {
   height: 100vh;
   flex-direction: row;
 }
+
+.retry-button {
+  background-color: #FFA93E;
+  color: #ffffff;
+  padding: 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.retry-button:hover {
+  background-color: #ff8c00;
+}
+
 </style>

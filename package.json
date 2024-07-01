@@ -11,20 +11,24 @@
   "dependencies": {
     "@azure/communication-chat": "^1.6.0-beta.1",
     "@tato30/vue-pdf": "^1.9.6",
+    "@vueup/vue-quill": "^1.2.0",
     "axios": "^1.6.8",
     "chart.js": "^4.4.2",
-    "pdfjs-dist": "^4.1.392",
+    "pdfjs-dist": "^4.3.136",
     "poppins": "^0.1.1",
+    "quill": "^2.0.2",
     "rippleui": "^1.12.1",
     "vue": "^3.3.4",
     "vue-advanced-chat": "^2.0.11",
     "vue-cal": "^4.8.1",
     "vue-carousel": "^0.18.0",
     "vue-google-oauth2": "^1.5.10",
+    "vue-pdf": "^4.3.0",
     "vue-router": "^4.2.5",
     "vue-routers": "^1.0.9",
     "vue3-datepicker": "^0.4.0",
-    "vue3-google-oauth2": "^1.0.7"
+    "vue3-google-oauth2": "^1.0.7",
+    "vue3-pdf": "^4.2.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

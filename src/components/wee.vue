@@ -8,9 +8,9 @@
           pour réussir ton année?
         </h1>
         <p class="flex sm:text-xl text-sm w-9/12 mt-5">
-          Booste ta réussite cette année avec une organisation optimale de tes révisions. Accède à tout moment à des ressources, cas pratiques, et reçois des retours personnalisés grâce à l'IA, des QCM, et des plans de révisions sur mesure.
+          Booste ta réussite cette année avec une organisation optimale de tes révisions. Accède à tout moment à des ressources, des prises de notes, et reçois des retours personnalisés grâce à l'IA, des QCM, et des plans de révisions sur mesure.
         </p>
-        <button @click="goToRegister" class="flex p-5 mt-16 bg-[#B4E1FE] px-7 rounded-lg uppercase font-bold my-4">
+        <button @click="goToRegister" class="flex p-5 mt-16 bg-[#ffa93e] px-7 rounded-lg uppercase font-bold my-4">
           nous rejoindre
         </button>
       </div>

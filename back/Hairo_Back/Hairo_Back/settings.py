@@ -26,9 +26,24 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Hairo_Back',
     'rest_framework',
+    'rest_framework_simplejwt',
     'webpack_loader',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.microsoft',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -115,6 +130,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://localhost:5173',
 ]
+
+CORS_ALLOW_CREDENTIALS = True
+
 APPEND_SLASH = False
 
 WEBPACK_LOADER = {
@@ -143,3 +161,9 @@ SITE_ID = 1
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'fichiers_cours')
+
+# settings.py
+
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'
+SECRET_KEY = 'your_secret_key'

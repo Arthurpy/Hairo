@@ -24,14 +24,17 @@ class UserManager(BaseUserManager):
     
     def get_by_natural_key(self, email):
         return self.get(**{self.model.USERNAME_FIELD: email})
-
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, default='non rensigné')
+    prenom = models.CharField(max_length=255, default='non rensigné')
+    faculte = models.CharField(max_length=255, default='non rensigné')
+    tutorat = models.CharField(max_length=255, default='non rensigné')
+    moyenne_visee = models.CharField(max_length=255, default='non rensigné')
+    rank = models.CharField(max_length=255, default=0)
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['password']

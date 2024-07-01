@@ -1,0 +1,205 @@
+{
+    "questions": [
+      {
+        "question": "1. Quelle est la longueur approximative du tube digestif humain ?",
+        "answers": {
+          "A": "5 à 7 m",
+          "B": "10 à 12 m",
+          "C": "15 à 17 m",
+          "D": "20 à 22 m"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "2. Quelle structure est située immédiatement après le pharynx dans le tube digestif ?",
+        "answers": {
+          "A": "L'œsophage",
+          "B": "L'estomac",
+          "C": "Le duodénum",
+          "D": "La cavité orale"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "3. Quelle partie de l'intestin grêle est fixe et forme un cadre autour de la tête du pancréas ?",
+        "answers": {
+          "A": "Jéjunum",
+          "B": "Iléum",
+          "C": "Duodénum",
+          "D": "Cæcum"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "4. Quelle glande salivaire est située sous le corps de la mandibule ?",
+        "answers": {
+          "A": "Parotide",
+          "B": "Sub-linguale",
+          "C": "Sub-mandibulaire",
+          "D": "Glande salivaire mineure"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "5. Combien de dents adultes compte la dentition humaine ?",
+        "answers": {
+          "A": "20",
+          "B": "24",
+          "C": "28",
+          "D": "32"
+        },
+        "good_answers": ["D"]
+      },
+      {
+        "question": "6. Où se situe le cardia ?",
+        "answers": {
+          "A": "Entre l'œsophage et l'estomac",
+          "B": "Entre l'estomac et le duodénum",
+          "C": "Entre le duodénum et le jéjunum",
+          "D": "Entre le jéjunum et l'iléum"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "7. Quel est le rôle principal des glandes salivaires ?",
+        "answers": {
+          "A": "Production d'hormones",
+          "B": "Sécrétion de sucs digestifs",
+          "C": "Filtration du sang",
+          "D": "Stockage de la bile"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "8. Où se trouve le sphincter d’Oddi ?",
+        "answers": {
+          "A": "Entre le pancréas et le duodénum",
+          "B": "Entre l'estomac et le duodénum",
+          "C": "Entre l'iléum et le cæcum",
+          "D": "Entre le rectum et l'anus"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "9. Quelle partie du colon forme une boucle et surplombe le pelvis ?",
+        "answers": {
+          "A": "Colon ascendant",
+          "B": "Colon transverse",
+          "C": "Colon descendant",
+          "D": "Colon sigmoïde"
+        },
+        "good_answers": ["D"]
+      },
+      {
+        "question": "10. Quelle est la principale fonction du foie ?",
+        "answers": {
+          "A": "Production de sucs digestifs",
+          "B": "Filtration de l'air",
+          "C": "Production de bile",
+          "D": "Stockage du glycogène"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "11. Quelle partie de l'appareil digestif est un organe lymphoïde ?",
+        "answers": {
+          "A": "Foie",
+          "B": "Pancréas",
+          "C": "Rate",
+          "D": "Vésicule biliaire"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "12. Quel conduit transporte la bile du foie à l'intestin ?",
+        "answers": {
+          "A": "Conduit cystique",
+          "B": "Conduit cholédoque",
+          "C": "Conduit pancréatique",
+          "D": "Conduit hépatique"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "13. Quel organe est décrit comme ayant une forme en J ?",
+        "answers": {
+          "A": "Œsophage",
+          "B": "Estomac",
+          "C": "Colon",
+          "D": "Duodénum"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "14. Quelle partie de l'intestin grêle est enroulée autour de la tête du pancréas ?",
+        "answers": {
+          "A": "Jéjunum",
+          "B": "Iléum",
+          "C": "Duodénum",
+          "D": "Colon"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "15. Quel organe possède un ligament falciforme ?",
+        "answers": {
+          "A": "Estomac",
+          "B": "Pancréas",
+          "C": "Foie",
+          "D": "Rate"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "16. Quelle artère est une branche du tronc coeliaque et descend le long de la petite courbure de l'estomac ?",
+        "answers": {
+          "A": "Artère hépatique commune",
+          "B": "Artère splénique",
+          "C": "Artère gastrique gauche",
+          "D": "Artère mésentérique supérieure"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "17. Quelle est la fonction principale du rectum ?",
+        "answers": {
+          "A": "Absorption des nutriments",
+          "B": "Stockage des matières fécales",
+          "C": "Production d'enzymes digestives",
+          "D": "Sécrétion de bile"
+        },
+        "good_answers": ["B"]
+      },
+      {
+        "question": "18. Quelle partie du colon est située dans le flanc droit ?",
+        "answers": {
+          "A": "Colon ascendant",
+          "B": "Colon transverse",
+          "C": "Colon descendant",
+          "D": "Colon sigmoïde"
+        },
+        "good_answers": ["A"]
+      },
+      {
+        "question": "19. Quel conduit pancréatique rejoint le conduit cholédoque ?",
+        "answers": {
+          "A": "Conduit de Sténon",
+          "B": "Conduit cystique",
+          "C": "Conduit pancréatique (Wirsung)",
+          "D": "Conduit sub-mandibulaire"
+        },
+        "good_answers": ["C"]
+      },
+      {
+        "question": "20. Quel élément est commun aux voies digestives et aux voies aériennes ?",
+        "answers": {
+          "A": "Larynx",
+          "B": "Pharynx",
+          "C": "Œsophage",
+          "D": "Tranchée"
+        },
+        "good_answers": ["B"]
+      }
+    ]
+  }
+  

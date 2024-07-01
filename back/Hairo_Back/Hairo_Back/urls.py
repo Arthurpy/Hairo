@@ -12,6 +12,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib import admin
+from .views import save_settings , load_settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,6 +28,9 @@ urlpatterns = [
     path('api/qcms/names/', QCMListView.as_view(), name='qcm-names'),
     path('notes-login/', views.notes_login, name='notes-login'),
     path('notes-callback', views.notes_callback, name='notes-callback'),
+    path('accounts/login/', login_view, name='login'),
+    path('api/loadSettings', load_settings, name='load_settings'),
+    path('api/saveSettings', save_settings, name='save_settings'),
 ]
 
 if settings.DEBUG:

@@ -1,21 +1,33 @@
 from django.shortcuts import render, redirect
 from .models import User, Cours, QCM, Resultat
 from django.contrib.auth import authenticate, login
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 import json
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 import jwt
-from datetime import datetime, timedelta
 from django.conf import settings
-from .models import Cours
 from functools import wraps
 import requests
 import msal
 from rest_framework import viewsets
 from .serializers import QCMSerializer, ResultatSerializer
 from django.views.generic import ListView
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from .models import User
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 def landing_page(request):
@@ -278,3 +290,39 @@ def notes_callback(request):
         else:
             error_description = result.get('error_description', 'Token is invalid or expired.')
             return JsonResponse({'error': error_description}, status=400)
+
+@csrf_exempt
+def load_settings(request):
+    if request.method == 'GET':
+        user = request.user
+        if not user.is_authenticated:
+            return JsonResponse({'error': 'User not authenticated'}, status=401)
+
+        profile = {
+            'name': user.name,
+            'prenom': user.prenom,
+            'faculte': user.faculte,
+            'tutorat': user.tutorat,
+            'moyenne_visee': user.moyenne_visee,
+            'rank': user.rank,  # Ajout du champ rank
+        }
+        return JsonResponse({'profile': profile})
+
+@csrf_exempt
+def save_settings(request):
+    if request.method == 'POST':
+        user = request.user
+        if not user.is_authenticated:
+            return JsonResponse({'error': 'User not authenticated'}, status=401)
+
+        data = json.loads(request.body)
+        profile = data.get('profile', {})
+        user.name = profile.get('name', user.name)
+        user.prenom = profile.get('prenom', user.prenom)
+        user.faculte = profile.get('faculte', user.faculte)
+        user.tutorat = profile.get('tutorat', user.tutorat)
+        user.moyenne_visee = profile.get('moyenne_visee', user.moyenne_visee)
+        user.rank = profile.get('rank', user.rank)  # Ajout du champ rank
+        user.save()
+
+        return JsonResponse({'message': 'Settings saved successfully'})

@@ -40,10 +40,12 @@
         </RouterLink>
       </div>
       <footer class="sett">
+      <RouterLink to="/settings">
         <button class="page btn-hover" :class="{ active: activeButton === 'settings' }">
           <img class="icon" src="../assets/logo-setting.png">
-          Settings
+          Paramètres
         </button>
+      </RouterLink>
         <button class="page btn-hover" :class="{ active: activeButton === 'logout'}" @click="logout" >
           <img class="icon" src="../assets/logo-logout.png">
           Logout
@@ -92,6 +94,7 @@
     flex-direction: column;
     align-items: center;
     align-self: stretch;
+    font-family: ;
 }
 
 .sidebar {
@@ -137,12 +140,13 @@
     border-radius: 4px;
     background: #D2E3FF;
     color: black;
-    border-radius: 35px;;
+    border-radius: 5px;;
 }
 
 .btn-hover:hover {
     background-color: #FFA93E;
-    border-radius: 20px;
+    border-radius: 5px;
+    color: white;
 }
 
 .first-button {

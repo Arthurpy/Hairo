@@ -5,7 +5,7 @@
   </template>
   
   <script>
-  import Chart from 'chart.js/auto'; // Importer Chart.js
+  import Chart from 'chart.js/auto'; 
   
   export default {
     props: {
@@ -15,27 +15,27 @@
       },
     },
     mounted() {
-      this.renderChart(); // Appeler la méthode pour afficher le graphique lors du montage du composant
+      this.renderChart();
     },
     methods: {
       renderChart() {
-        const chartCanvas = this.$refs.chartCanvas; // Récupérer la référence du canvas
+        const chartCanvas = this.$refs.chartCanvas;
   
         // Créer le graphique camembert
         new Chart(chartCanvas, {
-          type: 'pie', // Type de graphique camembert
+          type: 'pie',
           data: {
-            labels: this.chartData.labels, // Les étiquettes du graphique (noms des sections)
+            labels: this.chartData.labels,
             datasets: [
               {
-                data: this.chartData.data, // Les données du graphique (valeurs des sections)
-                backgroundColor: this.chartData.backgroundColor || [], // Couleurs de fond des sections (optionnel)
-                borderColor: this.chartData.borderColor || [], // Couleurs de bordure des sections (optionnel)
-                borderWidth: this.chartData.borderWidth || 1, // Largeur de la bordure des sections (optionnel)
+                data: this.chartData.data,
+                backgroundColor: this.chartData.backgroundColor || [],
+                borderColor: this.chartData.borderColor || [],
+                borderWidth: this.chartData.borderWidth || 1,
               },
             ],
           },
-          options: this.chartData.options || {}, // Options du graphique (optionnel)
+          options: this.chartData.options || {},
         });
       },
     },

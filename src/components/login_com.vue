@@ -3,7 +3,7 @@
           @submit.prevent="login">
 		  <div class="flex w-full flex-col gap-2 blur-[1px]">
 		<p class="text-black p">Se connecter avec</p>
-		<div class="flex w-full flex-col gap-2 bg-slate-500 p-4" style="background-color: aqua; border-radius: 5%;">
+		<div class="flex w-full flex-col gap-2 bg-slate-500 p-4" style="border-radius: 5%;">
 			<button type="button" class="btn gap-2 bg-gray-5">
 				<svg stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 48 48" enablebackground="new 0 0 48 48" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
 					<path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
@@ -80,59 +80,6 @@
     </form>
 </template>
 
-<!-- <script>
-export default {
-    name: 'login_com',
-	data() {
-        return {
-            email: '',
-            password: '',
-            emailError: false,
-            loginError: false,
-            loginErrorMessage: ''
-        };
-    },
-	methods: {
-        validateEmail() {
-            const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            this.emailError = !pattern.test(this.email);
-        },
-		async login() {
-    try {
-        this.validateEmail();
-        if (this.emailError) {
-            this.loginErrorMessage = 'Please enter a valid email.';
-            return;
-        }
-        const response = await fetch('http://localhost:8000/login/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: this.email,
-                password: this.password
-            })
-        });
-        const responseData = await response.json();  // Assurez-vous que cette ligne est correctement appelée
-        if (response.ok && responseData.token) {
-            localStorage.setItem('authToken', responseData.token);
-            this.$router.push('/dashboard');
-        } else {
-            this.loginErrorMessage = responseData.error || 'Email ou mot de passe incorrect.';
-        }
-    } catch (error) {
-        console.error('Login failed:', error);
-        this.loginErrorMessage = 'An error occurred while trying to log in.';
-    }
-},
-		goToRegister() {
-			this.$router.push('/register');
-		},
-	},
-};
-</script> -->
-
 <script>
 export default {
     name: 'login_com',
@@ -161,12 +108,13 @@ export default {
         const response = await fetch('http://localhost:8000/login/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: this.email, password: this.password }) // Change 'email' to 'username' if necessary
+            body: JSON.stringify({ username: this.email, password: this.password })
         });
         const responseData = await response.json();
         if (response.ok) {
             localStorage.setItem('authToken', responseData.token);
             localStorage.setItem('user', JSON.stringify(responseData.user));
+            localStorage.setItem('mail', this.email);
             this.$router.push('/dashboard');
         } else {
             this.loginErrorMessage = responseData.error || 'Email or password is incorrect.';

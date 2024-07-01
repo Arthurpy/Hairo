@@ -9,14 +9,14 @@
       <div class="flex">
         <div class="bg-white text-[#2176FF] w-[50vw] h-auto rounded-lg mt-[30px] ml-[50px] flex items-center text-base p-[15px]">
           <h1 class="text-[#2176FF] text-2xl font-semibold">Que rechercher vous?</h1>
-          <input type="text" v-model="searchQuery" class="input-rounded input ml-56" style="color: white;" placeholder="Rechercher un thème">
+          <input type="text" v-model="searchQuery" class="input-rounded input ml-56"  style="color: white; border-radius: 9999px; background: white;border: 1px solid black;" placeholder="Rechercher un thème">
         </div>
         <div class="recommended-courses bg-white text-[#2176FF] w-[18vw] h-auto rounded-lg mt-[30px] ml-[20px] p-[15px]">
           <h2 class="text-[#2176FF] text-xl font-semibold">Cours conseillés</h2>
           <div style="display: flex;">
-            <div v-for="(course, index) in recommendedCourses" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="recommended-course bg-[#2176FF] text-white rounded-lg p-2 mt-2">
+            <router-link v-for="(course, index) in recommendedCourses" :key="index" :to="{ name: 'CourseDetails', params: { courseName: course } }" class="recommended-course bg-[#2176FF] text-white rounded-lg p-2 mt-2">
               {{ course }}
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ export default {
       isLightTheme: true,
       courses: pacesFolders,
       searchQuery: '',
-      recommendedCourses: ['Anat', 'Génome', 'Biomol'] // Vos cours conseillés
+      recommendedCourses: ['Anat', 'Génome', 'Biomol'],
     };
   },
   computed: {
